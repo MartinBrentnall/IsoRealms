@@ -23,6 +23,9 @@
 #include "IsoRealms/Resources/IEventBindings.h"
 #include "IsoRealms/Application.h"
 #include "IsoRealms/Editing/IDialogManager.h"
+#include "IsoRealms/Persistence/JSONArray.h"
+#include "IsoRealms/Persistence/JSONDocument.h"
+#include "IsoRealms/Persistence/JSONObject.h"
 #include "IsoRealms/Project/Project.h"
 #include "IsoRealms/Types.h"
 

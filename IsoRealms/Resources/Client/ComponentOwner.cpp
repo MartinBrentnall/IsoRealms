@@ -21,7 +21,6 @@
 #include <optional>
 #include <stdexcept>
 
-#include "IsoRealms/Persistence/JSONObject.h"
 #include "IsoRealms/Project/Project.h"
 #include "IsoRealms/Project/ProjectFile.h"
 

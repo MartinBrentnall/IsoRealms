@@ -135,8 +135,6 @@ namespace IsoRealms {
         IBinding* cBinding;
       };
 
-      inline static const std::string JSON_LOCAL = "local";
-
       IEventBindings* cRuntimeLocals;
 
       mutable std::set<std::unique_ptr<IBinding>> cInstances;
@@ -245,7 +243,7 @@ namespace IsoRealms {
         void defineBinding(IComponentDefiner& definer) override {
           Options mHint;
           mHint.addOption(Options::PROPERTY_NO_EDIT, "true");
-          definer.propertyResource(JSON_RESOURCE, cDefValue, mHint);
+          definer.propertyResource("asset", cDefValue, mHint); // TODO: Rename to "resource".
           if (!definer.loadsPersistedValues()) {
             cDefValue.defineTreeItem(definer);
           }
@@ -273,9 +271,6 @@ namespace IsoRealms {
       mutable std::set<std::unique_ptr<IBinding>> cInstances;
     };
 
-    inline static const std::string JSON_RESOURCE = "asset";
-    inline static const std::string JSON_VALUE    = "value";
-    
     // External interfaces.
     Project& cProject;
 

@@ -18,6 +18,8 @@
  */
 #pragma once
 
+#include <functional>
+#include <memory>
 #include <vector>
 
 #include "IsoRealms/IComponentDefiner.h"
@@ -33,6 +35,8 @@ namespace IsoRealms {
   class IOptionalObject;
   class IComponentData;
   class ITreeSelectorObject;
+  class JSONDocument;
+  class JSONObject;
 
   /**
    * Loads persisted field values by invoking the same property declarations used
@@ -43,6 +47,7 @@ namespace IsoRealms {
     public:
     ComponentLoader(IComponentData& resourceData, JSONObject object);
     ComponentLoader(IComponentData& resourceData, std::vector<JSONObject> objects);
+    ComponentLoader(IComponentData& resourceData, const std::string& file, bool user);
 
     // TODO: Replace this function with a hint or something more elegant.
     bool loadsPersistedValues() const override {
@@ -82,10 +87,12 @@ namespace IsoRealms {
 
     protected:
     bool loadPropertyArray(const std::string& key, const std::function<void()>& addAndLoadElement, const Options& hint = Options::EMPTY) override;
-    bool loadFixedPropertyArray(const std::string& key, unsigned int count, const std::function<unsigned int(const JSONObject&)>& matchIndex, const std::function<void(unsigned int index)>& loadElement) override;
+    bool loadKeyedMembers(const std::function<void(const std::string& key, bool isNull, IComponentDefiner& definer)>& loadMember) override;
+    bool loadFixedPropertyArray(const std::string& key, unsigned int count, const std::function<void(unsigned int index)>& loadElement) override;
 
     private:
     IComponentData& cComponentData;
+    std::vector<std::unique_ptr<JSONDocument>> cDocuments;
     std::vector<JSONObject> cObjects;
 
     const JSONObject& currentObject() const;

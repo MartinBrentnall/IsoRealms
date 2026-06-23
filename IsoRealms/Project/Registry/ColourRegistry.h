@@ -103,11 +103,6 @@ namespace IsoRealms {
         float cEditingLastKnownSaturation; /// Last known saturation value.
         float cEditingLastKnownLightness;  /// Last known lightness value.
       };
-
-      inline static const std::string JSON_ALPHA = "alpha";
-      inline static const std::string JSON_BLUE  = "blue";
-      inline static const std::string JSON_GREEN = "green";
-      inline static const std::string JSON_RED   = "red";
     };
 
     Literal cLiteral;

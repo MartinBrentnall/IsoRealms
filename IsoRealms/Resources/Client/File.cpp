@@ -21,9 +21,7 @@
 #include <optional>
 #include <stdexcept>
 
-#include "IsoRealms/Editing/Property/IProperty.h"
 #include "IsoRealms/Editing/Property/IPropertyManager.h"
-#include "IsoRealms/Persistence/JSONObject.h"
 #include "IsoRealms/Project/Project.h"
 #include "IsoRealms/System.h"
 
@@ -52,22 +50,6 @@ namespace IsoRealms {
 
   bool File::isSet() const {
     return !cPath.empty();
-  }
-  
-  void File::load(const std::string& name, JSONObject object) {
-    JSONObject mFileObject = object.getObject(name);
-    cPath = mFileObject.getString("path");
-    cUser = mFileObject.getBoolean("user");
-
-    if (cChangeCallback) {
-      cChangeCallback();
-    }
-  }
-  
-  void File::save(const std::string& name, JSONObject object) const {
-    JSONObject mFileObject = object.addObject(name);
-    mFileObject.addString("path", cPath);
-    mFileObject.addBoolean("user", cUser);
   }
   
   TreeItemInfo File::getTreeItemInfo() const {

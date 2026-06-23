@@ -69,13 +69,6 @@ namespace IsoRealms {
       }
 
       private:
-
-      // JSON members.
-      inline static const std::string JSON_VALUE = "value";
-
-      /**
-       * A simple Float resource implementation.
-       */
       class Instance : public IFloat {
         public:
         Instance(Project& project, const float value);

@@ -19,7 +19,6 @@
 #include "Function.h"
 
 #include <sol.hpp>
-#include <unordered_map>
 
 #include "Modules/Basics/Basics.h"
 
@@ -220,17 +219,11 @@ namespace IsoRealms::Basics {
   }
 
   void Function::Call::defineResource(IComponentDefiner& definer) {
-    std::unordered_map<std::string, unsigned int> mArgumentIndices;
-    for (unsigned int i = 0; i < cParent.cDefArgumentDefinitions.size(); i++) {
-      mArgumentIndices.emplace(cParent.cDefArgumentDefinitions[i]->getName(), i);
-    }
     definer.fixedArray("bindings", cDefArguments, [](const std::unique_ptr<IsoRealms::Binding>& binding) -> IsoRealms::Binding& {return *binding;}, [this, &definer](IsoRealms::Binding& binding, unsigned int index) {
       Options mHint;
       mHint.addOption("name", cParent.cDefArgumentDefinitions[index]->getName());
       mHint.addOption("description", "An argument to the function.");
       definer.propertyResource("to", binding, mHint);
-    }, [mArgumentIndices](const JSONObject& loadObject) -> unsigned int {
-      return mArgumentIndices.at(loadObject.getString("argument"));
     });
   }
 

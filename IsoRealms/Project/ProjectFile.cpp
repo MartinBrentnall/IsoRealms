@@ -18,6 +18,9 @@
  */
 #include "ProjectFile.h"
 
+#include "IsoRealms/Project/Options.h"
+#include "IsoRealms/Utils.h"
+
 #include "Project.h"
 
 namespace IsoRealms {
@@ -28,16 +31,6 @@ namespace IsoRealms {
   ProjectFile::ProjectFile(Project& project, const std::string& filename, bool user) :
               ProjectFile(project) {
     cFile.setPath(filename, user);
-  }
-
-  ProjectFile::ProjectFile(Project& project, JSONObject object) :
-              ProjectFile(project) {
-    cFile.load(JSON_FILENAME, object);
-    cAllowModifications = object.getBoolean(JSON_ALLOW_MODIFICATION, true);
-  }
-
-  void ProjectFile::setDescription(JSONObject object) {
-    cDefID = object.getString(JSON_DESCRIPTION);
   }
 
   std::string ProjectFile::getName() const {
@@ -72,20 +65,6 @@ namespace IsoRealms {
     return nullptr; // TODO: Throw?
   }
 
-  void ProjectFile::save(JSONObject object) const {
-    object.addString(JSON_DESCRIPTION, cDefID);
-    JSONArray mIncludeArray = object.addArray(JSON_INCLUDE);
-    for (const std::unique_ptr<ProjectFile>& mInclusion : cInclusions) {
-      JSONObject mIncludeObject = mIncludeArray.addObject();
-      mInclusion->saveInclusion(mIncludeObject);
-    }
-  }
-
-  void ProjectFile::saveInclusion(JSONObject object) const {
-    cFile.save(JSON_FILENAME, object);
-    object.addBoolean(JSON_ALLOW_MODIFICATION, cAllowModifications, true);
-  }
-
   bool ProjectFile::isModifiable() const {
     return cAllowModifications && cFile.isUser();
   }
@@ -95,10 +74,14 @@ namespace IsoRealms {
   }
 
   void ProjectFile::define(IComponentDefiner& definer, Project& project, bool inclusion) {
-    definer.propertyResource(JSON_FILENAME,    cFile);
-    definer.propertyString(  JSON_DESCRIPTION, [this]() {return cDefID;}, [this](const std::string& value) {cDefID = value;});
+    if (inclusion || !definer.loadsPersistedValues()) {
+      Options mHintImmediate;
+      mHintImmediate.addOption(Options::PROPERTY_IMMEDIATE, "true");
+      definer.propertyResource("filename", cFile, mHintImmediate);
+    }
+    definer.propertyString("description", [this]() {return cDefID;}, [this](const std::string& value) {cDefID = value;});
     if (inclusion && cFile.isUser()) {
-      definer.propertyBoolean(JSON_ALLOW_MODIFICATION, [this]() {return cAllowModifications;}, [this, &definer, &project](bool value) {
+      definer.propertyBoolean("allowModification", [this]() {return cAllowModifications;}, [this, &definer, &project](bool value) {
         if (!value) {
           definer.confirm("Setting this file to read-only will cause it to be saved as it is currently.  Are you sure you want to do this?", [this, &project]() {
             project.save(*this);
@@ -111,21 +94,29 @@ namespace IsoRealms {
         }
       }, true);
     }
-    for (const std::unique_ptr<ProjectFile>& mInclusion : cInclusions) {
-      definer.scope(JSON_INCLUDE, mInclusion->cFile.getRelativePath(), [this, &mInclusion, &project](IComponentDefiner& definer) {
-        mInclusion->define(definer, project, true);
-      }, [this, &mInclusion]() {
-        Utils::removeElementUnique(cInclusions, mInclusion.get());
-      });
-    }
-    definer.propertyAdd(JSON_INCLUDE, "Add...", [this, &definer, &project]() {
-      ProjectFile* mNewInclusion = cInclusions.emplace_back(std::make_unique<ProjectFile>(project)).get();
-      definer.scope(JSON_INCLUDE, mNewInclusion->cFile.getRelativePath(), [this, &mNewInclusion, &project](IComponentDefiner& definer) {
-        mNewInclusion->define(definer, project, true);
-      }, [this, &mNewInclusion]() {
-        Utils::removeElementUnique(cInclusions, mNewInclusion);
-      });
+    definer.array("include", cInclusions, [](const std::unique_ptr<ProjectFile>& inclusion) -> ProjectFile& {
+      return *inclusion;
+    }, [this, &project, &definer](ProjectFile& inclusion) {
+      if (definer.loadsPersistedValues()) {
+        // Inclusion metadata is loaded from the parent file's include[] entry.
+        inclusion.define(definer, project, true);
+        if (inclusion.cFile.isSet()) {
+          Options mFileHint;
+          mFileHint.addOption(Options::PROPERTY_FILE, inclusion.cFile.getRelativePath());
+          mFileHint.addOption(Options::PROPERTY_USER, inclusion.cFile.isUser() ? "true" : "false");
+          definer.scope("include", inclusion.cFile.getRelativePath(), [&project, &inclusion](IComponentDefiner& fileDefiner) {
+            project.define(fileDefiner, &inclusion);
+          }, nullptr, mFileHint);
+        }
+      } else {
+        definer.scope("include", inclusion.cFile.getRelativePath(), [this, &inclusion, &project](IComponentDefiner& nestedDefiner) {
+          inclusion.define(nestedDefiner, project, true);
+        }, [this, &inclusion]() {
+          Utils::removeElementUnique(cInclusions, &inclusion);
+        });
+      }
+    }, [this, &project]() -> ProjectFile& {
+      return *cInclusions.emplace_back(std::make_unique<ProjectFile>(project)).get();
     });
   }
 }
-

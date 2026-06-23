@@ -36,7 +36,6 @@ namespace IsoRealms {
   class IEditable;
   class IOptionalObject;
   class ITreeSelectorObject;
-  class JSONObject;
   class Module;
 
   class IComponentDefiner : public IComponentAccessManager {
@@ -78,9 +77,13 @@ namespace IsoRealms {
     virtual void scope(const std::string& key, const std::string& value, std::function<void(IComponentDefiner&)> subProperties, std::function<void()> removeFunction = nullptr, const Options& hint = Options::EMPTY, std::function<bool()> icon = nullptr) = 0;
     virtual void spacer(float height) = 0;
 
+    virtual bool loadKeyedMembers(const std::function<void(const std::string& key, bool isNull, IComponentDefiner& definer)>& loadMember) {
+      return false;
+    }
+
     template <typename CONTAINER, typename VALUE_FUNC, typename PROPERTY_FUNC, typename ADD_FUNC>
     void array(const std::string& key, const CONTAINER& container, VALUE_FUNC value, PROPERTY_FUNC createProperty, ADD_FUNC add, const Options& hint = Options::EMPTY) {
-      if (savesPersistedValues() && hint.getOption(Options::PROPERTY_OPTIONAL) == "true" && std::begin(container) == std::end(container)) {
+      if (savesPersistedValues() && std::begin(container) == std::end(container)) {
         return;
       }
       if (beginSavePropertyArray(key)) {
@@ -105,8 +108,8 @@ namespace IsoRealms {
       }, hint);
     }
 
-    template <typename CONTAINER, typename VALUE_FUNC, typename PROPERTY_FUNC, typename MATCH_INDEX_FUNC>
-    void fixedArray(const std::string& key, const CONTAINER& container, VALUE_FUNC value, PROPERTY_FUNC createProperty, MATCH_INDEX_FUNC matchIndex) {
+    template <typename CONTAINER, typename VALUE_FUNC, typename PROPERTY_FUNC>
+    void fixedArray(const std::string& key, const CONTAINER& container, VALUE_FUNC value, PROPERTY_FUNC createProperty) {
       const unsigned int mCount = static_cast<unsigned int>(std::distance(std::begin(container), std::end(container)));
       std::function<void(unsigned int)> mCreateAtIndex = [&](unsigned int mIndex) {
         auto mElement = std::begin(container);
@@ -123,7 +126,10 @@ namespace IsoRealms {
         endSavePropertyArray();
         return;
       }
-      if (loadFixedPropertyArray(key, mCount, matchIndex, mCreateAtIndex)) {
+      if (loadFixedPropertyArray(key, mCount, mCreateAtIndex)) {
+        return;
+      }
+      if (loadsPersistedValues()) {
         return;
       }
       unsigned int mIndex = 0;
@@ -150,7 +156,7 @@ namespace IsoRealms {
       return false;
     }
 
-    virtual bool loadFixedPropertyArray(const std::string& key, unsigned int count, const std::function<unsigned int(const JSONObject&)>& matchIndex, const std::function<void(unsigned int index)>& loadElement) {
+    virtual bool loadFixedPropertyArray(const std::string& key, unsigned int count, const std::function<void(unsigned int index)>& loadElement) {
       return false;
     }
   };

@@ -41,7 +41,6 @@
 namespace IsoRealms {
   class IModuleHandle;
   class IProperty;
-  class JSONObject;
   class LuaState;
   class Project;
   class ComponentType;
@@ -52,12 +51,8 @@ namespace IsoRealms {
     public:
     Module(const std::string& name, Project& project, LuaState* luaState);
     
-    static unsigned int matchLoadIndex(const JSONObject& loadObject);
-
-    void loadComponents(JSONObject object, ProjectFile* ownerProject);
     void publish();
     bool needsSaving(const ProjectFile* savingProject) const;
-    void save(JSONObject object, const ProjectFile* savingProject) const;
     void getProperties();
     void updateInputs(unsigned int milliseconds);
     void updateRuntime(unsigned int milliseconds);
@@ -108,17 +103,6 @@ namespace IsoRealms {
     virtual ~Module();
 
     private:
-    inline static const std::string JSON_RESOURCES     = "assets";
-    inline static const std::string JSON_CATEGORIES    = "categories";
-    inline static const std::string JSON_CONFIGURATION = "configuration";
-    inline static const std::string JSON_DESCRIPTION   = "description";
-    inline static const std::string JSON_LONG_NAME     = "longName";
-    inline static const std::string JSON_NAME          = "name";
-    inline static const std::string JSON_OMISSIONS     = "omissions";
-    inline static const std::string JSON_PROPERTIES    = "properties";
-    inline static const std::string JSON_COMPONENTS    = "components";
-    inline static const std::string JSON_TYPE          = "type";
-
     Project& cProject;
     ResourcePublisher cModuleResourceRegistry;
     std::map<std::string, std::unique_ptr<ComponentType>> cComponentTypes;

@@ -62,6 +62,7 @@ namespace IsoRealms {
     int getInteger(const std::string& name, int defaultValue = 0) const;
     float getFloat(const std::string& name, float defaultValue = 0.0f) const;
     bool getBoolean(const std::string& name, bool defaultValue = false) const;
+    bool isArray(const std::string& name) const;
 
     private:
     JSONDocument& cParent;

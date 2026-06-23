@@ -100,32 +100,30 @@ namespace IsoRealms::Equilibria {
 
     Options mZoneObjectsHint;
     mZoneObjectsHint.addOption(Options::PROPERTY_NO_EDIT, "true");
-    Options mOptionalZoneObjectArrayHint;
-    mOptionalZoneObjectArrayHint.addOption(Options::PROPERTY_OPTIONAL, "true");
-    definer.scope("zoneObjects", "", [this, &mOptionalZoneObjectArrayHint](IComponentDefiner& d) {
+    definer.scope("zoneObjects", "", [this](IComponentDefiner& d) {
       d.array("terrain", cDefTerrain, [](const std::unique_ptr<Terrain>& mTerrain) -> Terrain& {return *mTerrain;}, [&d](Terrain& terrain) {
         terrain.define(d);
       }, [this]() -> Terrain& {
         return *addTerrain(std::make_unique<Terrain>(*this));
-      }, mOptionalZoneObjectArrayHint);
+      });
 
       d.array("lifts", cDefLifts, [](const std::unique_ptr<Lift>& mLift) -> Lift& {return *mLift;}, [&d](Lift& lift) {
         lift.define(d);
       }, [this]() -> Lift& {
         return *cDefLifts.emplace_back(std::make_unique<Lift>(*this)).get();
-      }, mOptionalZoneObjectArrayHint);
+      });
 
       d.array("aliens", cDefAliens, [](const std::unique_ptr<Alien>& mAlien) -> Alien& {return *mAlien;}, [&d](Alien& alien) {
         alien.define(d);
       }, [this]() -> Alien& {
         return *cDefAliens.emplace_back(std::make_unique<Alien>(*this)).get();
-      }, mOptionalZoneObjectArrayHint);
+      });
 
       d.array("pickUps", cDefPickUps, [](const std::unique_ptr<PickUp>& mPickUp) -> PickUp& {return *mPickUp;}, [&d](PickUp& pickUp) {
         pickUp.define(d);
       }, [this]() -> PickUp& {
         return *cDefPickUps.emplace_back(std::make_unique<PickUp>(*this)).get();
-      }, mOptionalZoneObjectArrayHint);
+      });
     }, nullptr, mZoneObjectsHint);
 
     if (definer.loadsPersistedValues()) {

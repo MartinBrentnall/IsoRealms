@@ -100,13 +100,11 @@ namespace IsoRealms {
     }
 
     // Handle sub-conditions as an array.
-    Options mOptionalArrayHint;
-    mOptionalArrayHint.addOption(Options::PROPERTY_OPTIONAL, "true");
     definer.array("subConditions", cDefConditions, [](const Condition& condition) -> Condition& {return const_cast<Condition&>(condition);}, [&definer, &availableElements](Condition& condition) {
       condition.define(definer, availableElements);
     }, [this]() -> Condition& {
       return cDefConditions.emplace_back(true);
-    }, mOptionalArrayHint);
+    });
 
     // TODO: Criteria handling is currently indirect via InputDefinition.  This should be refactored to be more direct.
     // Everything below this point should be refactored to be more direct.
@@ -139,7 +137,7 @@ namespace IsoRealms {
       }
     }, [&mInputs]() -> InputDefinition& {
       return mInputs.emplace_back();
-    }, mOptionalArrayHint);
+    });
   }
 
   void Condition::saveCache(std::ostream& cache, unsigned char conditionType, unsigned char elementType, unsigned char endType) const {

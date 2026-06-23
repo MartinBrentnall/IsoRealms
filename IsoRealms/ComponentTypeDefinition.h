@@ -27,22 +27,13 @@
 #include "IsoRealms/Component.h"
 #include "IsoRealms/IComponentDefiner.h"
 #include "IsoRealms/IComponentTypeDefinition.h"
-#include "IsoRealms/Persistence/JSONArray.h"
-#include "IsoRealms/Persistence/JSONObject.h"
 #include "IsoRealms/Project/ComponentType.h"
 #include "IsoRealms/Project/ProjectFile.h"
-#include "IsoRealms/Persistence/ComponentLoader.h"
-#include "IsoRealms/Persistence/ComponentSaver.h"
 
-// Forward declarations
 namespace IsoRealms {
   class ProjectFile;
-  class JSONArray;
-  class JSONObject;
   class ComponentType;
-}
 
-namespace IsoRealms {
   template <typename MODULE, typename TYPE> class ComponentTypeDefinition : public IComponentTypeDefinition {
     private:
     class ComponentInfo {
@@ -137,6 +128,14 @@ namespace IsoRealms {
     void define(IComponentDefiner& definer, ComponentType& parent) override {
       Options mNamelessHint;
       mNamelessHint.addOption("name", "");
+
+      // TODO: This feels hacky.
+      if (definer.loadsPersistedValues()) {
+        definer.loadKeyedMembers([&parent, this](const std::string& name, bool isNull, IComponentDefiner& memberDefiner) {
+          parent.loadPersistedMember(name, isNull, memberDefiner, parent.getProjectFile());
+        });
+        return;
+      }
       definer.array("components", cComponents, [](const std::pair<const std::string, std::unique_ptr<ComponentInfo>>& entry) -> IComponent& {
         return *entry.second->getComponent();
       }, [&definer, this](IComponent& component) {
@@ -165,10 +164,9 @@ namespace IsoRealms {
       return mComponent;
     }
     
-    IComponent* loadComponent(ComponentType& parent, const std::string& name, JSONObject object, ProjectFile* ownerProject) override {
+    IComponent* loadComponent(ComponentType& parent, const std::string& name, IComponentDefiner& definer, ProjectFile* ownerProject) override {
       Component<MODULE, TYPE>* mComponent = cComponents.emplace(name, std::make_unique<ComponentInfo>(parent, cModule, ownerProject)).first->second->getComponent();
-      ComponentLoader mLoader(mComponent->getComponentData(), object);
-      mComponent->getComponent()->define(mLoader);
+      mComponent->getComponent()->define(definer);
       mComponent->publish();
       return mComponent;
     }
@@ -182,17 +180,6 @@ namespace IsoRealms {
       return false;
     }
   
-    void save(JSONObject& object, const ProjectFile* savingProject) override {
-      for (const std::unique_ptr<ComponentInfo>& mComponentInfo : cComponents | std::views::values) {
-        Component<MODULE, TYPE>* mComponent = mComponentInfo->getComponent();
-        if (mComponent->needsSaving(savingProject)) {
-          JSONObject mComponentObject = object.addObject(mComponent->getName());
-          ComponentSaver mSaver(mComponent->getComponentData(), mComponentObject);
-          mComponent->getComponent()->define(mSaver);
-        }
-      }
-    }
-
     bool forEachComponent(std::function<bool(IComponent*)> func) override {
       for (const std::unique_ptr<ComponentInfo>& mComponentInfo : cComponents | std::views::values) {
         if (!func(mComponentInfo->getComponent())) {

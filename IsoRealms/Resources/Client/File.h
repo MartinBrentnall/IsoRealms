@@ -27,7 +27,6 @@
 #include "IsoRealms/Project/Registry/TreeItemInfo.h"
 
 namespace IsoRealms {
-  class JSONObject;
   class Application;
   class IProperty;
   class Project;
@@ -41,8 +40,6 @@ namespace IsoRealms {
     std::string getRelativePath() const;
     bool isUser() const;
     bool isSet() const;
-    void load(const std::string& name, JSONObject object);
-    void save(const std::string& name, JSONObject object) const;
 
     /**********************************\
      * Implements ITreeSelectorObject *

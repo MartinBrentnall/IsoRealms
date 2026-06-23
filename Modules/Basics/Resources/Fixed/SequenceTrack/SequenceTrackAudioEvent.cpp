@@ -92,7 +92,7 @@ namespace IsoRealms::Basics {
 
   void SequenceTrackAudioEvent::getEventProperties(IComponentDefiner& definer) {
     definer.propertyInteger("time", [this]() {return cDefTime;}, [this](unsigned int time) {cDefTime = time;});
-    definer.propertyResource("file", cDefFile);
+    definer.propertyResource("value", cDefFile);
     definer.propertyInteger("fadeIn", [this]() {return cDefFadeIn;}, [this](unsigned int value) {cDefFadeIn = value; return true;});
     definer.propertyInteger("fadeOut", [this]() {return cDefFadeOut;}, [this](unsigned int value) {cDefFadeOut = value; return true;});
   }

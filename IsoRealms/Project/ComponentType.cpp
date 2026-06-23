@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "IsoRealms/Persistence/JSONObject.h"
 #include "IsoRealms/Project/ProjectFile.h"
 #include "Module.h"
 #include "Project.h"
@@ -33,25 +32,23 @@ namespace IsoRealms {
     cComponentType->define(definer, *this);
   }
 
-  void ComponentType::loadComponent(JSONThing mInstanceThing, ProjectFile* ownerProject) {
-    std::string mComponentName = mInstanceThing.getName();
-    if (mInstanceThing.isNull()) {
-      cOmittedComponents.insert(std::make_unique<PlaceHolder>(mComponentName, ownerProject));
+  void ComponentType::loadPersistedMember(const std::string& name, bool isNull, IComponentDefiner& definer, ProjectFile* ownerProject) {
+    if (isNull) {
+      cOmittedComponents.insert(std::make_unique<PlaceHolder>(name, ownerProject));
       return;
     }
 
-    // Ignore resource if name matches an existing one (useful for include overrides and omissions).
-    if (cComponentType->getComponent2(mComponentName, false) != nullptr) {
-      cOverriddenComponents.push_back(std::make_unique<PlaceHolder>(mComponentName, ownerProject));
+    if (cComponentType->getComponent2(name, false) != nullptr) {
+      cOverriddenComponents.push_back(std::make_unique<PlaceHolder>(name, ownerProject));
       return;
     }
     for (const std::unique_ptr<PlaceHolder>& mOmittedComponent : cOmittedComponents) {
-      if (mOmittedComponent->getID() == mComponentName) {
-        cOverriddenComponents.push_back(std::make_unique<PlaceHolder>(mComponentName, ownerProject));
+      if (mOmittedComponent->getID() == name) {
+        cOverriddenComponents.push_back(std::make_unique<PlaceHolder>(name, ownerProject));
         return;
       }
     }
-    cComponentType->loadComponent(*this, mComponentName, mInstanceThing.getValue(), ownerProject);
+    cComponentType->loadComponent(*this, name, definer, ownerProject);
   }
 
   void ComponentType::reloadComponent(const std::string& resourceName) {
@@ -60,27 +57,28 @@ namespace IsoRealms {
     for (const std::unique_ptr<PlaceHolder>& mOverriddenComponent : cOverriddenComponents) {
       if (mOverriddenComponent->getID() == resourceName) {
 
+        // TODO: Need an alternative way to implement this.
         // Found overridden resource, now open the project file that the resource is in.
-        ProjectFile* mProjectFile = mOverriddenComponent->getProjectFile();
-        std::string mProjectFilePath = mProjectFile->cFile.getRelativePath();
-        bool mProjectFileUser = mProjectFile->cFile.isUser();
-        JSONDocument mProjectFileDocument(mProjectFilePath, mProjectFileUser);
+        // ProjectFile* mProjectFile = mOverriddenComponent->getProjectFile();
+        // std::string mProjectFilePath = mProjectFile->cFile.getRelativePath();
+        // bool mProjectFileUser = mProjectFile->cFile.isUser();
+        // JSONDocument mProjectFileDocument(mProjectFilePath, mProjectFileUser);
 
-        // Navigate to the resource in the project file and load it.
-        JSONObject mProjectObject = mProjectFileDocument.getObject(JSON_PROJECT);
-        JSONObject mModulesObject = mProjectObject.getObject(JSON_MODULES);
-        JSONObject mComponentObject = mModulesObject.getObject(cParent.getName());
-        cComponentType->loadComponent(*this, resourceName, mComponentObject, mProjectFile);
+        // // Navigate to the resource in the project file and load it.
+        // JSONObject mProjectObject = mProjectFileDocument.getObject("project");
+        // JSONObject mModulesObject = mProjectObject.getObject("modules");
+        // JSONObject mComponentObject = mModulesObject.getObject(cParent.getName());
+        // cComponentType->loadComponent(*this, resourceName, mComponentObject, mProjectFile);
 
-        // Remove the overridden resource.
-        cOverriddenComponents.erase(std::remove_if(cOverriddenComponents.begin(), cOverriddenComponents.end(), [resourceName](const std::unique_ptr<PlaceHolder>& mOverriddenComponent) {
-          return mOverriddenComponent->getID() == resourceName;
-        }), cOverriddenComponents.end());
+        // // Remove the overridden resource.
+        // cOverriddenComponents.erase(std::remove_if(cOverriddenComponents.begin(), cOverriddenComponents.end(), [resourceName](const std::unique_ptr<PlaceHolder>& mOverriddenComponent) {
+        //   return mOverriddenComponent->getID() == resourceName;
+        // }), cOverriddenComponents.end());
 
-        // Remove the omitted resource.
-        std::erase_if(cOmittedComponents, [resourceName](const std::unique_ptr<PlaceHolder>& mOmittedComponent) {
-          return mOmittedComponent->getID() == resourceName;
-        });
+        // // Remove the omitted resource.
+        // std::erase_if(cOmittedComponents, [resourceName](const std::unique_ptr<PlaceHolder>& mOmittedComponent) {
+        //   return mOmittedComponent->getID() == resourceName;
+        // });
 
         // And we're done.
         return;
@@ -95,13 +93,6 @@ namespace IsoRealms {
       }
     }
     return cComponentType->needsSaving(savingProject);
-  }
-
-  void ComponentType::save(JSONObject& object, const ProjectFile* savingProject) {
-    cComponentType->save(object, savingProject);
-    for (const std::unique_ptr<PlaceHolder>& mOmittedComponent : cOmittedComponents) {
-      mOmittedComponent->save(object, *savingProject);      
-    }
   }
 
   std::string const ComponentType::getPlural() const {
@@ -224,11 +215,5 @@ namespace IsoRealms {
 
   bool ComponentType::PlaceHolder::needsSaving(const ProjectFile& savingProject) const {
     return cOwnerProject == &savingProject;
-  }
-
-  void ComponentType::PlaceHolder::save(JSONObject& object, const ProjectFile& savingProject) const {
-    if (cOwnerProject == &savingProject) {
-      object.addNull(cID);
-    }
   }
 }

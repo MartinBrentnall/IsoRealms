@@ -69,9 +69,6 @@ namespace IsoRealms {
       }
 
       private:
-
-      inline static const std::string JSON_VALUE = "value";
-
       class Instance : public IInteger {
         public:
         Instance(Project& project, const int value = 0);

@@ -22,9 +22,8 @@
 #include <string>
 
 #include "IsoRealms/IComponent.h"
+#include "IsoRealms/IComponentDefiner.h"
 #include "IsoRealms/IComponentTypeDefinition.h"
-#include "IsoRealms/Persistence/JSONThing.h"
-#include "IsoRealms/Persistence/JSONValue.h"
 
 namespace IsoRealms {
   class Module;
@@ -33,10 +32,9 @@ namespace IsoRealms {
     public:
     ComponentType(IComponentTypeDefinition* resourceType, Module& parent);
     void define(IComponentDefiner& definer);
-    void loadComponent(JSONThing mInstanceThing, ProjectFile* ownerProject);
+    void loadPersistedMember(const std::string& name, bool isNull, IComponentDefiner& definer, ProjectFile* ownerProject);
     void reloadComponent(const std::string& resourceName);
     bool needsSaving(const ProjectFile* savingProject) const;
-    void save(JSONObject& object, const ProjectFile* savingProject);
 
     std::string const getPlural() const;
     std::string const getSingular() const;
@@ -66,20 +64,11 @@ namespace IsoRealms {
       std::string getID() const;
       ProjectFile* getProjectFile() const;
       bool needsSaving(const ProjectFile& savingProject) const;
-      void save(JSONObject& object, const ProjectFile& savingProject) const;
 
       private:
       std::string cID;
       ProjectFile* cOwnerProject;
     };
-
-    inline static const std::string JSON_CATEGORY    = "category";
-    inline static const std::string JSON_DESCRIPTION = "description";
-    inline static const std::string JSON_MODULES     = "modules";
-    inline static const std::string JSON_PLURAL      = "plural";
-    inline static const std::string JSON_PROJECT     = "project";
-    inline static const std::string JSON_PROPERTIES  = "properties";
-    inline static const std::string JSON_SINGULAR    = "singular";
 
     Module& cParent;
     IComponentTypeDefinition* cComponentType;

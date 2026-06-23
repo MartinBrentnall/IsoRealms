@@ -33,7 +33,7 @@ namespace IsoRealms::Equilibria {
   void WorldView::define(IComponentDefiner& definer) {
     Options mHint;
     mHint.addOption(Options::PROPERTY_IMMEDIATE, "true");
-    definer.propertyResource("world",  cDefWorld,        mHint);
+    definer.propertyResource("world",  cDefWorld);
     definer.propertyResource("camera", cDefCamera,       mHint);
     definer.propertyResource("type",   cDefZoneViewType, mHint);
     definer.propertyFloat(   "zoom",   [this]() {return cDefZoom;}, [this](float value) {cDefZoom = value;}, DEFAULT_ZOOM, [](float value) {return value > 0.0f;}); // TODO: Should this be part of the camera???  e.g. CameraZoom

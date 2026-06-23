@@ -24,34 +24,23 @@
 #include <string>
 
 #include "IsoRealms/Resources/Client/File.h"
-#include "IsoRealms/Persistence/JSONArray.h"
 
 namespace IsoRealms {
-  class JSONArray;
   class Project;
 
   class ProjectFile {
     public:
     ProjectFile(Project& project);
     ProjectFile(Project& project, const std::string& filename, bool user);
-    ProjectFile(Project& project, JSONObject object);
-    void setDescription(JSONObject object);
     std::string getName() const;
     std::vector<std::string> getNames() const;
     void getNames(std::vector<std::string>& names) const;
     ProjectFile* getFile(const std::string& id);
     void define(IComponentDefiner& definer, Project& project, bool topFile);
     void rename(const std::string name, bool user);
-    void save(JSONObject object) const;
-    void saveInclusion(JSONObject object) const;
     bool isModifiable() const;
 
 //    private:
-    inline static const std::string JSON_ALLOW_MODIFICATION = "allowModifications";
-    inline static const std::string JSON_DESCRIPTION        = "description";
-    inline static const std::string JSON_FILENAME           = "filename";
-    inline static const std::string JSON_INCLUDE            = "include";
-
     File cFile;
     std::string cDefID;
     bool cAllowModifications = true;

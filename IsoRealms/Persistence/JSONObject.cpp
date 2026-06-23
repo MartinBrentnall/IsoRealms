@@ -124,6 +124,10 @@ namespace IsoRealms {
     return cObject.HasMember(name) ? cObject[name].GetFloat() : defaultValue;
   }
 
+  bool JSONObject::isArray(const std::string& name) const {
+    return cObject.HasMember(name) && cObject[name].IsArray();
+  }
+
   JSONObject::Iterator JSONObject::begin() {
     return Iterator(*this, cObject.MemberBegin());
   }

@@ -22,9 +22,7 @@
 #include "IsoRealms/Exception/InitException.h"
 #include "IsoRealms/Input/HatHandler.h"
 #include "IsoRealms/Persistence/ParseException.h"
-#include "IsoRealms/Persistence/JSONDocument.h"
-#include "IsoRealms/Persistence/JSONObject.h"
-#include "IsoRealms/Persistence/JSONThing.h"
+#include "IsoRealms/Persistence/ComponentLoader.h"
 #include "IsoRealms/Project/Options.h"
 #include "IsoRealms/Project/Project.h"
 #include "IsoRealms/System.h"
@@ -77,7 +75,6 @@ namespace IsoRealms {
       cFullScreen         = false;
       cSelectedResolution = 0;
     }
-    resizeScreen();
   }
 
   Application::~Application() {
@@ -89,6 +86,10 @@ namespace IsoRealms {
     for (std::thread& mThread : cThreads) {
       mThread.join();
     }
+  }
+
+  std::unique_ptr<ComponentLoader> Application::createComponentLoader(Project& project, const std::string& file, bool user) {
+    return std::make_unique<ComponentLoader>(project, file, user);
   }
 
   int Application::run(Options& options) {
@@ -104,6 +105,7 @@ namespace IsoRealms {
         mProjectFinished = true;
       }, options.getOption("file"), options.getOption("type") == "user");
       mProject.reset(options);
+      ensureWindow();
       initMainThread();
 
       // Events might have accumulated during project construction, so lets flush it before starting.
@@ -276,7 +278,14 @@ namespace IsoRealms {
     cMainThreadInitTasks.push(task);
   }
 
+  void Application::ensureWindow() {
+    if (!cWindow.isOpen()) {
+      resizeScreen();
+    }
+  }
+
   void Application::initMainThread() {
+    ensureWindow();
     while (!cMainThreadAllocTasks.empty()) {
       std::function<void()> mTask = cMainThreadAllocTasks.front();
       mTask();

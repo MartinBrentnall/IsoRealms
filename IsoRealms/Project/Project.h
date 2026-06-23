@@ -91,13 +91,13 @@ namespace IsoRealms {
     void save(const std::string& file);
     void save(const ProjectFile& file) const;
     bool isUser();
-    void getProperties(IComponentDefiner& definer, ProjectFile* loadOwner = nullptr);
     void define(IComponentDefiner& definer, ProjectFile* loadOwner = nullptr);
     IEditable* getDefaultEditable();
     IScreen* getScreenProxy(IScreen* screen);
     
     // Functions used by project members.
     Module* loadModule(const std::string& name);
+    Module* getModule(const std::string& name);
     void unloadModule(const std::string& name);
     const std::vector<std::unique_ptr<Module>>& getModules() const;
     std::vector<std::string> getUnusedModuleNames() const;
@@ -223,17 +223,6 @@ namespace IsoRealms {
     template <typename TYPE> friend struct ResourceContainerTraits;
 
     private:
-    inline static const std::string JSON_EDITOR                = "editor";
-    inline static const std::string JSON_INCLUDE               = "include";
-    inline static const std::string JSON_INPUT                 = "input";
-    inline static const std::string JSON_LAUNCH_CONFIGURATIONS = "launchConfigurations";
-    inline static const std::string JSON_MODULES               = "modules";
-    inline static const std::string JSON_NAME                  = "name";
-    inline static const std::string JSON_ON_CLOSE_REQUEST      = "onCloseRequest";
-    inline static const std::string JSON_ON_START              = "onStart";
-    inline static const std::string JSON_PROJECT               = "project";
-    inline static const std::string JSON_SCREEN                = "screen";
-
     class QuitAction : public IAction {
       public:
       QuitAction(Project& parent);
@@ -306,8 +295,7 @@ namespace IsoRealms {
     QuitAction cQuitAction;
 
     // Private functions.
-    std::vector<std::unique_ptr<JSONDocument>> loadComponents(ProjectFile& file);
-    Module* getModule(const std::string& name);
+    void finishLoadedComponents();
     void updateTasks();
     void saveRecursive(const ProjectFile& file) const;
   };

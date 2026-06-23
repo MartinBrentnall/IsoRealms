@@ -22,7 +22,6 @@
 #include <string>
 
 namespace IsoRealms {
-  class JSONObject;
   class IBinding;
   class TreeItemInfo;
 

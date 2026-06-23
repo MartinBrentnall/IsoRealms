@@ -38,14 +38,13 @@ namespace IsoRealms {
     public:
     virtual void define(IComponentDefiner& definer, ComponentType& parent) = 0;
     virtual IComponent* createComponent(ComponentType& parent, const std::string& name, ProjectFile* ownerProject) = 0;
-    virtual IComponent* loadComponent(ComponentType& parent, const std::string& name, JSONObject object, ProjectFile* ownerProject) = 0;
+    virtual IComponent* loadComponent(ComponentType& parent, const std::string& name, IComponentDefiner& definer, ProjectFile* ownerProject) = 0;
     virtual void deleteComponent(IComponent* component) = 0;
     virtual void renameComponent(IComponent* component, const std::string& name) = 0;
     virtual IComponent* getComponent2(const std::string& name, bool required = true) const = 0;
     virtual std::vector<std::string> getAvailableComponents() const = 0;
     virtual const std::string& getComponentID(const IComponent& component) const = 0;
     virtual bool needsSaving(const ProjectFile* savingProject) const = 0;
-    virtual void save(JSONObject& object, const ProjectFile* savingProject) = 0;
     virtual bool forEachComponent(std::function<bool(IComponent*)> func) = 0;
   };
 }

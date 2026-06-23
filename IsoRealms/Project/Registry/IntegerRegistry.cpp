@@ -36,7 +36,7 @@ namespace IsoRealms {
   }
 
   void IntegerRegistry::Literal::Instance::defineResource(IComponentDefiner& definer) {
-    definer.propertyInteger(JSON_VALUE, [this]() {return cValue;}, [this](int value) {cValue = value;});
+    definer.propertyInteger("value", [this]() {return cValue;}, [this](int value) {cValue = value;});
   }
 
   bool IntegerRegistry::Literal::Instance::isDefaultConfiguration() const {

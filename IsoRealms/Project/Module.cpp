@@ -21,9 +21,6 @@
 #include "IsoRealms/IModuleHandle.h"
 #include "IsoRealms/Exception/InitException.h"
 #include "IsoRealms/Exception/ComponentInitException.h"
-#include "IsoRealms/Persistence/JSONObject.h"
-#include "IsoRealms/Persistence/JSONThing.h"
-#include "IsoRealms/Persistence/JSONValue.h"
 #include "IsoRealms/System.h"
 
 #include "ComponentType.h"
@@ -72,25 +69,6 @@ namespace IsoRealms {
     cModule = mCreateFunction(&project, this);
   }
 
-  void Module::loadComponents(JSONObject object, ProjectFile* ownerProject) {
-    for (JSONThing mComponentThing : object) {
-      JSONObject mComponentObject = mComponentThing.getValue();
-      std::string mComponentTypeName = mComponentThing.getName();
-      ComponentType* mComponentType = getComponentType(mComponentTypeName);
-      if (mComponentType == nullptr) {
-        std::cout << "ERROR: Module::loadComponents: Component type \"" << mComponentTypeName << "\" not known in module \"" << cName << "\".  Available components:" << std::endl;
-        for (std::pair<const std::string, std::unique_ptr<ComponentType>>& mDebugComponent : cComponentTypes) {
-          std::cout << "  " << mDebugComponent.first << std::endl;
-        }
-        throw ComponentInitException("ERROR: Module::loadComponents: Component type \"" + mComponentTypeName + "\" not known in module \"" + cName + "\".");
-      }
-
-      for (JSONThing mInstanceThing : mComponentObject) {
-        mComponentType->loadComponent(mInstanceThing, ownerProject);
-      }
-    }
-  }
-
   void Module::publish() {
 
     // TODO: I don't remember why this is separate from the constructor.
@@ -104,17 +82,6 @@ namespace IsoRealms {
       }
     }
     return false;
-  }
-
-  void Module::save(JSONObject object, const ProjectFile* savingProject) const {
-    JSONObject mModuleObject = object.addObject(cName);
-
-    for (const std::pair<const std::string, std::unique_ptr<ComponentType>>& mComponentType : cComponentTypes) {
-      if (mComponentType.second->needsSaving(savingProject)) {
-        JSONObject mComponentTypeObject = mModuleObject.addObject(mComponentType.first);
-        mComponentType.second->save(mComponentTypeObject, savingProject);
-      }
-    }
   }
 
   void Module::updateInputs(unsigned int milliseconds) {
@@ -155,10 +122,6 @@ namespace IsoRealms {
 
   std::string Module::getLongName() const {
     return cLongName;
-  }
-
-  unsigned int Module::matchLoadIndex(const JSONObject& loadObject) {
-    return static_cast<unsigned int>(loadObject.getInteger("index"));
   }
 
   std::string Module::getDescription() const {

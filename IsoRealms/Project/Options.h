@@ -47,10 +47,13 @@ namespace IsoRealms {
     /** Hint option: JSON member name under which nested struct properties are loaded and saved. */
     inline static const std::string PROPERTY_SCOPED = "scoped";
 
-    /** Hint option: array property is omitted from JSON when empty and not required when loading. */
-    inline static const std::string PROPERTY_OPTIONAL = "optional";
+    /** Hint option: scope loads from a project file; value is the file path (see PROPERTY_USER). ComponentLoader only. */
+    inline static const std::string PROPERTY_FILE = "file";
 
-    /** Hint option: scope properties are deferred until components are loaded, using a fresh loader. */
+    /** Hint option: used with PROPERTY_FILE; "true" if the file is in user space. ComponentLoader only. */
+    inline static const std::string PROPERTY_USER = "user";
+
+    /** Hint option: scope properties are deferred until components are loaded, using a captured object stack. */
     inline static const std::string PROPERTY_DEFER = "defer";
     
     Options();

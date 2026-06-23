@@ -43,7 +43,9 @@
 #include "System.h"
  
 namespace IsoRealms {
+  class ComponentLoader;
   class Options;
+  class Project;
   
   /**
    * Thread pool allows tasks to be performed in parallel, and/or large tasks to
@@ -171,6 +173,11 @@ namespace IsoRealms {
      * the current screen mode.
      */
     void resizeScreen();
+
+    /**
+     * Create the application window if it has not been created yet.
+     */
+    void ensureWindow();
     
     /**
      * Add the specified task to the task queue, then immediately trigger the
@@ -185,9 +192,9 @@ namespace IsoRealms {
     public:
     
     /**
-     * Construct an IsoRealms application.  Specifically, this constructs the
-     * window in which an IsoRealms application is shown within, and performs
-     * other global level initialisation such as setting up the thread-pool.
+     * Construct an IsoRealms application and perform global level
+     * initialisation such as setting up the thread-pool.  The application
+     * window is created when the project is ready to run.
      */
     Application();
     ~Application();
@@ -200,6 +207,8 @@ namespace IsoRealms {
     void setName(const std::string& name);
 
     int run(Options& options);
+
+    std::unique_ptr<ComponentLoader> createComponentLoader(Project& project, const std::string& file, bool user);
 
     JSONDocument createDocument();
     JSONDocument openDocument(const std::string& name);

@@ -79,11 +79,9 @@ namespace IsoRealms::Equilibria {
       });
       std::vector<ConditionElement*> mElements = cDefType->getTerrainStateConditionElements();
 
-      Options mOptionalConditionHint;
-      mOptionalConditionHint.addOption(Options::PROPERTY_OPTIONAL, "true");
-        d.propertyCondition("condition", mElements, [this]()->std::optional<Condition>& {return cDefCondition;}, [this](std::optional<Condition>& condition) {
+      d.propertyCondition("condition", mElements, [this]()->std::optional<Condition>& {return cDefCondition;}, [this](std::optional<Condition>& condition) {
         cDefCondition = condition;
-      }, mOptionalConditionHint);
+      });
     }, nullptr, mDeferHint);
     definer.propertyList("behaviour",
                          std::vector<std::string>{BEHAVIOUR_NORMAL,

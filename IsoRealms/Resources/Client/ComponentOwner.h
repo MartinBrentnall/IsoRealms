@@ -28,7 +28,6 @@
 namespace IsoRealms {
   class Application;
   class IComponentDefiner;
-  class JSONObject;
   class Project;
   class ProjectFile;
 

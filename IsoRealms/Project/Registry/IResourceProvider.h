@@ -19,8 +19,6 @@
 #pragma once
 
 namespace IsoRealms {
-  class JSONObject;
-
   template <typename OWNER, typename TYPE> class IResourceProvider {
     public:
     virtual TYPE* getResource(OWNER& owner) = 0;

@@ -80,9 +80,6 @@ namespace IsoRealms {
       }
 
       private:
-
-      inline static const std::string JSON_VALUE = "value";
-
       class Instance : public IString {
         public:
         Instance(Project& project, const std::string&);
@@ -177,11 +174,6 @@ namespace IsoRealms {
                   cDefValue(owner) {
         }
 
-        Instance(Conversion& parent, IComponentData& owner, JSONObject object) :
-                  Instance(parent, owner) {
-          cDefValue.set(object, JSON_RESOURCE);
-        }
-
         /**********************\
         * Implements IString *
         \**********************/
@@ -203,7 +195,6 @@ namespace IsoRealms {
         }
 
         private:
-        inline static const std::string JSON_RESOURCE = "asset";
 
         // External interfaces.
         Conversion& cParent;
@@ -212,9 +203,6 @@ namespace IsoRealms {
       };
       mutable std::set<std::unique_ptr<IString>> cConvertedResources;
     };
-
-    inline static const std::string JSON_RESOURCE = "asset";
-    inline static const std::string JSON_VALUE    = "value";
     
     // External interfaces.
     Project& cProject;

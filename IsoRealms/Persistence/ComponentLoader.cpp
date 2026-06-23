@@ -18,16 +18,19 @@
  */
 #include "ComponentLoader.h"
 
-#include <map>
 #include <optional>
 
 #include "IsoRealms/Condition/Condition.h"
 #include "IsoRealms/Editing/Property/ITreeSelectorObject.h"
 #include "IsoRealms/Exception/ArgumentException.h"
 #include "IsoRealms/IComponentData.h"
+#include "IsoRealms/Persistence/JSONDocument.h"
+#include "IsoRealms/Persistence/JSONArray.h"
+#include "IsoRealms/Persistence/JSONThing.h"
+#include "IsoRealms/Persistence/JSONValue.h"
+#include "IsoRealms/Project/ComponentType.h"
 #include "IsoRealms/Project/ComponentType.h"
 #include "IsoRealms/Project/Module.h"
-#include "IsoRealms/Project/Project.h"
 #include "IsoRealms/Resources/Fixed/DigitalInput/KeyboardKey.h"
 #include "IsoRealms/Resources/Type/IEditable.h"
 #include "IsoRealms/Utils.h"
@@ -65,6 +68,12 @@ namespace IsoRealms {
   ComponentLoader::ComponentLoader(IComponentData& resourceData, std::vector<JSONObject> objects) :
             cComponentData(resourceData),
             cObjects(std::move(objects)) {
+  }
+
+  ComponentLoader::ComponentLoader(IComponentData& resourceData, const std::string& file, bool user) :
+            cComponentData(resourceData) {
+    cDocuments.push_back(std::make_unique<JSONDocument>(file, user));
+    cObjects.push_back(cDocuments.back()->getObject("project"));
   }
 
   JSONObject& ComponentLoader::currentObject() {
@@ -107,7 +116,7 @@ namespace IsoRealms {
   }
 
   bool ComponentLoader::loadPropertyArray(const std::string& key, const std::function<void()>& addAndLoadElement, const Options& hint) {
-    if (hint.getOption(Options::PROPERTY_OPTIONAL) == "true" && !currentObject().hasMember(key)) {
+    if (!currentObject().hasMember(key)) {
       return true;
     }
     for (JSONValue mValue : currentObject().getArray(key)) {
@@ -119,16 +128,32 @@ namespace IsoRealms {
     return true;
   }
 
-  bool ComponentLoader::loadFixedPropertyArray(const std::string& key, unsigned int count, const std::function<unsigned int(const JSONObject&)>& matchIndex, const std::function<void(unsigned int index)>& loadElement) {
-    std::map<unsigned int, JSONObject> mSlots;
-    for (JSONValue mValue : currentObject().getArray(key)) {
-      JSONObject mObject = mValue.getObject();
-      mSlots.emplace(matchIndex(mObject), mObject);
+  bool ComponentLoader::loadKeyedMembers(const std::function<void(const std::string& key, bool isNull, IComponentDefiner& definer)>& loadMember) {
+    for (JSONThing mMember : currentObject()) {
+      if (mMember.isNull()) {
+        loadMember(mMember.getName(), true, *this);
+      } else {
+        pushObject(mMember.getValue());
+        loadMember(mMember.getName(), false, *this);
+        popObject();
+      }
     }
-    for (unsigned int mIndex = 0; mIndex < count; mIndex++) {
-      pushObject(mSlots.at(mIndex));
+    return true;
+  }
+
+  bool ComponentLoader::loadFixedPropertyArray(const std::string& key, unsigned int count, const std::function<void(unsigned int index)>& loadElement) {
+    if (!currentObject().hasMember(key) || !currentObject().isArray(key)) {
+      return false;
+    }
+    unsigned int mIndex = 0;
+    for (JSONValue mValue : currentObject().getArray(key)) {
+      if (mIndex >= count) {
+        break;
+      }
+      pushObject(mValue.getObject());
       loadElement(mIndex);
       popObject();
+      mIndex++;
     }
     return true;
   }
@@ -162,7 +187,7 @@ namespace IsoRealms {
   }
 
   void ComponentLoader::propertyCondition(const std::string& key, std::vector<ConditionElement*> availableElements, std::function<std::optional<Condition>&()> getter, std::function<void(std::optional<Condition>&)> setter, const Options& hint) {
-    if (hint.getOption(Options::PROPERTY_OPTIONAL) == "true" && !currentObject().hasMember(key)) {
+    if (!currentObject().hasMember(key)) {
       return;
     }
     pushObject(currentObject().getObject(key));
@@ -234,7 +259,12 @@ namespace IsoRealms {
   void ComponentLoader::scopeModule(Module& module, std::function<void()> removeFunction) {
     std::vector<ComponentType*> mComponentTypes = module.getComponentTypes();
     for (ComponentType* mComponentType : mComponentTypes) {
-      mComponentType->define(*this);
+      const std::string mTypeName = module.getName(mComponentType);
+      if (currentObject().hasMember(mTypeName)) {
+        pushObject(currentObject().getObject(mTypeName));
+        mComponentType->define(*this);
+        popObject();
+      }
     }
   }
 
@@ -247,6 +277,15 @@ namespace IsoRealms {
         ComponentLoader mLoader(*mComponentData, mObjectStack);
         mSubProperties(mLoader);
       });
+      return;
+    }
+    const std::string mFilePath = hint.getOption(Options::PROPERTY_FILE);
+    if (!mFilePath.empty()) {
+      const bool mUser = hint.getOption(Options::PROPERTY_USER) == "true";
+      cDocuments.push_back(std::make_unique<JSONDocument>(mFilePath, mUser));
+      pushObject(cDocuments.back()->getObject("project"));
+      subProperties(*this);
+      popObject();
       return;
     }
     if (hint.getOption(Options::PROPERTY_SCOPED) == "true") {

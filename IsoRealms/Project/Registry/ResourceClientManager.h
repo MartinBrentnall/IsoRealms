@@ -23,15 +23,12 @@
 #include "IsoRealms/Resources/Providers/ResourceSingleton.h"
 #include "IsoRealms/Resources/Type/IStateNotifier.h"
 #include "IsoRealms/IStateListener.h"
-#include "IsoRealms/Persistence/JSONObject.h"
 
 #include "ResourceRegistry.h"
 
 namespace IsoRealms {
   template <typename DERIVED, typename OWNER, typename TYPE> class ResourceClientManager {
     public:
-    inline static const std::string JSON_KEY = "key";
-
     ResourceRegistry<OWNER, TYPE> cRegistry;
 
     ResourceClientManager() :
