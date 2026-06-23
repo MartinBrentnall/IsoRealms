@@ -122,13 +122,13 @@ namespace IsoRealms {
     return true;
   }
 
-  bool ComponentLoader::loadKeyedMembers(const std::function<void(const std::string& key, bool isNull, IComponentDefiner& definer)>& loadMember) {
+  bool ComponentLoader::loadKeyedMembers(const std::function<void(const std::string& key, bool isNull)>& loadMember) {
     for (JSONThing mMember : currentObject()) {
       if (mMember.isNull()) {
-        loadMember(mMember.getName(), true, *this);
+        loadMember(mMember.getName(), true);
       } else {
         pushObject(mMember.getValue());
-        loadMember(mMember.getName(), false, *this);
+        loadMember(mMember.getName(), false);
         popObject();
       }
     }

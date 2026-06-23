@@ -131,12 +131,10 @@ namespace IsoRealms {
       Options mScopedHint;
       mScopedHint.addOption(Options::PROPERTY_SCOPED, "true");
       definer.scope("modules", "", [this, &definer]() {
-        definer.loadKeyedMembers([this](const std::string& moduleName, bool isNull, IComponentDefiner& moduleDefiner) {
-          if (!isNull) {
-            moduleDefiner.scopeModule(*getModule(moduleName), [this, moduleName]() {
-              unloadModule(moduleName);
-            });
-          }
+        definer.loadKeyedMembers([this, &definer](const std::string& moduleName, bool isNull) {
+          definer.scopeModule(*getModule(moduleName), [this, moduleName]() {
+            unloadModule(moduleName);
+          });
         });
       }, nullptr, mScopedHint);
     } else {

@@ -77,7 +77,7 @@ namespace IsoRealms {
     virtual void scope(const std::string& key, const std::string& value, std::function<void()> subProperties, std::function<void()> removeFunction = nullptr, const Options& hint = Options::EMPTY, std::function<bool()> icon = nullptr) = 0;
     virtual void spacer(float height) = 0;
 
-    virtual bool loadKeyedMembers(const std::function<void(const std::string& key, bool isNull, IComponentDefiner& definer)>& loadMember) {
+    virtual bool loadKeyedMembers(const std::function<void(const std::string& key, bool isNull)>& loadMember) {
       return false;
     }
 

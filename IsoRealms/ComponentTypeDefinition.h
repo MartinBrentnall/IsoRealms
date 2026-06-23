@@ -131,8 +131,8 @@ namespace IsoRealms {
 
       // TODO: This feels hacky.
       if (definer.loadsPersistedValues()) {
-        definer.loadKeyedMembers([&parent, this](const std::string& name, bool isNull, IComponentDefiner& memberDefiner) {
-          parent.loadPersistedMember(name, isNull, memberDefiner, parent.getProjectFile());
+        definer.loadKeyedMembers([&parent, this, &definer](const std::string& name, bool isNull) {
+          parent.loadPersistedMember(name, isNull, definer, parent.getProjectFile());
         });
         return;
       }
