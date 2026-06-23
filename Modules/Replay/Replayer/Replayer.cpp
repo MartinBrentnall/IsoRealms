@@ -26,8 +26,8 @@ namespace IsoRealms::Replay {
 
   void Replayer::define(IComponentDefiner& definer) {
     definer.array("digitalInputs", cDefDigitalInputs, [](const std::unique_ptr<DigitalInput>& i)->DigitalInput& {return *i;}, [this, &definer](DigitalInput& digitalInput) {
-      definer.scope("DigitalInput", digitalInput.getName(), [&digitalInput](IComponentDefiner& editingDefiner) {
-        digitalInput.define(editingDefiner);
+      definer.scope("DigitalInput", digitalInput.getName(), [&digitalInput, &definer]() {
+        digitalInput.define(definer);
       }, [this, &digitalInput]() {
         Utils::removeElementUnique(cDefDigitalInputs, &digitalInput);
         // TODO: Adjust ID's.
@@ -37,8 +37,8 @@ namespace IsoRealms::Replay {
       // TODO: Adjust ID's.
     });
     definer.array("analogueInputs", cDefAnalogueInputs, [](const std::unique_ptr<AnalogueInput>& i)->AnalogueInput& {return *i;}, [this, &definer](AnalogueInput& analogueInput) {
-      definer.scope("AnalogueInput", analogueInput.getName(), [&analogueInput](IComponentDefiner& editingDefiner) {
-        analogueInput.define(editingDefiner);
+      definer.scope("AnalogueInput", analogueInput.getName(), [&analogueInput, &definer]() {
+        analogueInput.define(definer);
       }, [this, &analogueInput]() {
         Utils::removeElementUnique(cDefAnalogueInputs, &analogueInput);
         // TODO: Adjust ID's.

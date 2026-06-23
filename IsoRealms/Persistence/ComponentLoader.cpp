@@ -65,11 +65,6 @@ namespace IsoRealms {
     cObjects.push_back(object);
   }
 
-  ComponentLoader::ComponentLoader(IComponentData& resourceData, std::vector<JSONObject> objects) :
-            cComponentData(resourceData),
-            cObjects(std::move(objects)) {
-  }
-
   ComponentLoader::ComponentLoader(IComponentData& resourceData, const std::string& file, bool user) :
             cComponentData(resourceData) {
     cDocuments.push_back(std::make_unique<JSONDocument>(file, user));
@@ -107,12 +102,11 @@ namespace IsoRealms {
     std::vector<JSONObject> mObjectStack = cObjects;
     mObjectStack.push_back(object);
     ITreeSelectorObject* mItem = &item;
-    IComponentData* mComponentData = &cComponentData;
-    std::function<void()> mLoad = [mComponentData, mObjectStack = std::move(mObjectStack), mItem]() {
-      ComponentLoader mLoader(*mComponentData, mObjectStack);
-      mItem->defineTreeItem(mLoader);
-    };
-    deferDuringLoad(cComponentData, std::move(mLoad));
+    deferDuringLoad(cComponentData, [this, mItem, object]() {
+      pushObject(object);
+      mItem->defineTreeItem(*this);
+      popObject();
+    });
   }
 
   bool ComponentLoader::loadPropertyArray(const std::string& key, const std::function<void()>& addAndLoadElement, const Options& hint) {
@@ -268,14 +262,13 @@ namespace IsoRealms {
     }
   }
 
-  void ComponentLoader::scope(const std::string& key, const std::string& value, std::function<void(IComponentDefiner&)> subProperties, std::function<void()> removeFunction, const Options& hint, std::function<bool()> icon) {
+  void ComponentLoader::scope(const std::string& key, const std::string& value, std::function<void()> subProperties, std::function<void()> removeFunction, const Options& hint, std::function<bool()> icon) {
     if (hint.getOption(Options::PROPERTY_DEFER) == "true") {
-      std::vector<JSONObject> mObjectStack = cObjects;
-      IComponentData* mComponentData = &cComponentData;
-      std::function<void(IComponentDefiner&)> mSubProperties = subProperties;
-      deferDuringLoad(cComponentData, [mComponentData, mObjectStack = std::move(mObjectStack), mSubProperties]() {
-        ComponentLoader mLoader(*mComponentData, mObjectStack);
-        mSubProperties(mLoader);
+      JSONObject mObject = currentObject();
+      deferDuringLoad(cComponentData, [this, mObject, mSubProperties = std::move(subProperties)]() {
+        pushObject(mObject);
+        mSubProperties();
+        popObject();
       });
       return;
     }
@@ -284,16 +277,16 @@ namespace IsoRealms {
       const bool mUser = hint.getOption(Options::PROPERTY_USER) == "true";
       cDocuments.push_back(std::make_unique<JSONDocument>(mFilePath, mUser));
       pushObject(cDocuments.back()->getObject("project"));
-      subProperties(*this);
+      subProperties();
       popObject();
       return;
     }
     if (hint.getOption(Options::PROPERTY_SCOPED) == "true") {
       pushObject(currentObject().getObject(key));
-      subProperties(*this);
+      subProperties();
       popObject();
     } else {
-      subProperties(*this);
+      subProperties();
     }
   }
 

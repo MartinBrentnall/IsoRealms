@@ -56,26 +56,26 @@ World::World(Equilibria& equilibria, IComponentData& data) :
   }
 
   void World::define(IComponentDefiner& definer) {
-    definer.propertyEditor("Content", this);
-    definer.propertyFloat(            "gravity",                 [this]() {return cDefGravity;},                   [this](float value) {cDefGravity                   = value;});
-    definer.propertyFloat(            "slopeForce",              [this]() {return cDefSurfaceAccelerationFactor;}, [this](float value) {cDefSurfaceAccelerationFactor = value;});
-    definer.propertyInteger(          "bounceControl",           [this]() {return cDefBounceTime;},                [this](bool  value) {cDefBounceTime                = value;}, DEFAULT_BOUNCE_CONTROL);
-    definer.scope(                    "Editing", "Edit...",      [this](IComponentDefiner& editingDefiner) {
-      editingDefiner.propertyBoolean( "basicProperties",         [this]() {return !cEditorBasicProperties;},       [this](bool  value) {cEditorBasicProperties        = !value;});
-      editingDefiner.propertyInteger( "automaticZoneXSize",      [this]() {return cAutomaticZoneXSize;},           [this](int   value) {cAutomaticZoneXSize           = value;}, DEFAULT_AUTOMATIC_ZONE_X_SIZE);
-      editingDefiner.propertyInteger( "automaticZoneYSize",      [this]() {return cAutomaticZoneYSize;},           [this](int   value) {cAutomaticZoneYSize           = value;}, DEFAULT_AUTOMATIC_ZONE_Y_SIZE);
-      editingDefiner.propertyInteger( "automaticZoneZSize",      [this]() {return cAutomaticZoneZSize;},           [this](int   value) {cAutomaticZoneZSize           = value;}, DEFAULT_AUTOMATIC_ZONE_Z_SIZE);
-      editingDefiner.propertyResource("automaticZoneManagement", cAutomaticZoneManagementType);
-      editingDefiner.propertyResource("defaultThemeSet",         cDefaultThemeSet);
-      editingDefiner.propertyResource("defaultWorldEditorTool",  cDefaultWorldEditorTool);
-      editingDefiner.propertyInteger( "editorMinX",              [this]() {return cEditorMinX;},                   [this](int   value) {cEditorMinX                   = value;}, DEFAULT_EDITOR_MIN_X);
-      editingDefiner.propertyInteger( "editorMaxX",              [this]() {return cEditorMaxX;},                   [this](int   value) {cEditorMaxX                   = value;}, DEFAULT_EDITOR_MAX_X);
-      editingDefiner.propertyInteger( "editorMinY",              [this]() {return cEditorMinY;},                   [this](int   value) {cEditorMinY                   = value;}, DEFAULT_EDITOR_MIN_Y);
-      editingDefiner.propertyInteger( "editorMaxY",              [this]() {return cEditorMaxY;},                   [this](int   value) {cEditorMaxY                   = value;}, DEFAULT_EDITOR_MAX_Y);
-      editingDefiner.propertyInteger( "editorMinZ",              [this]() {return cEditorMinZ;},                   [this](int   value) {cEditorMinZ                   = value;}, DEFAULT_EDITOR_MIN_Z);
-      editingDefiner.propertyInteger( "editorMaxZ",              [this]() {return cEditorMaxZ;},                   [this](int   value) {cEditorMaxZ                   = value;}, DEFAULT_EDITOR_MAX_Z);
+    definer.propertyEditor(    "Content",                 this);
+    definer.propertyFloat(     "gravity",                 [this]() {return cDefGravity;},                   [this](float value) {cDefGravity                   = value;});
+    definer.propertyFloat(     "slopeForce",              [this]() {return cDefSurfaceAccelerationFactor;}, [this](float value) {cDefSurfaceAccelerationFactor = value;});
+    definer.propertyInteger(   "bounceControl",           [this]() {return cDefBounceTime;},                [this](bool  value) {cDefBounceTime                = value;}, DEFAULT_BOUNCE_CONTROL);
+    definer.scope(             "Editing", "Edit...",      [this, &definer]() {
+      definer.propertyBoolean( "basicProperties",         [this]() {return !cEditorBasicProperties;},       [this](bool  value) {cEditorBasicProperties        = !value;});
+      definer.propertyInteger( "automaticZoneXSize",      [this]() {return cAutomaticZoneXSize;},           [this](int   value) {cAutomaticZoneXSize           = value;}, DEFAULT_AUTOMATIC_ZONE_X_SIZE);
+      definer.propertyInteger( "automaticZoneYSize",      [this]() {return cAutomaticZoneYSize;},           [this](int   value) {cAutomaticZoneYSize           = value;}, DEFAULT_AUTOMATIC_ZONE_Y_SIZE);
+      definer.propertyInteger( "automaticZoneZSize",      [this]() {return cAutomaticZoneZSize;},           [this](int   value) {cAutomaticZoneZSize           = value;}, DEFAULT_AUTOMATIC_ZONE_Z_SIZE);
+      definer.propertyResource("automaticZoneManagement", cAutomaticZoneManagementType);
+      definer.propertyResource("defaultThemeSet",         cDefaultThemeSet);
+      definer.propertyResource("defaultWorldEditorTool",  cDefaultWorldEditorTool);
+      definer.propertyInteger( "editorMinX",              [this]() {return cEditorMinX;},                   [this](int   value) {cEditorMinX                   = value;}, DEFAULT_EDITOR_MIN_X);
+      definer.propertyInteger( "editorMaxX",              [this]() {return cEditorMaxX;},                   [this](int   value) {cEditorMaxX                   = value;}, DEFAULT_EDITOR_MAX_X);
+      definer.propertyInteger( "editorMinY",              [this]() {return cEditorMinY;},                   [this](int   value) {cEditorMinY                   = value;}, DEFAULT_EDITOR_MIN_Y);
+      definer.propertyInteger( "editorMaxY",              [this]() {return cEditorMaxY;},                   [this](int   value) {cEditorMaxY                   = value;}, DEFAULT_EDITOR_MAX_Y);
+      definer.propertyInteger( "editorMinZ",              [this]() {return cEditorMinZ;},                   [this](int   value) {cEditorMinZ                   = value;}, DEFAULT_EDITOR_MIN_Z);
+      definer.propertyInteger( "editorMaxZ",              [this]() {return cEditorMaxZ;},                   [this](int   value) {cEditorMaxZ                   = value;}, DEFAULT_EDITOR_MAX_Z);
       for (unsigned int i = 0; i < cAvailableWorldEditorTools.size(); i++) {
-        editingDefiner.propertyResource("editorTool", *cAvailableWorldEditorTools[i].get(), Options::EMPTY, [this, i]() {
+        definer.propertyResource("editorTool", *cAvailableWorldEditorTools[i].get(), Options::EMPTY, [this, i]() {
           cAvailableWorldEditorTools.erase(cAvailableWorldEditorTools.begin() + i);
         });
       }
@@ -84,21 +84,21 @@ World::World(Equilibria& equilibria, IComponentData& data) :
     // None editable definition follows.
     Options mWorldObjectsHint;
     mWorldObjectsHint.addOption(Options::PROPERTY_NO_EDIT, "true");
-    definer.scope("worldObjects", "", [this](IComponentDefiner& d) {
-      d.array("debrisGenerators", cDefDebrisGenerators, [](const std::unique_ptr<DebrisGenerator>& mDebrisGenerator) -> DebrisGenerator& {return *mDebrisGenerator;}, [&d](DebrisGenerator& debrisGenerator) {
-        debrisGenerator.define(d);
+    definer.scope("worldObjects", "", [this, &definer]() {
+      definer.array("debrisGenerators", cDefDebrisGenerators, [](const std::unique_ptr<DebrisGenerator>& mDebrisGenerator) -> DebrisGenerator& {return *mDebrisGenerator;}, [&definer](DebrisGenerator& debrisGenerator) {
+        debrisGenerator.define(definer);
       }, [this]() -> DebrisGenerator& {
         return *cDefDebrisGenerators.emplace_back(std::make_unique<DebrisGenerator>(cComponentData, getAvailableDebrisGeneratorId()));
       });
 
-      d.array("players", cDefPlayers, [](const std::unique_ptr<Player>& mPlayer) -> Player& {return *mPlayer;}, [&d](Player& player) {
-        player.define(d);
+      definer.array("players", cDefPlayers, [](const std::unique_ptr<Player>& mPlayer) -> Player& {return *mPlayer;}, [&definer](Player& player) {
+        player.define(definer);
       }, [this]() -> Player& {
         return *cDefPlayers.emplace_back(std::make_unique<Player>(*this));
       });
 
-      d.array("zones", cDefZones, [](const std::unique_ptr<Zone>& mZone) -> Zone& {return *mZone;}, [&d](Zone& zone) {
-        zone.define(d);
+      definer.array("zones", cDefZones, [](const std::unique_ptr<Zone>& mZone) -> Zone& {return *mZone;}, [&definer](Zone& zone) {
+        zone.define(definer);
       }, [this]() -> Zone& {
         Zone* mZone = cDefZones.emplace_back(std::make_unique<Zone>(*this, *cAutomaticZoneManagementType.get(), 0, 0, 0, 7, 7, 7, nullptr)).get();
         cEquilibria.added(mZone);

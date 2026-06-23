@@ -104,13 +104,13 @@ namespace IsoRealms {
           Options mFileHint;
           mFileHint.addOption(Options::PROPERTY_FILE, inclusion.cFile.getRelativePath());
           mFileHint.addOption(Options::PROPERTY_USER, inclusion.cFile.isUser() ? "true" : "false");
-          definer.scope("include", inclusion.cFile.getRelativePath(), [&project, &inclusion](IComponentDefiner& fileDefiner) {
-            project.define(fileDefiner, &inclusion);
+          definer.scope("include", inclusion.cFile.getRelativePath(), [&project, &inclusion, &definer]() {
+            project.define(definer, &inclusion);
           }, nullptr, mFileHint);
         }
       } else {
-        definer.scope("include", inclusion.cFile.getRelativePath(), [this, &inclusion, &project](IComponentDefiner& nestedDefiner) {
-          inclusion.define(nestedDefiner, project, true);
+        definer.scope("include", inclusion.cFile.getRelativePath(), [this, &inclusion, &project, &definer]() {
+          inclusion.define(definer, project, true);
         }, [this, &inclusion]() {
           Utils::removeElementUnique(cInclusions, &inclusion);
         });

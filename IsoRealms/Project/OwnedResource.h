@@ -59,7 +59,7 @@ namespace IsoRealms {
         return;
       }
       if (cOwner.isConfigurable()) {
-        definer.scope(name, cResource.getTreeItemLabel(), [this, name](IComponentDefiner& definer) {
+        definer.scope(name, cResource.getTreeItemLabel(), [this, name, &definer]() {
           definer.propertyResource("Value", cResource);
           cOwner.createProperty(definer, "Owner");
         });

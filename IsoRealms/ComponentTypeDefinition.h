@@ -141,8 +141,8 @@ namespace IsoRealms {
       }, [&definer, this](IComponent& component) {
         Options mNamelessHint;
         mNamelessHint.addOption("name", "");
-        definer.scope(component.getName(), component.getName(), [&component, &definer](IComponentDefiner& nestedDefiner) {
-          component.define(nestedDefiner);
+        definer.scope(component.getName(), component.getName(), [&component, &definer]() {
+          component.define(definer);
         }, [this, &component]() {
           deleteComponent(&component);
         }, mNamelessHint, [&component]() {

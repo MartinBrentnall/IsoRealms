@@ -82,7 +82,7 @@ namespace IsoRealms {
       Options mNamelessHint;
       mNamelessHint.addOption("name", "");
       mNamelessHint.addOption("description", mCategory.second);
-      definer.scope(mCategory.first, mCategory.first, [this, &module, mCategory, &definer](IComponentDefiner& unusedDefiner) {
+      definer.scope(mCategory.first, mCategory.first, [this, &module, mCategory, &definer]() {
         for (const std::pair<const std::string, std::unique_ptr<ComponentTypeMetadata>>& mComponentType : cComponentTypes) {
           mComponentType.second->scope(definer, module, mComponentType.first, mCategory.first);
         }

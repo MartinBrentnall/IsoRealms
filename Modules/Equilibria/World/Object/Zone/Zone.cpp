@@ -77,14 +77,14 @@ namespace IsoRealms::Equilibria {
     Equilibria& mEquilibria = cDefWorld.getEquilibria();
     Options mDeferHint;
     mDeferHint.addOption(Options::PROPERTY_DEFER, "true");
-    definer.scope("", "", [this, &mEquilibria](IComponentDefiner& d) {
-      d.propertyString("type", [this, &mEquilibria]() {return mEquilibria.getComponentID(cDefType);}, [this, &mEquilibria](const std::string& value) {
+    definer.scope("", "", [this, &mEquilibria, &definer]() {
+      definer.propertyString("type", [this, &mEquilibria]() {return mEquilibria.getComponentID(cDefType);}, [this, &mEquilibria](const std::string& value) {
         cDefType = mEquilibria.get<ZoneType>(nullptr, value);
       });
-      d.propertyString("themeSet", [this, &mEquilibria]() {return cDefThemeSet != nullptr ? mEquilibria.getComponentID(cDefThemeSet) : "";}, [this, &mEquilibria](const std::string& value) {
+      definer.propertyString("themeSet", [this, &mEquilibria]() {return cDefThemeSet != nullptr ? mEquilibria.getComponentID(cDefThemeSet) : "";}, [this, &mEquilibria](const std::string& value) {
         cDefThemeSet = value.empty() ? nullptr : mEquilibria.get<ThemeSet>(nullptr, value);
       });
-      d.propertyString("theme", [this]() {return cDefThemeSet != nullptr && cDefTheme != nullptr ? cDefThemeSet->getName(cDefTheme) : "";}, [this](const std::string& value) {
+      definer.propertyString("theme", [this]() {return cDefThemeSet != nullptr && cDefTheme != nullptr ? cDefThemeSet->getName(cDefTheme) : "";}, [this](const std::string& value) {
         if (cDefThemeSet != nullptr) {
           cDefTheme = value.empty() ? nullptr : cDefThemeSet->getTheme(value);
         }
@@ -100,27 +100,27 @@ namespace IsoRealms::Equilibria {
 
     Options mZoneObjectsHint;
     mZoneObjectsHint.addOption(Options::PROPERTY_NO_EDIT, "true");
-    definer.scope("zoneObjects", "", [this](IComponentDefiner& d) {
-      d.array("terrain", cDefTerrain, [](const std::unique_ptr<Terrain>& mTerrain) -> Terrain& {return *mTerrain;}, [&d](Terrain& terrain) {
-        terrain.define(d);
+    definer.scope("zoneObjects", "", [this, &definer]() {
+      definer.array("terrain", cDefTerrain, [](const std::unique_ptr<Terrain>& mTerrain) -> Terrain& {return *mTerrain;}, [&definer](Terrain& terrain) {
+        terrain.define(definer);
       }, [this]() -> Terrain& {
         return *addTerrain(std::make_unique<Terrain>(*this));
       });
 
-      d.array("lifts", cDefLifts, [](const std::unique_ptr<Lift>& mLift) -> Lift& {return *mLift;}, [&d](Lift& lift) {
-        lift.define(d);
+      definer.array("lifts", cDefLifts, [](const std::unique_ptr<Lift>& mLift) -> Lift& {return *mLift;}, [&definer](Lift& lift) {
+        lift.define(definer);
       }, [this]() -> Lift& {
         return *cDefLifts.emplace_back(std::make_unique<Lift>(*this)).get();
       });
 
-      d.array("aliens", cDefAliens, [](const std::unique_ptr<Alien>& mAlien) -> Alien& {return *mAlien;}, [&d](Alien& alien) {
-        alien.define(d);
+      definer.array("aliens", cDefAliens, [](const std::unique_ptr<Alien>& mAlien) -> Alien& {return *mAlien;}, [&definer](Alien& alien) {
+        alien.define(definer);
       }, [this]() -> Alien& {
         return *cDefAliens.emplace_back(std::make_unique<Alien>(*this)).get();
       });
 
-      d.array("pickUps", cDefPickUps, [](const std::unique_ptr<PickUp>& mPickUp) -> PickUp& {return *mPickUp;}, [&d](PickUp& pickUp) {
-        pickUp.define(d);
+      definer.array("pickUps", cDefPickUps, [](const std::unique_ptr<PickUp>& mPickUp) -> PickUp& {return *mPickUp;}, [&definer](PickUp& pickUp) {
+        pickUp.define(definer);
       }, [this]() -> PickUp& {
         return *cDefPickUps.emplace_back(std::make_unique<PickUp>(*this)).get();
       });

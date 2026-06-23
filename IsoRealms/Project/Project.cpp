@@ -71,10 +71,7 @@ namespace IsoRealms {
     // Load modules and any components declared within them
     std::unique_ptr<ComponentLoader> mLoader = application.createComponentLoader(*this, file, user);
     define(*mLoader, getProjectFile());
-    finishLoadedComponents();
-  }
 
-  void Project::finishLoadedComponents() {
     for (const std::unique_ptr<Module>& mModule : cDefModules) {
       mModule->publish();
     }
@@ -97,6 +94,72 @@ namespace IsoRealms {
     cLoading = false;
   }
 
+  Project::~Project() {
+    // remove(&cLuaBindingApplication);
+    // remove(&cLuaBindingProject);
+    // remove(&cLuaBindingOptions);
+    // remove(&cQuitAction);
+  }
+  
+  void Project::define(IComponentDefiner& definer, ProjectFile* loadOwner) {
+    Options mNamelessHint;
+    mNamelessHint.addOption("name", "");
+    definer.scope("ApplicationConfiguration", "Edit...", [this, loadOwner, &definer]() {
+      definer.scope("FileStructure", "Edit...", [this, &definer]() {
+        cDefProjectFileStructure.define(definer, *this, false);
+      });
+      definer.scope("launchConfigurations", "Edit...", [this, &definer]() {
+        definer.array("LaunchConfigurationAdd", cDefTestLaunchConfigurations, [](const std::unique_ptr<ProjectLaunchConfiguration>& i)->ProjectLaunchConfiguration& {return *i;}, [this, &definer](ProjectLaunchConfiguration& launchConfiguration) {
+          definer.scope("LaunchConfiguration", launchConfiguration.getName(), [this, &launchConfiguration, &definer]() {
+            launchConfiguration.define(definer, *this);
+          }, [this, &launchConfiguration]() {
+            Utils::removeElementUnique(cDefTestLaunchConfigurations, &launchConfiguration);
+          });
+        }, [this]() -> ProjectLaunchConfiguration& {
+          return *cDefTestLaunchConfigurations.emplace_back(std::make_unique<ProjectLaunchConfiguration>(*this, cDefProjectFileStructure));
+        });
+      });
+      cDefActionOnStart.define(       definer, "onStart",        loadOwner);
+      cDefActionOnCloseRequest.define(definer, "onCloseRequest", loadOwner);
+      cDefInputHandler.define(        definer, "input",          loadOwner);
+      cDefScreen.define(              definer, "screen",         loadOwner);
+      cDefDefaultEditor.define(       definer, "editor",         loadOwner);
+    }, nullptr, mNamelessHint);
+
+    definer.spacer(0.5f);
+    if (definer.loadsPersistedValues()) {
+      Options mScopedHint;
+      mScopedHint.addOption(Options::PROPERTY_SCOPED, "true");
+      definer.scope("modules", "", [this, &definer]() {
+        definer.loadKeyedMembers([this](const std::string& moduleName, bool isNull, IComponentDefiner& moduleDefiner) {
+          if (!isNull) {
+            moduleDefiner.scopeModule(*getModule(moduleName), [this, moduleName]() {
+              unloadModule(moduleName);
+            });
+          }
+        });
+      }, nullptr, mScopedHint);
+    } else {
+      definer.fixedArray("modules", cDefModules, [](const std::unique_ptr<Module>& module) -> Module& {return *module;}, [&definer, this](Module& module, unsigned int index) {
+        definer.scopeModule(module, [this, &module]() {
+          unloadModule(module.getName());
+        });
+        definer.spacer(0.5f);
+      });
+    }
+
+    if (!definer.loadsPersistedValues() && !definer.savesPersistedValues()) {
+      if (!getUnusedModuleNames().empty()) {
+        definer.propertyOptional("Module", cDefModuleChooser, "Load Module...", []() {
+          Utils::renderIconAdd();
+          return true;
+        }, [this](const std::string& value) {
+          loadModule(value);
+        }, nullptr, mNamelessHint);
+      }
+    }
+  }
+  
   Module* Project::getModule(const std::string& name) {
     for (const std::unique_ptr<Module>& mModule : cDefModules) {
       if (mModule->getName() == name) {
@@ -106,13 +169,6 @@ namespace IsoRealms {
     return loadModule(name);
   }
 
-  Project::~Project() {
-    // remove(&cLuaBindingApplication);
-    // remove(&cLuaBindingProject);
-    // remove(&cLuaBindingOptions);
-    // remove(&cQuitAction);
-  }
-  
   void Project::reset() {
     if (cRuntimeUpdatingRuntime) {
       cRuntimeResetPostponed = true;
@@ -228,65 +284,6 @@ namespace IsoRealms {
     return cDefProjectFileStructure.cFile.isUser();
   }
 
-  void Project::define(IComponentDefiner& definer, ProjectFile* loadOwner) {
-    Options mNamelessHint;
-    mNamelessHint.addOption("name", "");
-    definer.scope("ApplicationConfiguration", "Edit...", [this, loadOwner](IComponentDefiner& definer) {
-      definer.scope("FileStructure", "Edit...", [this](IComponentDefiner& editingDefiner) {
-        cDefProjectFileStructure.define(editingDefiner, *this, false);
-      });
-      definer.scope("launchConfigurations", "Edit...", [this](IComponentDefiner& editingDefiner) {
-        editingDefiner.array("LaunchConfigurationAdd", cDefTestLaunchConfigurations, [](const std::unique_ptr<ProjectLaunchConfiguration>& i)->ProjectLaunchConfiguration& {return *i;}, [this, &editingDefiner](ProjectLaunchConfiguration& launchConfiguration) {
-          editingDefiner.scope("LaunchConfiguration", launchConfiguration.getName(), [this, &launchConfiguration](IComponentDefiner& nestedDefiner) {
-            launchConfiguration.define(nestedDefiner, *this);
-          }, [this, &launchConfiguration]() {
-            Utils::removeElementUnique(cDefTestLaunchConfigurations, &launchConfiguration);
-          });
-        }, [this]() -> ProjectLaunchConfiguration& {
-          return *cDefTestLaunchConfigurations.emplace_back(std::make_unique<ProjectLaunchConfiguration>(*this, cDefProjectFileStructure));
-        });
-      });
-      cDefActionOnStart.define(       definer, "onStart",        loadOwner);
-      cDefActionOnCloseRequest.define(definer, "onCloseRequest", loadOwner);
-      cDefInputHandler.define(        definer, "input",          loadOwner);
-      cDefScreen.define(              definer, "screen",         loadOwner);
-      cDefDefaultEditor.define(       definer, "editor",         loadOwner);
-    }, nullptr, mNamelessHint);
-
-    definer.spacer(0.5f);
-    if (definer.loadsPersistedValues()) {
-      Options mScopedHint;
-      mScopedHint.addOption(Options::PROPERTY_SCOPED, "true");
-      definer.scope("modules", "", [this](IComponentDefiner& scopedDefiner) {
-        scopedDefiner.loadKeyedMembers([this](const std::string& moduleName, bool isNull, IComponentDefiner& moduleDefiner) {
-          if (!isNull) {
-            moduleDefiner.scopeModule(*getModule(moduleName), [this, moduleName]() {
-              unloadModule(moduleName);
-            });
-          }
-        });
-      }, nullptr, mScopedHint);
-    } else {
-      definer.fixedArray("modules", cDefModules, [](const std::unique_ptr<Module>& module) -> Module& {return *module;}, [&definer, this](Module& module, unsigned int index) {
-        definer.scopeModule(module, [this, &module]() {
-          unloadModule(module.getName());
-        });
-        definer.spacer(0.5f);
-      });
-    }
-
-    if (!definer.loadsPersistedValues() && !definer.savesPersistedValues()) {
-      if (!getUnusedModuleNames().empty()) {
-        definer.propertyOptional("Module", cDefModuleChooser, "Load Module...", []() {
-          Utils::renderIconAdd();
-          return true;
-        }, [this](const std::string& value) {
-          loadModule(value);
-        }, nullptr, mNamelessHint);
-      }
-    }
-  }
-  
   IEditable* Project::getDefaultEditable() {
     return (*cDefDefaultEditor)->getTreeItemInfo().cID == "None" ? nullptr : ***cDefDefaultEditor;
   }

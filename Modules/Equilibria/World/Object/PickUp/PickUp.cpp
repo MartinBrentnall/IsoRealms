@@ -57,8 +57,8 @@ namespace IsoRealms::Equilibria {
   void PickUp::define(IComponentDefiner& definer) {
     Options mDeferHint;
     mDeferHint.addOption(Options::PROPERTY_DEFER, "true");
-    definer.scope("", "", [this](IComponentDefiner& d) {
-      d.propertyString("type", [this]() {return cZone.getWorld().getEquilibria().getComponentID(cDefType);}, [this](const std::string& value) {
+    definer.scope("", "", [this, &definer]() {
+      definer.propertyString("type", [this]() {return cZone.getWorld().getEquilibria().getComponentID(cDefType);}, [this](const std::string& value) {
         cDefType = cZone.getWorld().getEquilibria().get<PickUpType>(nullptr, value);
         cDefModel = cDefType->createModel();
         reset();

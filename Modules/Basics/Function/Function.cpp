@@ -30,8 +30,8 @@ namespace IsoRealms::Basics {
   void Function::define(IComponentDefiner& definer) {
     addBindingPropertyArray(definer, true);
     definer.array("arguments", cDefArgumentDefinitions, [](const std::unique_ptr<ArgumentDefinition>& mArgumentDefinition) -> ArgumentDefinition& {return *mArgumentDefinition;}, [this, &definer](ArgumentDefinition& argumentDefinition) {
-      definer.scope("Argument", argumentDefinition.getName(), [&argumentDefinition, this](IComponentDefiner& editingDefiner) {
-        argumentDefinition.define(editingDefiner, *this);
+      definer.scope("Argument", argumentDefinition.getName(), [&argumentDefinition, this, &definer]() {
+        argumentDefinition.define(definer, *this);
       }, [this, &argumentDefinition]() {
         Utils::removeElementUnique(cDefArgumentDefinitions, &argumentDefinition);
       });
@@ -66,8 +66,8 @@ namespace IsoRealms::Basics {
 
   void Function::addBindingPropertyArray(IComponentDefiner& definer, bool init) {
     definer.array("bindings", cDefBindings, [](const std::unique_ptr<Binding>& mBinding) -> Binding& {return *mBinding;}, [this, &definer, init](Binding& binding) {
-      definer.scope("Binding", binding.getName(), [&binding, init](IComponentDefiner& editingDefiner) {
-        binding.getProperties(editingDefiner, init);
+      definer.scope("Binding", binding.getName(), [&binding, init, &definer]() {
+        binding.getProperties(definer, init);
       }, [this, &binding]() {
         Utils::removeElementUnique(cDefBindings, &binding);
       });

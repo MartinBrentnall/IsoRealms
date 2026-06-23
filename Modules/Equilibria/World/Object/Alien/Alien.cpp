@@ -63,8 +63,8 @@ namespace IsoRealms::Equilibria {
   void Alien::define(IComponentDefiner& definer) {
     Options mDeferHint;
     mDeferHint.addOption(Options::PROPERTY_DEFER, "true");
-    definer.scope("", "", [this](IComponentDefiner& d) {
-      d.propertyString("type", [this]() {return cZone.getWorld().getEquilibria().getComponentID(cDefType);}, [this](const std::string& value) {
+    definer.scope("", "", [this, &definer]() {
+      definer.propertyString("type", [this]() {return cZone.getWorld().getEquilibria().getComponentID(cDefType);}, [this](const std::string& value) {
         cDefType = cZone.getWorld().getEquilibria().get<AlienType>(nullptr, value);
         cDefMovementHandler = cZone.getWorld().getMovementHandler(cDefType);
         cDefModel = cDefType->createModel();

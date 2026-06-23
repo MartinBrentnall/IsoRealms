@@ -55,8 +55,8 @@ namespace IsoRealms::Equilibria {
   void Player::define(IComponentDefiner& definer) {
     Options mDeferHint;
     mDeferHint.addOption(Options::PROPERTY_DEFER, "true");
-    definer.scope("", "", [this](IComponentDefiner& d) {
-      d.propertyString("type", [this]() {return cDefWorld.getEquilibria().getComponentID(cDefType);}, [this](const std::string& value) {
+    definer.scope("", "", [this, &definer]() {
+      definer.propertyString("type", [this]() {return cDefWorld.getEquilibria().getComponentID(cDefType);}, [this](const std::string& value) {
         cDefType = cDefWorld.getEquilibria().get<PlayerType>(nullptr, value);
         cDefMovementHandler = cDefWorld.getMovementHandler(cDefType);
         cDefModel = cDefType->createModel();

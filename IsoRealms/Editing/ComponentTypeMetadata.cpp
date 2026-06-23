@@ -42,7 +42,7 @@ namespace IsoRealms {
       Options mNamelessHint;
       mNamelessHint.addOption("name", "");
       mNamelessHint.addOption("description", cDescription);
-      definer.scope(componentType, cPlural, [this, &module, componentType, &definer](IComponentDefiner& unusedDefiner) {
+      definer.scope(componentType, cPlural, [this, &module, componentType, &definer]() {
         definer.pushComponentTypeMetadata(cProperties);
         module.getComponentType(componentType)->define(definer);
       }, nullptr, mNamelessHint);

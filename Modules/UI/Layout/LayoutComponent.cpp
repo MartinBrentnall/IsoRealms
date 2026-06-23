@@ -285,10 +285,10 @@ namespace IsoRealms::UI {
     definer.propertyResource("screen", cDefScreen);
     Options mScopeHint;
     mScopeHint.addOption(Options::PROPERTY_SCOPED, "true");
-    definer.scope(           "left",   "Edit...", [this](IComponentDefiner& editingDefiner) {return cDefLeftEdge.define(  editingDefiner);}, nullptr, mScopeHint);
-    definer.scope(           "right",  "Edit...", [this](IComponentDefiner& editingDefiner) {return cDefRightEdge.define( editingDefiner);}, nullptr, mScopeHint);
-    definer.scope(           "top",    "Edit...", [this](IComponentDefiner& editingDefiner) {return cDefTopEdge.define(   editingDefiner);}, nullptr, mScopeHint);
-    definer.scope(           "bottom", "Edit...", [this](IComponentDefiner& editingDefiner) {return cDefBottomEdge.define(editingDefiner);}, nullptr, mScopeHint);
+    definer.scope(           "left",   "Edit...", [this, &definer]() {return cDefLeftEdge.define(  definer);}, nullptr, mScopeHint);
+    definer.scope(           "right",  "Edit...", [this, &definer]() {return cDefRightEdge.define( definer);}, nullptr, mScopeHint);
+    definer.scope(           "top",    "Edit...", [this, &definer]() {return cDefTopEdge.define(   definer);}, nullptr, mScopeHint);
+    definer.scope(           "bottom", "Edit...", [this, &definer]() {return cDefBottomEdge.define(definer);}, nullptr, mScopeHint);
   }
   
   void LayoutComponent::setScreen(IScreen* screen) {

@@ -76,6 +76,8 @@ namespace IsoRealms {
     Project(Application& application, std::function<void(bool)> onFinish);
     Project(Application& application, std::function<void(bool)> onFinish, const std::string& file, bool user);
     virtual ~Project();
+    void define(IComponentDefiner& definer, ProjectFile* loadOwner = nullptr);
+
     void reset();
     void reset(Options& options);
     void reset(const ProjectLaunchConfiguration* configuration);
@@ -91,7 +93,6 @@ namespace IsoRealms {
     void save(const std::string& file);
     void save(const ProjectFile& file) const;
     bool isUser();
-    void define(IComponentDefiner& definer, ProjectFile* loadOwner = nullptr);
     IEditable* getDefaultEditable();
     IScreen* getScreenProxy(IScreen* screen);
     
@@ -295,7 +296,6 @@ namespace IsoRealms {
     QuitAction cQuitAction;
 
     // Private functions.
-    void finishLoadedComponents();
     void updateTasks();
     void saveRecursive(const ProjectFile& file) const;
   };

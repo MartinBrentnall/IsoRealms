@@ -30,7 +30,7 @@ namespace IsoRealms::Equilibria {
   void ThemeSet::define(IComponentDefiner& definer) {
 
     // Texture elements.
-    definer.scope("texturesScope", "Edit...", [this](IComponentDefiner& definer) {
+    definer.scope("texturesScope", "Edit...", [this, &definer]() {
       definer.array("textures", cTextures, [](const std::pair<const std::string, std::unique_ptr<ThemeTexture>>& mTexture) -> ThemeTexture& {return *mTexture.second;}, [this, &definer](ThemeTexture& texture) {
         createTextureElementProperty(definer, &texture);
       }, [this]() -> ThemeTexture& {
@@ -39,7 +39,7 @@ namespace IsoRealms::Equilibria {
     });
 
     // Colour elements.
-    definer.scope("coloursScope", "Edit...", [this](IComponentDefiner& definer) {
+    definer.scope("coloursScope", "Edit...", [this, &definer]() {
       definer.array("colours", cColours, [](const std::pair<const std::string, std::unique_ptr<ThemeColour>>& mColour) -> ThemeColour& {return *mColour.second;}, [this, &definer](ThemeColour& colour) {
         createColourElementProperty(definer, &colour);
       }, [this]() -> ThemeColour& {
@@ -48,9 +48,9 @@ namespace IsoRealms::Equilibria {
     });
 
     // Themes.
-    definer.scope("themesScope", "Edit...", [this](IComponentDefiner& definer) {
+    definer.scope("themesScope", "Edit...", [this, &definer]() {
       definer.array("themes", cThemes, [](const std::pair<const std::string, std::unique_ptr<Theme>>& mTheme) -> Theme& {return *mTheme.second;}, [this, &definer](Theme& theme) {
-        definer.scope("theme", getName(&theme), [&theme](IComponentDefiner& definer) {
+        definer.scope("theme", getName(&theme), [&theme, &definer]() {
           theme.define(definer);
         }, [this, &theme]() {
           cThemes.erase(getName(&theme));

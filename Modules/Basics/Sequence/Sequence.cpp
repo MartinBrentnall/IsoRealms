@@ -40,7 +40,7 @@ namespace IsoRealms::Basics {
     definer.propertyBoolean( "loop",    [this]() {return cDefLoop;},    [this](bool value) {cDefLoop    = value;});
     definer.propertyResource("speed",   cDefSpeed);
     definer.array("instances", cDefInstances, [](const std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry) -> SequenceInstance& {return *mEntry.second;}, [this, &definer](SequenceInstance& instance) {
-      definer.scope("Instance", getInstanceName(instance), [this, &instance](IComponentDefiner& definer) {
+      definer.scope("Instance", getInstanceName(instance), [this, &instance, &definer]() {
         instance.define(definer);
       }, [this, &instance]() {
         cDefInstances.erase(getInstanceName(instance));
