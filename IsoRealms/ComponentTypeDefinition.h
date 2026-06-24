@@ -129,27 +129,28 @@ namespace IsoRealms {
       Options mNamelessHint;
       mNamelessHint.addOption("name", "");
 
-      // TODO: This feels hacky.
-      if (definer.loadsPersistedValues()) {
-        definer.loadKeyedMembers([&parent, this, &definer](const std::string& name, bool isNull) {
+      std::function<void(const std::string& name, bool isNull)> mDefineComponent = [&definer, this, &parent](const std::string& name, bool isNull) {
+        if (definer.loadsPersistedValues()) {
           parent.loadPersistedMember(name, isNull, definer, parent.getProjectFile());
-        });
-        return;
-      }
-      definer.array("components", cComponents, [](const std::pair<const std::string, std::unique_ptr<ComponentInfo>>& entry) -> IComponent& {
-        return *entry.second->getComponent();
-      }, [&definer, this](IComponent& component) {
+          return;
+        }
         Options mNamelessHint;
         mNamelessHint.addOption("name", "");
-        definer.scope(component.getName(), component.getName(), [&component, &definer]() {
-          component.define(definer);
-        }, [this, &component]() {
-          deleteComponent(&component);
-        }, mNamelessHint, [&component]() {
-          return component.renderIcon();
+        IComponent& mComponent = *getComponent2(name, false);
+        definer.scope(name, name, [&mComponent, &definer]() {
+          mComponent.define(definer);
+        }, [this, &mComponent]() {
+          deleteComponent(&mComponent);
+        }, mNamelessHint, [&mComponent]() {
+          return mComponent.renderIcon();
         });
-      }, [this, &parent]() -> IComponent& {
-        return *createComponent(parent, "Unnamed " + parent.getSingular(), parent.getProjectFile());
+      };
+      definer.keyedArray("", cComponents, [](const std::pair<const std::string, std::unique_ptr<ComponentInfo>>& entry) -> IComponent& {
+        return *entry.second->getComponent();
+      }, mDefineComponent, mNamelessHint);
+      
+      definer.propertyAdd("", "Add...", [this, &parent, mDefineComponent]() {
+        mDefineComponent(createComponent(parent, "Unnamed " + parent.getSingular(), parent.getProjectFile())->getName(), false);
       }, mNamelessHint);
     }
 

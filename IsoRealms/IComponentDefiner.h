@@ -77,8 +77,30 @@ namespace IsoRealms {
     virtual void scope(const std::string& key, const std::string& value, std::function<void()> subProperties, std::function<void()> removeFunction = nullptr, const Options& hint = Options::EMPTY, std::function<bool()> icon = nullptr) = 0;
     virtual void spacer(float height) = 0;
 
-    virtual bool loadKeyedMembers(const std::function<void(const std::string& key, bool isNull)>& loadMember) {
-      return false;
+    template <typename CONTAINER, typename VALUE_FUNC, typename PROPERTY_FUNC>
+    void keyedArray(const std::string& key, const CONTAINER& container, VALUE_FUNC value, PROPERTY_FUNC createProperty, const Options& hint = Options::EMPTY) {
+      if (savesPersistedValues() && std::begin(container) == std::end(container)) {
+        return;
+      }
+      if (beginSaveKeyedArray(key)) {
+        for (const auto& mElement : container) {
+          const std::string mMemberKey = value(mElement).getName();
+          beginSaveKeyedMember(mMemberKey);
+          createProperty(mMemberKey, false);
+          endSaveKeyedMember();
+        }
+        endSaveKeyedArray();
+        return;
+      }
+      if (loadsPersistedValues()) {
+        loadKeyedArray(key, [&createProperty](const std::string& memberKey, bool isNull) {
+          createProperty(memberKey, isNull);
+        }, hint);
+        return;
+      }
+      for (const auto& mElement : container) {
+        createProperty(value(mElement).getName(), false);
+      }
     }
 
     template <typename CONTAINER, typename VALUE_FUNC, typename PROPERTY_FUNC, typename ADD_FUNC>
@@ -156,7 +178,28 @@ namespace IsoRealms {
       return false;
     }
 
+    virtual void loadKeyedArray(const std::string& key, const std::function<void(const std::string& memberKey, bool isNull)>& loadMember, const Options& hint = Options::EMPTY) {
+    }
+
+    virtual bool beginSaveKeyedArray(const std::string& key) {
+      return false;
+    }
+
+    virtual void beginSaveKeyedMember(const std::string& memberKey) {
+    }
+
+    virtual void endSaveKeyedMember() {
+    }
+
+    virtual void endSaveKeyedArray() {
+    }
+
     virtual bool loadFixedPropertyArray(const std::string& key, unsigned int count, const std::function<void(unsigned int index)>& loadElement) {
+      return false;
+    }
+
+    private:
+    virtual bool loadKeyedMembers(const std::function<void(const std::string& key, bool isNull)>& loadMember) {
       return false;
     }
   };

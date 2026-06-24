@@ -104,6 +104,8 @@ namespace IsoRealms {
   void Project::define(IComponentDefiner& definer, ProjectFile* loadOwner) {
     Options mNamelessHint;
     mNamelessHint.addOption("name", "");
+
+    // Application configuration.
     definer.scope("ApplicationConfiguration", "Edit...", [this, loadOwner, &definer]() {
       definer.scope("FileStructure", "Edit...", [this, &definer]() {
         cDefProjectFileStructure.define(definer, *this, false);
@@ -126,26 +128,18 @@ namespace IsoRealms {
       cDefDefaultEditor.define(       definer, "editor",         loadOwner);
     }, nullptr, mNamelessHint);
 
+    // Modules.
     definer.spacer(0.5f);
-    if (definer.loadsPersistedValues()) {
-      Options mScopedHint;
-      mScopedHint.addOption(Options::PROPERTY_SCOPED, "true");
-      definer.scope("modules", "", [this, &definer]() {
-        definer.loadKeyedMembers([this, &definer](const std::string& moduleName, bool isNull) {
-          definer.scopeModule(*getModule(moduleName), [this, moduleName]() {
-            unloadModule(moduleName);
-          });
-        });
-      }, nullptr, mScopedHint);
-    } else {
-      definer.fixedArray("modules", cDefModules, [](const std::unique_ptr<Module>& module) -> Module& {return *module;}, [&definer, this](Module& module, unsigned int index) {
-        definer.scopeModule(module, [this, &module]() {
-          unloadModule(module.getName());
-        });
-        definer.spacer(0.5f);
+    definer.keyedArray("modules", cDefModules, [](const std::unique_ptr<Module>& module) -> Module& {
+      return *module;
+    }, [&definer, this](const std::string& moduleName, bool isNull) {
+      definer.scopeModule(*getModule(moduleName), [this, moduleName]() {
+        unloadModule(moduleName);
       });
-    }
+      definer.spacer(0.5f);
+    });
 
+    // Module chooser for loading new modules.
     if (!definer.loadsPersistedValues() && !definer.savesPersistedValues()) {
       if (!getUnusedModuleNames().empty()) {
         definer.propertyOptional("Module", cDefModuleChooser, "Load Module...", []() {

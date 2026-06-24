@@ -65,6 +65,29 @@ namespace IsoRealms {
     cSaveArrayKeys.pop_back();
   }
 
+  bool ComponentSaver::beginSaveKeyedArray(const std::string& key) {
+    if (!key.empty()) {
+      pushObject(currentObject().addObject(key));
+      cSaveKeyedArrayKeys.push_back(key);
+    }
+    return true;
+  }
+
+  void ComponentSaver::beginSaveKeyedMember(const std::string& memberKey) {
+    pushObject(currentObject().addObject(memberKey));
+  }
+
+  void ComponentSaver::endSaveKeyedMember() {
+    popObject();
+  }
+
+  void ComponentSaver::endSaveKeyedArray() {
+    if (!cSaveKeyedArrayKeys.empty()) {
+      cSaveKeyedArrayKeys.pop_back();
+      popObject();
+    }
+  }
+
   void ComponentSaver::saveTreeSelectorResourceProperties(const ITreeSelectorObject& item, JSONObject object, const Options& hint) const {
     if (item.hasConfiguration()) {
       ComponentSaver mSaver(cComponentData, object);

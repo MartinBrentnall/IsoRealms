@@ -80,11 +80,16 @@ namespace IsoRealms {
     void beginSavePropertyArrayElement() override;
     void endSavePropertyArrayElement() override;
     void endSavePropertyArray() override;
+    bool beginSaveKeyedArray(const std::string& key) override;
+    void beginSaveKeyedMember(const std::string& memberKey) override;
+    void endSaveKeyedMember() override;
+    void endSaveKeyedArray() override;
 
     private:
     IComponentData& cComponentData;
     std::vector<JSONObject> cObjects;
     std::vector<std::string> cSaveArrayKeys;
+    std::vector<std::string> cSaveKeyedArrayKeys;
 
     JSONObject& currentObject();
     const JSONObject& currentObject() const;

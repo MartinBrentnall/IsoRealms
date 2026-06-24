@@ -86,8 +86,11 @@ namespace IsoRealms {
 
     protected:
     bool loadPropertyArray(const std::string& key, const std::function<void()>& addAndLoadElement, const Options& hint = Options::EMPTY) override;
-    bool loadKeyedMembers(const std::function<void(const std::string& key, bool isNull)>& loadMember) override;
+    void loadKeyedArray(const std::string& key, const std::function<void(const std::string& memberKey, bool isNull)>& loadMember, const Options& hint = Options::EMPTY) override;
     bool loadFixedPropertyArray(const std::string& key, unsigned int count, const std::function<void(unsigned int index)>& loadElement) override;
+
+    private:
+    bool loadKeyedMembers(const std::function<void(const std::string& key, bool isNull)>& loadMember) override;
 
     private:
     IComponentData& cComponentData;

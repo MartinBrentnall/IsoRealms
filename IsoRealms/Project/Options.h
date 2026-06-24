@@ -44,6 +44,9 @@ namespace IsoRealms {
     /** Hint option: property is not shown or editable in the editor. */
     inline static const std::string PROPERTY_NO_EDIT = "noEdit";
 
+    /** Hint option: suppress the default array add control; use a separate add property instead. */
+    inline static const std::string PROPERTY_NO_ADD = "noAdd";
+
     /** Hint option: JSON member name under which nested struct properties are loaded and saved. */
     inline static const std::string PROPERTY_SCOPED = "scoped";
 
