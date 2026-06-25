@@ -24,12 +24,14 @@
 
 #include "PropertyTreeSelector.h"
 
+#include "IsoRealms/IComponentDefiner.h"
+
 namespace IsoRealms {
   class PropertyNativeBoolean;
 
   class PropertyNativeBoolean : public Property {
     public:
-    PropertyNativeBoolean(const PropertyData& data, IComponentAccessManager& resourceAccessManager, IComponentData& resourceData, std::function<bool()> getter, std::function<void(bool)> setter, Project& project, std::function<void()> removeFunction = nullptr);
+    PropertyNativeBoolean(const PropertyData& data, IComponentAccessManager& resourceAccessManager, IComponentData& resourceData, std::function<bool()> getter, std::function<void(bool)> setter, Project& project, std::function<void()> removeFunction = nullptr, PropertyBooleanConfirmCallback confirmCustom = nullptr);
 
     /************************\
      * Implements IProperty *
@@ -43,7 +45,7 @@ namespace IsoRealms {
     private:
     class BooleanSelection : public ITreeSelectorObject {
       public:
-      BooleanSelection(std::function<void(bool)> setter, std::function<bool()> getter, Project& project);
+      BooleanSelection(IComponentAccessManager& accessManager, std::function<void(bool)> setter, std::function<bool()> getter, Project& project, PropertyBooleanConfirmCallback confirmCustom);
 
       /**********************************\
        * Implements ITreeSelectorObject *
@@ -64,8 +66,10 @@ namespace IsoRealms {
       inline static const std::string ID_FALSE = "false";
 
       Project& cProject;
+      IComponentAccessManager& cAccessManager;
       std::function<void(bool)> cSetter;
       std::function<bool()> cGetter;
+      PropertyBooleanConfirmCallback cConfirmCustom;
     };
 
     BooleanSelection cInternalSelection;

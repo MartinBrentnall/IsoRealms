@@ -169,7 +169,7 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  void ComponentLoader::propertyBoolean(const std::string& key, std::function<bool()> getter, std::function<void(bool)> setter, bool defaultValue, std::function<void()> removeFunction) {
+  void ComponentLoader::propertyBoolean(const std::string& key, std::function<bool()> getter, std::function<void(bool)> setter, bool defaultValue, std::function<void()> removeFunction, PropertyBooleanConfirmCallback confirmCustom) {
     setter(currentObject().getBoolean(key, defaultValue));
   }
 
@@ -251,7 +251,7 @@ namespace IsoRealms {
     }
   }
 
-  void ComponentLoader::propertyString(const std::string& key, std::function<std::string()> getter, std::function<void(const std::string&)> setter, const std::string& defaultValue, std::function<bool(const std::string&)> validityChecker, std::function<void()> removeFunction, std::function<void(std::function<void()>, std::function<void()>)> confirmCustom) {
+  void ComponentLoader::propertyString(const std::string& key, std::function<std::string()> getter, std::function<void(const std::string&)> setter, const std::string& defaultValue, std::function<bool(const std::string&)> validityChecker, std::function<void()> removeFunction, PropertyConfirmCallback confirmCustom) {
     std::string mValue = currentObject().getString(key, defaultValue);
     requireValidPropertyValue(key, mValue, validityChecker);
     setter(mValue);
@@ -328,15 +328,4 @@ namespace IsoRealms {
     });
   }
 
-  void ComponentLoader::confirm(const std::string& message, std::function<void()> confirm, std::function<void()> cancel) {
-    confirm();
-  }
-
-  bool ComponentLoader::isComponentReadOnly() const {
-    return false;
-  }
-
-  void ComponentLoader::promoteComponentToProject() {
-    // Nothing to do.
-  }
 }

@@ -99,7 +99,7 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  void ComponentSaver::propertyBoolean(const std::string& key, std::function<bool()> getter, std::function<void(bool)> setter, bool defaultValue, std::function<void()> removeFunction) {
+  void ComponentSaver::propertyBoolean(const std::string& key, std::function<bool()> getter, std::function<void(bool)> setter, bool defaultValue, std::function<void()> removeFunction, PropertyBooleanConfirmCallback confirmCustom) {
     currentObject().addBoolean(key, getter(), defaultValue);
   }
 
@@ -174,7 +174,7 @@ namespace IsoRealms {
     }
   }
 
-  void ComponentSaver::propertyString(const std::string& key, std::function<std::string()> getter, std::function<void(const std::string&)> setter, const std::string& defaultValue, std::function<bool(const std::string&)> validityChecker, std::function<void()> removeFunction, std::function<void(std::function<void()>, std::function<void()>)> confirmCustom) {
+  void ComponentSaver::propertyString(const std::string& key, std::function<std::string()> getter, std::function<void(const std::string&)> setter, const std::string& defaultValue, std::function<bool(const std::string&)> validityChecker, std::function<void()> removeFunction, PropertyConfirmCallback confirmCustom) {
     currentObject().addString(key, getter(), defaultValue);
   }
 
@@ -247,17 +247,5 @@ namespace IsoRealms {
       endSavePropertyArrayElement();
     });
     endSavePropertyArray();
-  }
-
-  void ComponentSaver::confirm(const std::string& message, std::function<void()> confirm, std::function<void()> cancel) {
-    // Nothing to do.
-  }
-
-  bool ComponentSaver::isComponentReadOnly() const {
-    return false;
-  }
-
-  void ComponentSaver::promoteComponentToProject() {
-    // Nothing to do.
   }
 }

@@ -20,13 +20,14 @@
 
 #include <string>
 
-#include "Resources/Client/ComponentOwner.h"
+#include "Editing/IComponentAccessManager.h"
 #include "IComponentDefiner.h"
 #include "IActionContext.h"
 #include "IComponent.h"
 #include "IComponentData.h"
 #include "Project/ResourcePublisher.h"
 #include "Project/ComponentType.h"
+#include "Resources/Client/ComponentOwner.h"
 #include "Utils.h"
 
 namespace IsoRealms {
@@ -94,9 +95,9 @@ namespace IsoRealms {
         return cParent.forEachComponent([this, &value](IComponent* mComponent) {
           return mComponent->getName() != value || mComponent == this;
         });
-      }, nullptr, [this, &definer](std::function<void()> confirm, std::function<void()> cancel) {
+      }, nullptr, [this](std::function<void()> confirm, std::function<void()> cancel, IComponentAccessManager& access) {
         if (hasReadOnlyReferences()) {
-          definer.confirm("TODO: This component is referenced by read-only components.  Renaming it will promote any read-only components referencing this one and make them writable.", [this, confirm]() {
+          access.confirm("TODO: This component is referenced by read-only components.  Renaming it will promote any read-only components referencing this one and make them writable.", [this, confirm]() {
             confirm();
           }, [this, cancel]() {
             cancel();

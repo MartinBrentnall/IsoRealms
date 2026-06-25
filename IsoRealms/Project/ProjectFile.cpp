@@ -18,6 +18,7 @@
  */
 #include "ProjectFile.h"
 
+#include "IsoRealms/Editing/IComponentAccessManager.h"
 #include "IsoRealms/Project/Options.h"
 #include "IsoRealms/Utils.h"
 
@@ -81,18 +82,16 @@ namespace IsoRealms {
     }
     definer.propertyString("description", [this]() {return cDefID;}, [this](const std::string& value) {cDefID = value;});
     if (inclusion && cFile.isUser()) {
-      definer.propertyBoolean("allowModification", [this]() {return cAllowModifications;}, [this, &definer, &project](bool value) {
+      definer.propertyBoolean("allowModification", [this]() {return cAllowModifications;}, [this](bool value) {cAllowModifications = value;}, true, nullptr, [this, &project](bool value, std::function<void()> confirm, std::function<void()> cancel, IComponentAccessManager& access) {
         if (!value) {
-          definer.confirm("Setting this file to read-only will cause it to be saved as it is currently.  Are you sure you want to do this?", [this, &project]() {
+          access.confirm("Setting this file to read-only will cause it to be saved as it is currently.  Are you sure you want to do this?", [this, &project, confirm]() {
             project.save(*this);
-            cAllowModifications = false;
-          }, []() {
-            // Nothing to do.
-          });
+            confirm();
+          }, cancel);
         } else {
-          cAllowModifications = true;
+          confirm();
         }
-      }, true);
+      });
     }
     definer.array("include", cInclusions, [](const std::unique_ptr<ProjectFile>& inclusion) -> ProjectFile& {
       return *inclusion;

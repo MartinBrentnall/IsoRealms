@@ -56,7 +56,7 @@ namespace IsoRealms {
     bool hasPersistedMember(const std::string& key) const override;
 
     void propertyAdd(             const std::string& key, const std::string& value, std::function<void()> addPropertyFunction, const Options& hint = Options::EMPTY) override;
-    void propertyBoolean(         const std::string& key, std::function<bool()>         getter, std::function<void(bool)>               setter, bool               defaultValue,                                                          std::function<void()> removeFunction) override;
+    void propertyBoolean(         const std::string& key, std::function<bool()>         getter, std::function<void(bool)>               setter, bool               defaultValue, std::function<void()> removeFunction, PropertyBooleanConfirmCallback confirmCustom = nullptr) override;
     void propertyCode(            const std::string& key, std::function<std::string()>  getter, std::function<void(const std::string&)> setter,             std::function<void()> removeFunction = nullptr) override;
     void propertyColourChannel(   const std::string& key, std::function<float()> valueFunction, float* minRed, float* minGreen, float* minBlue, float* minAlpha, float* maxRed, float* maxGreen, float* maxBlue, float* maxAlpha, std::function<void(const float)> confirmationCallback) override;
     void propertyColourHue(       const std::string& key, std::function<float()> valueFunction, float* saturation, float* lightness, float* alpha, std::function<void(const float)> confirmationCallback) override;
@@ -70,7 +70,7 @@ namespace IsoRealms {
     void propertyList(            const std::string& key, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, const std::string& defaultValue, std::function<void()> removeFunction) override;
     void propertyOptional(        const std::string& key, IOptionalObject& optionalSource, const std::string& noneLabel, std::function<bool()> noneIcon, std::function<void(const std::string&)> choiceCallback, std::function<std::string()> valueGetter = nullptr, const Options& hint = Options::EMPTY) override;
     void propertyResource(        const std::string& key, ITreeSelectorObject& item, const Options& hint = Options::EMPTY, std::function<void()> removeFunction = nullptr) override;
-    void propertyString(          const std::string& key, std::function<std::string()>  getter, std::function<void(const std::string&)> setter, const std::string& defaultValue, std::function<bool(const std::string&)> validityChecker, std::function<void()> removeFunction, std::function<void(std::function<void()>, std::function<void()>)> confirmCustom) override;
+    void propertyString(          const std::string& key, std::function<std::string()>  getter, std::function<void(const std::string&)> setter, const std::string& defaultValue, std::function<bool(const std::string&)> validityChecker, std::function<void()> removeFunction, PropertyConfirmCallback confirmCustom) override;
     void propertyUnsignedInteger( const std::string& key, std::function<unsigned int()> getter, std::function<void(unsigned int)>       setter, unsigned int       defaultValue, std::function<bool(unsigned int)>       validityChecker, std::function<void()> removeFunction) override;
 
     void scopeModule(Module& module, std::function<void()> removeFunction) override;
@@ -80,13 +80,6 @@ namespace IsoRealms {
     void keyedArray(const std::string& key, const std::string& addKey, IKeyedArraySource& source, const Options& hint = Options::EMPTY) override;
     void array(const std::string& key, const std::string& addKey, IArraySource& source, const Options& hint = Options::EMPTY) override;
     void fixedArray(const std::string& key, IFixedArraySource& source, const Options& hint = Options::EMPTY) override;
-    
-    /**************************************\
-     * Implements IComponentAccessManager *
-    \**************************************/
-    void confirm(const std::string& message, std::function<void()> confirm, std::function<void()> cancel) override;
-    bool isComponentReadOnly() const override;
-    void promoteComponentToProject() override;
 
     private:
     bool loadPropertyArray(const std::string& key, const std::function<void()>& addAndLoadElement, const Options& hint = Options::EMPTY);

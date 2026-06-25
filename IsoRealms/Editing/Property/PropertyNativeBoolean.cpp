@@ -25,9 +25,9 @@
 #include "IsoRealms/Editing/ComponentEditor.h"
 
 namespace IsoRealms {
-  PropertyNativeBoolean::PropertyNativeBoolean(const PropertyData& data, IComponentAccessManager& resourceAccessManager, IComponentData& resourceData, std::function<bool()> getter, std::function<void(bool)> setter, Project& project, std::function<void()> removeFunction) :
+  PropertyNativeBoolean::PropertyNativeBoolean(const PropertyData& data, IComponentAccessManager& resourceAccessManager, IComponentData& resourceData, std::function<bool()> getter, std::function<void(bool)> setter, Project& project, std::function<void()> removeFunction, PropertyBooleanConfirmCallback confirmCustom) :
             Property(data, resourceAccessManager, removeFunction),
-            cInternalSelection(setter, getter, project),
+            cInternalSelection(resourceAccessManager, setter, getter, project, confirmCustom),
             cInternalProperty(resourceAccessManager, resourceData, data, cInternalSelection, removeFunction) {
   }
 
@@ -51,10 +51,12 @@ namespace IsoRealms {
     cInternalProperty.configure(manager);
   }
   
-  PropertyNativeBoolean::BooleanSelection::BooleanSelection(std::function<void(bool)> setter, std::function<bool()> getter, Project& project) :
+  PropertyNativeBoolean::BooleanSelection::BooleanSelection(IComponentAccessManager& accessManager, std::function<void(bool)> setter, std::function<bool()> getter, Project& project, PropertyBooleanConfirmCallback confirmCustom) :
             cProject(project),
+            cAccessManager(accessManager),
             cSetter(setter),
-            cGetter(getter) {
+            cGetter(getter),
+            cConfirmCustom(confirmCustom) {
   }
 
   TreeItemInfo PropertyNativeBoolean::BooleanSelection::getTreeItemInfo() const {
@@ -107,12 +109,24 @@ namespace IsoRealms {
   }
   
   void PropertyNativeBoolean::BooleanSelection::setID(const std::string& id) {
+    bool mValue;
     if (id == ID_TRUE) {
-      cSetter(true);
+      mValue = true;
     } else if (id == ID_FALSE) {
-      cSetter(false);
+      mValue = false;
     } else {
       std::cout << "TODO: Throw Unsupported BooleanSelection ID" << std::endl;
+      return;
+    }
+
+    std::function<void()> mApply = [this, mValue]() {
+      cSetter(mValue);
+    };
+
+    if (cConfirmCustom) {
+      cConfirmCustom(mValue, mApply, []() {}, cAccessManager);
+    } else {
+      mApply();
     }
   }
 }

@@ -116,9 +116,9 @@ namespace IsoRealms {
     getProperties().addProperty(std::make_unique<PropertyAdd>(mergePropertyMetadata(getCurrentMetadata().getPropertyData(key), hint), *this, value, addPropertyFunction));
   }
 
-  void ComponentEditor::propertyBoolean(const std::string& key, std::function<bool()> getter, std::function<void(bool)> setter, bool defaultValue, std::function<void()> removeFunction) {
+  void ComponentEditor::propertyBoolean(const std::string& key, std::function<bool()> getter, std::function<void(bool)> setter, bool defaultValue, std::function<void()> removeFunction, PropertyBooleanConfirmCallback confirmCustom) {
     IComponentData& mParent = getParent();
-    getProperties().addProperty(std::make_unique<PropertyNativeBoolean>(getCurrentMetadata().getPropertyData(key), *this, mParent, getter, setter, mParent.getProject(), removeFunction));
+    getProperties().addProperty(std::make_unique<PropertyNativeBoolean>(getCurrentMetadata().getPropertyData(key), *this, mParent, getter, setter, mParent.getProject(), removeFunction, confirmCustom));
   }
 
   void ComponentEditor::propertyCode(const std::string& key, std::function<std::string()> getter, std::function<void(const std::string&)> setter, std::function<void()> removeFunction) {
@@ -180,7 +180,7 @@ namespace IsoRealms {
     getProperties().addProperty(std::make_unique<PropertyTreeSelector>(*this, getParent(), mergePropertyMetadata(getCurrentMetadata().getPropertyData(key), hint), item, removeFunction));
   }
 
-  void ComponentEditor::propertyString(const std::string& key, std::function<std::string()> getter, std::function<void(const std::string&)> setter, const std::string& defaultValue, std::function<bool(const std::string&)> validityChecker, std::function<void()> removeFunction, std::function<void(std::function<void()>, std::function<void()>)> confirmCustom) {
+  void ComponentEditor::propertyString(const std::string& key, std::function<std::string()> getter, std::function<void(const std::string&)> setter, const std::string& defaultValue, std::function<bool(const std::string&)> validityChecker, std::function<void()> removeFunction, PropertyConfirmCallback confirmCustom) {
     getProperties().addProperty(std::make_unique<PropertyNativeString>(getCurrentMetadata().getPropertyData(key), *this, getter, setter, validityChecker, removeFunction, confirmCustom));
   }
 
