@@ -72,6 +72,8 @@ namespace IsoRealms {
     void array(const std::string& key, const std::string& addKey, IArraySource& source, const Options& hint = Options::EMPTY) override;
     void fixedArray(const std::string& key, IFixedArraySource& source, const Options& hint = Options::EMPTY) override;
 
+    void onPersisted(std::function<void()> callback) override;
+
     private:
     bool beginSavePropertyArray(const std::string& key);
     void beginSavePropertyArrayElement();

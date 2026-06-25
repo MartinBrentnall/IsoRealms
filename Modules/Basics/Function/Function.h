@@ -51,7 +51,7 @@ namespace IsoRealms::Basics {
     void define(IComponentDefiner& definer);
     void publish(ResourcePublisher& publisher);
     bool renderIcon() const;
-    void getScriptProperties(IComponentDefiner& definer);
+    void defineScript(IComponentDefiner& definer);
     IsoRealms::Project& getProject() const;
     IComponentData& getComponentData() const;
     void setBindingName(Binding& binding, const std::string& name);

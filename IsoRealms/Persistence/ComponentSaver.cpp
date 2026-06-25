@@ -248,4 +248,8 @@ namespace IsoRealms {
     });
     endSavePropertyArray();
   }
+
+  void ComponentSaver::onPersisted(std::function<void()> callback) {
+    callback();
+  }
 }

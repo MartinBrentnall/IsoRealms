@@ -75,10 +75,10 @@ namespace IsoRealms {
     definer.propertyFloat("yaw",     [this]() {return cDefYaw;},     [this](float value) {cDefYaw     = value;});
     definer.propertyFloat("pitch",   [this]() {return cDefPitch;},   [this](float value) {cDefPitch   = value;});
 
-    if (definer.loadsPersistedValues()) {
+    definer.onInitialised([this]() {
       for (ModelInstance* mInstance : cInstances) {
         mInstance->set(cResource->createModel());
       }
-    }
+    });
   }
 }

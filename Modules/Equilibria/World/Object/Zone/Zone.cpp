@@ -126,14 +126,12 @@ namespace IsoRealms::Equilibria {
       });
     }, nullptr, mZoneObjectsHint);
 
-    if (definer.loadsPersistedValues()) {
-      cDefWorld.getEquilibria().getProject().init([this]() {
-        cDefTerrainStates.clear();
-        for (std::unique_ptr<Terrain>& mTerrain : cDefTerrain) {
-          addTerrainState(mTerrain.get());
-        }
-      });
-    }
+    definer.onInitialised([this]() {
+      cDefTerrainStates.clear();
+      for (std::unique_ptr<Terrain>& mTerrain : cDefTerrain) {
+        addTerrainState(mTerrain.get());
+      }
+    });
   }
 
   std::string Zone::getDisplayName() const {

@@ -53,6 +53,14 @@ namespace IsoRealms {
       return false;
     }
 
+    virtual void onInitialised(std::function<void()> callback) {
+      // Only invoked after persisted values have been applied during loading.
+    }
+
+    virtual void onPersisted(std::function<void()> callback) {
+      // Only invoked after persisted values have been written during saving.
+    }
+
     // TODO: Replace this function with a hint.
     virtual bool hasPersistedMember(const std::string& key) const {
       return false;

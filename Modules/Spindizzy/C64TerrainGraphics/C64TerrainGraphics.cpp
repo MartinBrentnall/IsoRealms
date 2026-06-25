@@ -70,9 +70,9 @@ namespace IsoRealms::Spindizzy {
     definer.propertyResource("highlight", cDefHighlight);
 
     // TODO: This is a hack to reload the textures when the properties are loaded.
-    if (definer.loadsPersistedValues()) {
+    definer.onInitialised([this]() {
       setNeedsFullRedraw();
-    }
+    });
   }
   
   void C64TerrainGraphics::publish(ResourcePublisher& publisher) {

@@ -61,11 +61,9 @@ namespace IsoRealms::Equilibria {
       });
     });
 
-    if (definer.loadsPersistedValues()) {
-      cEquilibria.getProject().init([this]() {
-        setNextTheme();
-      });
-    }
+    definer.onInitialised([this]() {
+      setNextTheme();
+    });
   }
 
   void ThemeSet::publish(ResourcePublisher& publisher) {

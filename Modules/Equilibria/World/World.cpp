@@ -106,54 +106,50 @@ World::World(Equilibria& equilibria, IComponentData& data) :
       });
     }, nullptr, mWorldObjectsHint);
 
-    // Initialisation stuff.
-    if (definer.loadsPersistedValues()) {
-      cComponentData.getProject().init([this]() {
+    definer.onInitialised([this]() {
+      // Try to open terrain cache
+      std::string mCachePath = cComponentData.getPath("Terrain.cache", cComponentData.getProject().isUser());
+//      std::cout << "Cache path: " << mCachePath << std::endl;
+      std::ifstream mCache(mCachePath, std::ios::binary);
+      bool mUsingCache = false;
+      if (mCache) {
+//        std::filesystem::file_time_type mCacheTime = std::filesystem::last_write_time(mCachePath);
+//        std::filesystem::file_time_type mProjectTime = project->getLastWriteTime();
+//
+//        if (mCacheTime > mProjectTime) {
+          mUsingCache = true;
+//        } else {
+//          mCache.close();
+//        }
+      }
+      updateBounds();
 
-        // Try to open terrain cache
-        std::string mCachePath = cComponentData.getPath("Terrain.cache", cComponentData.getProject().isUser());
-  //      std::cout << "Cache path: " << mCachePath << std::endl;
-        std::ifstream mCache(mCachePath, std::ios::binary);
-        bool mUsingCache = false;
-        if (mCache) {
-  //        std::filesystem::file_time_type mCacheTime = std::filesystem::last_write_time(mCachePath);
-  //        std::filesystem::file_time_type mProjectTime = project->getLastWriteTime();
-  //
-  //        if (mCacheTime > mProjectTime) {
-            mUsingCache = true;
-  //        } else {
-  //          mCache.close();
-  //        }
+      if (mUsingCache) {
+        for (std::unique_ptr<Zone>& mZone : cDefZones) {
+          mZone->initialiseObjects();
+          mZone->initialiseTerrain(mCache);
         }
-        updateBounds();
-  
-        if (mUsingCache) {
-          for (std::unique_ptr<Zone>& mZone : cDefZones) {
-            mZone->initialiseObjects();
-            mZone->initialiseTerrain(mCache);
-          }
-        } else {
-  
-          // Multi-threaded world initialisation
-          std::vector<std::function<void()>> mTask;
-          for (Zone* mZone : cRuntimeZonesToInitialise) {
-  //        mTask.push_back([&mZone, mUsingCache]() { TODO: Enable this for multi-threaded initialisation.
-            mZone->initialiseObjects();
-            mZone->initialiseTerrain();
-  //        });
-          }
-  //         Application& mApplication = cComponentData.getProject().getApplication();
-  //         mApplication.executeAndWait(mTask);
-  //         std::cout << "INFO: World::World: Updating cache..." << std::endl;
-          updateCache();
-        }
-        cRuntimeZonesToInitialise.clear();
-      });
-    }
+      } else {
 
-    if (definer.savesPersistedValues()) {
+        // Multi-threaded world initialisation
+        std::vector<std::function<void()>> mTask;
+        for (Zone* mZone : cRuntimeZonesToInitialise) {
+//        mTask.push_back([&mZone, mUsingCache]() { TODO: Enable this for multi-threaded initialisation.
+          mZone->initialiseObjects();
+          mZone->initialiseTerrain();
+//        });
+        }
+//         Application& mApplication = cComponentData.getProject().getApplication();
+//         mApplication.executeAndWait(mTask);
+//         std::cout << "INFO: World::World: Updating cache..." << std::endl;
+        updateCache();
+      }
+      cRuntimeZonesToInitialise.clear();
+    });
+
+    definer.onPersisted([this]() {
       updateCache();
-    }
+    });
   }
 
   std::string World::getAvailableDebrisGeneratorId() const {

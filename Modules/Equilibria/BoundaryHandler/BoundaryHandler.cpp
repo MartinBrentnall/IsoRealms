@@ -36,11 +36,9 @@ void BoundaryHandler::define(IComponentDefiner& definer) {
     definer.propertyResource("onEntry",  cDefEnteredAction);
     definer.propertyResource("onExit",   cDefExitedAction);
 
-    if (definer.loadsPersistedValues()) {
-      cEquilibria.getProject().init([this]() {
-        cEquilibria.added(this);
-      });
-    }
+    definer.onInitialised([this]() {
+      cEquilibria.added(this);
+    });
   }
 
   void BoundaryHandler::removed() {

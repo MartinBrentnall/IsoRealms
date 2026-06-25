@@ -111,9 +111,9 @@ namespace IsoRealms::Equilibria {
     });
 
     // Register the terrain with the world.
-    if (definer.loadsPersistedValues()) {
+    definer.onInitialised([this]() {
       cZone.getWorld().registerTerrain(this, !(cDefFlags & FLAG_INVISIBLE), !(cDefFlags & FLAG_GHOST));
-    }
+    });
   }
 
   void Terrain::loadCachedSurfaces(std::ifstream& cache) {

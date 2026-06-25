@@ -38,11 +38,9 @@ namespace IsoRealms::Equilibria {
     definer.propertyResource("onCollision", cDefEnteredAction);
     definer.propertyResource("onParting",   cDefExitedAction);
 
-    if (definer.loadsPersistedValues()) {
-      cEquilibria.getProject().init([this]() {
-        cEquilibria.added(this);
-      });
-    }
+    definer.onInitialised([this]() {
+      cEquilibria.added(this);
+    });
   }
 
   void CollisionHandler::removed() {

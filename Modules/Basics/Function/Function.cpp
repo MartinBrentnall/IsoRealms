@@ -42,9 +42,9 @@ namespace IsoRealms::Basics {
     definer.propertyCode("code", [this]() {return cDefCode;}, [this](const std::string& value) {
       cDefCode = value;
     });
-    if (definer.loadsPersistedValues()) {
+    definer.onInitialised([this]() {
       declare();
-    }
+    });
   }
 
   void Function::publish(ResourcePublisher& publisher) {
@@ -76,14 +76,14 @@ namespace IsoRealms::Basics {
     });
   }
 
-  void Function::getScriptProperties(IComponentDefiner& definer) {
+  void Function::defineScript(IComponentDefiner& definer) {
     addBindingPropertyArray(definer, false);
     definer.propertyCode("code", [this]() {return cDefCode;}, [this](const std::string& value) {
       cDefCode = value;
     });
-    if (definer.loadsPersistedValues()) {
+    definer.onInitialised([this]() {
       declare();
-    }
+    });
   }
 
   IsoRealms::Project& Function::getProject() const {

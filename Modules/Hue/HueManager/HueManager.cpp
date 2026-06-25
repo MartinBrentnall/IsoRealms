@@ -35,8 +35,8 @@ namespace IsoRealms::Hue {
       return *cDefBulbs.emplace_back(std::make_unique<Bulb>(*this, cComponentData, static_cast<int>(cDefBulbs.size())));
     });
 
-    // If we are loading persisted values, we need to initialize the REST client.
-    if (definer.loadsPersistedValues()) {
+    // If we are loading persisted values,  we need to initialise the REST client.
+    definer.onInitialised([this]() {
       RESTInit();
       cREST.init(cDefBridgeAddress.c_str(), SSL_PORT, cDefBridgeUser.c_str(), DEBUG_LEVEL);
   
@@ -88,8 +88,7 @@ namespace IsoRealms::Hue {
         cEntertainment.cleanup();
         throw ArgumentException("ERROR: HueManager::HueManager: Failed to make DTLS connection to bridge (returned: " + Utils::toString(retval) + ").");
       }
-      printf("Running...\n");
-    }
+    });
   }
 
   HueManager::~HueManager() {

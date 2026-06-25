@@ -112,6 +112,6 @@ namespace IsoRealms::Basics {
   }
   
   void Script::ScriptAction::defineResource(IComponentDefiner& definer) {
-    cDefFunction.getScriptProperties(definer);
+    cDefFunction.defineScript(definer);
   }
 }

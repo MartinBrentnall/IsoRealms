@@ -38,15 +38,13 @@ namespace IsoRealms::Equilibria {
     definer.propertyResource("type",   cDefZoneViewType, mHint);
     definer.propertyFloat(   "zoom",   [this]() {return cDefZoom;}, [this](float value) {cDefZoom = value;}, DEFAULT_ZOOM, [](float value) {return value > 0.0f;}); // TODO: Should this be part of the camera???  e.g. CameraZoom
 
-    if (definer.loadsPersistedValues()) {
-      cComponentData.getProject().init([this]() {
-        cDefWorld->registerView(*this);
-        std::vector<std::unique_ptr<Zone>>& mZones = cDefWorld->getZones();
-        for (std::unique_ptr<Zone>& mZone : mZones) {
-          addZoneView(mZone.get());
-        }
-      });
-    }
+    definer.onInitialised([this]() {
+      cDefWorld->registerView(*this);
+      std::vector<std::unique_ptr<Zone>>& mZones = cDefWorld->getZones();
+      for (std::unique_ptr<Zone>& mZone : mZones) {
+        addZoneView(mZone.get());
+      }
+    });
   }
 
   void WorldView::publish(ResourcePublisher& publisher) {

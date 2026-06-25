@@ -65,9 +65,9 @@ namespace IsoRealms::Basics {
       return *mTrack;
     });
 
-    if (definer.loadsPersistedValues()) {
+    definer.onInitialised([this]() {
       cComponentData.republish();
-    }
+    });
   }
 
   void Sequence::publish(ResourcePublisher& publisher) {

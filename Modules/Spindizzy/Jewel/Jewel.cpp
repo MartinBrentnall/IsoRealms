@@ -45,11 +45,11 @@ namespace IsoRealms::Spindizzy {
     definer.propertyFloat("cycleSpeed", [this]() {return cDefCycleSpeed;}, [this](float value) {cDefCycleSpeed = value;}, DEFAULT_CYCLE_SPEED);
 
     // If we are loading persisted values, we need to create a default cycle colour if none exists.
-    if (definer.loadsPersistedValues()) {
+    definer.onInitialised([this]() {
       if (cDefColoursCycle.size() == 0) {
         cDefColoursCycle.emplace_back(std::make_unique<CycleColour>(*this, cComponentData));
       }
-    }
+    });
   }
 
   void Jewel::randomizeInstances() {

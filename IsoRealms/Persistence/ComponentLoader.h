@@ -81,6 +81,8 @@ namespace IsoRealms {
     void array(const std::string& key, const std::string& addKey, IArraySource& source, const Options& hint = Options::EMPTY) override;
     void fixedArray(const std::string& key, IFixedArraySource& source, const Options& hint = Options::EMPTY) override;
 
+    void onInitialised(std::function<void()> callback) override;
+
     private:
     bool loadPropertyArray(const std::string& key, const std::function<void()>& addAndLoadElement, const Options& hint = Options::EMPTY);
     void loadKeyedArray(const std::string& key, const std::function<void(const std::string& memberKey, bool isNull)>& loadMember, const Options& hint = Options::EMPTY);

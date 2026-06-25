@@ -83,11 +83,11 @@ namespace IsoRealms {
     definer.propertyString("path", [this]() {return cPath;}, [this](const std::string& value) {cPath = value;});
     definer.propertyBoolean("user", [this]() {return cUser;}, [this](bool value) {cUser = value;});
 
-    if (definer.loadsPersistedValues()) {
+    definer.onInitialised([this]() {
       if (cChangeCallback) {
         cChangeCallback();
       }
-    }
+    });
   }
 
   Application& File::getApplication() {
