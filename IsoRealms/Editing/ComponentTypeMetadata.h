@@ -16,28 +16,28 @@
  * You should have received a copy of the GNU General Public License
  * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
- #pragma once
+#pragma once
 
- #include <string>
+#include <string>
  
- #include "Metadata.h"
+#include "Metadata.h"
 
- namespace IsoRealms {
-   class ComponentEditor;
-   class JSONObject;
-   class Module;
+namespace IsoRealms {
+  class ComponentEditor;
+  class JSONObject;
+  class Module;
  
-   class ComponentTypeMetadata {
-     public:
-     ComponentTypeMetadata(JSONObject object, const Metadata& componentBaseMetadata);
-     void scope(ComponentEditor& definer, Module& module, const std::string& componentType, const std::string& category);
- 
-     private:
-     std::string cSingular;
-     std::string cPlural;
-     std::string cCategory;
-     std::string cDescription;
-     Metadata cProperties;
-   };
- }
+  class ComponentTypeMetadata {
+    public:
+    ComponentTypeMetadata(JSONObject object, const Metadata& componentBaseMetadata);
+    void scope(ComponentEditor& definer, Module& module, const std::string& componentType, const std::string& category);
+
+    private:
+    std::string cSingular;
+    std::string cPlural;
+    std::string cCategory;
+    std::string cDescription;
+    Metadata cProperties;
+  };
+}
  

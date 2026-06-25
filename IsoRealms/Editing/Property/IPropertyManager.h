@@ -31,6 +31,7 @@ namespace IsoRealms {
   class IPropertyEditor;
   class IComponentDefiner;
   class IUIStyle;
+  class Metadata;
 
   class IPropertyManager {
     public:
@@ -44,5 +45,8 @@ namespace IsoRealms {
     virtual void edit(IEditable* editor) = 0;
     virtual void refreshProperties() = 0;
     virtual IUIStyle& getPropertyStyle() = 0;
+    virtual IComponentData& getOwner() = 0;
+    virtual void setMetadata(const Metadata& metadata) = 0;
+    virtual const Metadata& getMetadata() const = 0;
   };
 }

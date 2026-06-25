@@ -44,7 +44,6 @@ namespace IsoRealms {
     // Clear any existing metadata.
     cModuleMetadata.clear();
     cApplicationMetadata.clear();
-    cMetadata.clear();
 
     // Load application metadata.
     std::locale mLocale("");
@@ -78,125 +77,120 @@ namespace IsoRealms {
     for (const std::unique_ptr<Module>& mModule : mModules) {
       cModuleMetadata[mModule->getName()] = std::make_unique<ModuleMetadata>(*mModule, *cApplicationMetadata["Component"].get());
     }
-
-    // Start with the application metadata.
-    pushApplicationMetadata("Application");
   }
 
-  void ComponentEditor::openMenu(IComponentData& parent, IPropertyManager& properties) {
-    cMetadataDepthAtMenuOpen.push_back(cMetadata.size());
-    cParents.push_back(&parent);
+  const Metadata& ComponentEditor::getApplicationMetadata(const std::string& section) const {
+    return *cApplicationMetadata.at(section);
+  }
+
+  void ComponentEditor::openMenu(IPropertyManager& properties) {
     cPropertyManagers.push_back(&properties);
   }
 
-  void ComponentEditor::resetMetadataForMenu() {
-    if (!cMetadataDepthAtMenuOpen.empty()) {
-      while (cMetadata.size() > cMetadataDepthAtMenuOpen.back()) {
-        cMetadata.pop_back();
-      }
-    }
-  }
-
   void ComponentEditor::closeMenu() {
-    resetMetadataForMenu();
-    if (!cMetadataDepthAtMenuOpen.empty()) {
-      cMetadataDepthAtMenuOpen.pop_back();
-    }
-    if (!cParents.empty()) {
-      cParents.pop_back();
-    }
     if (!cPropertyManagers.empty()) {
       cPropertyManagers.pop_back();
     }
   }
 
   IComponentData& ComponentEditor::getParent() const {
-    return *cParents.back();
+    return getProperties().getOwner();
   }
 
   IPropertyManager& ComponentEditor::getProperties() const {
     return *cPropertyManagers.back();
   }
 
+  const Metadata& ComponentEditor::getCurrentMetadata() const {
+    return getProperties().getMetadata();
+  }
+
+  const Metadata& ComponentEditor::getParentMenuMetadata() const {
+    if (cPropertyManagers.size() < 2) {
+      return getApplicationMetadata("Application");
+    }
+    return cPropertyManagers[cPropertyManagers.size() - 2]->getMetadata();
+  }
+
   void ComponentEditor::propertyAdd(const std::string& key, const std::string& value, std::function<void()> addPropertyFunction, const Options& hint) {
-    getProperties().addProperty(std::make_unique<PropertyAdd>(mergePropertyMetadata(cMetadata.back()->getPropertyData(key), hint), *this, value, addPropertyFunction));
+    getProperties().addProperty(std::make_unique<PropertyAdd>(mergePropertyMetadata(getCurrentMetadata().getPropertyData(key), hint), *this, value, addPropertyFunction));
   }
 
   void ComponentEditor::propertyBoolean(const std::string& key, std::function<bool()> getter, std::function<void(bool)> setter, bool defaultValue, std::function<void()> removeFunction) {
     IComponentData& mParent = getParent();
-    getProperties().addProperty(std::make_unique<PropertyNativeBoolean>(cMetadata.back()->getPropertyData(key), *this, mParent, getter, setter, mParent.getProject(), removeFunction));
+    getProperties().addProperty(std::make_unique<PropertyNativeBoolean>(getCurrentMetadata().getPropertyData(key), *this, mParent, getter, setter, mParent.getProject(), removeFunction));
   }
 
   void ComponentEditor::propertyCode(const std::string& key, std::function<std::string()> getter, std::function<void(const std::string&)> setter, std::function<void()> removeFunction) {
-    getProperties().addProperty(std::make_unique<PropertyCode>(getParent().getProject(), cMetadata.back()->getPropertyData(key), *this, getter, setter, removeFunction));
+    getProperties().addProperty(std::make_unique<PropertyCode>(getParent().getProject(), getCurrentMetadata().getPropertyData(key), *this, getter, setter, removeFunction));
   }
 
   void ComponentEditor::propertyColourChannel(const std::string& key, std::function<float()> valueFunction, float* minRed, float* minGreen, float* minBlue, float* minAlpha, float* maxRed, float* maxGreen, float* maxBlue, float* maxAlpha, std::function<void(const float)> confirmationCallback) {
     IComponentData& mParent = getParent();
-    getProperties().addProperty(std::make_unique<PropertyColourChannel>(mParent, key, *cMetadata.back(), cMetadata.back()->getPropertyData(key), *this, valueFunction, minRed, minGreen, minBlue, minAlpha, maxRed, maxGreen, maxBlue, maxAlpha, confirmationCallback));
+    getProperties().addProperty(std::make_unique<PropertyColourChannel>(mParent, key, getCurrentMetadata(), getCurrentMetadata().getPropertyData(key), *this, valueFunction, minRed, minGreen, minBlue, minAlpha, maxRed, maxGreen, maxBlue, maxAlpha, confirmationCallback));
   }
 
   void ComponentEditor::propertyColourHue(const std::string& key, std::function<float()> valueFunction, float* saturation, float* lightness, float* alpha, std::function<void(const float)> confirmationCallback) {
     IComponentData& mParent = getParent();
-    getProperties().addProperty(std::make_unique<PropertyColourHue>(mParent, key, *cMetadata.back(), cMetadata.back()->getPropertyData(key), *this, valueFunction, saturation, lightness, alpha, confirmationCallback));
+    getProperties().addProperty(std::make_unique<PropertyColourHue>(mParent, key, getCurrentMetadata(), getCurrentMetadata().getPropertyData(key), *this, valueFunction, saturation, lightness, alpha, confirmationCallback));
   }
 
   void ComponentEditor::propertyColourLightness(const std::string& key, std::function<float()> valueFunction, float* hue, float* saturation, float* alpha, std::function<void(const float)> confirmationCallback) {
     IComponentData& mParent = getParent();
-    getProperties().addProperty(std::make_unique<PropertyColourLightness>(mParent, key, *cMetadata.back(), cMetadata.back()->getPropertyData(key), *this, valueFunction, hue, saturation, alpha, confirmationCallback));
+    getProperties().addProperty(std::make_unique<PropertyColourLightness>(mParent, key, getCurrentMetadata(), getCurrentMetadata().getPropertyData(key), *this, valueFunction, hue, saturation, alpha, confirmationCallback));
   }
 
   void ComponentEditor::propertyColourSaturation(const std::string& key, std::function<float()> valueFunction, float* hue, float* lightness, float* alpha, std::function<void(const float)> confirmationCallback) {
     IComponentData& mParent = getParent();
-    getProperties().addProperty(std::make_unique<PropertyColourSaturation>(mParent, key, *cMetadata.back(), cMetadata.back()->getPropertyData(key), *this, valueFunction, hue, lightness, alpha, confirmationCallback));
+    getProperties().addProperty(std::make_unique<PropertyColourSaturation>(mParent, key, getCurrentMetadata(), getCurrentMetadata().getPropertyData(key), *this, valueFunction, hue, lightness, alpha, confirmationCallback));
   }
 
   void ComponentEditor::propertyCondition(const std::string& key, std::vector<ConditionElement*> availableElements, std::function<std::optional<Condition>&()> getter, std::function<void(std::optional<Condition>&)> setter, const Options& hint) {
-    getProperties().addProperty(std::make_unique<PropertyCondition>(cMetadata.back()->getPropertyData(key), *this, availableElements, getter, setter));
+    getProperties().addProperty(std::make_unique<PropertyCondition>(getCurrentMetadata().getPropertyData(key), *this, availableElements, getter, setter));
   }
 
   void ComponentEditor::propertyEditor(const std::string& key, IEditable* editable) {
-    getProperties().addProperty(std::make_unique<PropertyEditor>(cMetadata.back()->getPropertyData(key), *this, editable));
+    getProperties().addProperty(std::make_unique<PropertyEditor>(getCurrentMetadata().getPropertyData(key), *this, editable));
   }
 
   void ComponentEditor::propertyFloat(const std::string& key, std::function<float()> getter, std::function<void(float)> setter, float defaultValue, std::function<bool(float)> validityChecker, std::function<void()> removeFunction) {
-    getProperties().addProperty(std::make_unique<PropertyNativeFloat>(cMetadata.back()->getPropertyData(key), *this, getter, validityChecker, setter, removeFunction));
+    getProperties().addProperty(std::make_unique<PropertyNativeFloat>(getCurrentMetadata().getPropertyData(key), *this, getter, validityChecker, setter, removeFunction));
   }
 
   void ComponentEditor::propertyInteger(const std::string& key, std::function<int()> getter, std::function<void(int)> setter, int defaultValue, std::function<bool(int)> validityChecker, std::function<void()> removeFunction, const Options& hint) {
     if (hint.getOption(Options::PROPERTY_NO_EDIT) == "true") {
       return;
     }
-    getProperties().addProperty(std::make_unique<PropertyNativeInteger>(cMetadata.back()->getPropertyData(key), *this, getter, setter, validityChecker, removeFunction));
+    getProperties().addProperty(std::make_unique<PropertyNativeInteger>(getCurrentMetadata().getPropertyData(key), *this, getter, setter, validityChecker, removeFunction));
   }
 
   void ComponentEditor::propertyKey(const std::string& key, std::function<std::string()> getter, std::function<void(sf::Keyboard::Key)> setter, std::function<void()> removeFunction) {
-    getProperties().addProperty(std::make_unique<PropertyKey>(cMetadata.back()->getPropertyData(key), *this, getter, setter, removeFunction));
+    getProperties().addProperty(std::make_unique<PropertyKey>(getCurrentMetadata().getPropertyData(key), *this, getter, setter, removeFunction));
   }
 
   void ComponentEditor::propertyList(const std::string& key, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, const std::string& defaultValue, std::function<void()> removeFunction) {
     IComponentData& mParent = getParent();
-    getProperties().addProperty(std::make_unique<PropertyList>(*this, mParent, mParent.getProject(), cMetadata.back()->getPropertyData(key), options, getter, setter, removeFunction));
+    getProperties().addProperty(std::make_unique<PropertyList>(*this, mParent, mParent.getProject(), getCurrentMetadata().getPropertyData(key), options, getter, setter, removeFunction));
   }
 
   void ComponentEditor::propertyResource(const std::string& key, ITreeSelectorObject& item, const Options& hint, std::function<void()> removeFunction) {
     if (hint.getOption(Options::PROPERTY_NO_EDIT) == "true") {
       return;
     }
-    getProperties().addProperty(std::make_unique<PropertyTreeSelector>(*this, getParent(), mergePropertyMetadata(cMetadata.back()->getPropertyData(key), hint), item, removeFunction));
+    getProperties().addProperty(std::make_unique<PropertyTreeSelector>(*this, getParent(), mergePropertyMetadata(getCurrentMetadata().getPropertyData(key), hint), item, removeFunction));
   }
 
   void ComponentEditor::propertyString(const std::string& key, std::function<std::string()> getter, std::function<void(const std::string&)> setter, const std::string& defaultValue, std::function<bool(const std::string&)> validityChecker, std::function<void()> removeFunction, std::function<void(std::function<void()>, std::function<void()>)> confirmCustom) {
-    getProperties().addProperty(std::make_unique<PropertyNativeString>(cMetadata.back()->getPropertyData(key), *this, getter, setter, validityChecker, removeFunction, confirmCustom));
+    getProperties().addProperty(std::make_unique<PropertyNativeString>(getCurrentMetadata().getPropertyData(key), *this, getter, setter, validityChecker, removeFunction, confirmCustom));
   }
 
   void ComponentEditor::propertyOptional(const std::string& key, IOptionalObject& optionalSource, const std::string& noneLabel, std::function<bool()> noneIcon, std::function<void(const std::string&)> choiceCallback, std::function<std::string()> valueGetter, const Options& hint) {
     IComponentData& mParent = getParent();
-    getProperties().addProperty(std::make_unique<PropertyOptional>(*this, mParent, mergePropertyMetadata(cMetadata.back()->getPropertyData(key), hint), choiceCallback, mParent.getProject(), cApplication, optionalSource, noneLabel, noneIcon, valueGetter));
+    getProperties().addProperty(std::make_unique<PropertyOptional>(*this, mParent, mergePropertyMetadata(getCurrentMetadata().getPropertyData(key), hint), choiceCallback, mParent.getProject(), cApplication, optionalSource, noneLabel, noneIcon, valueGetter));
   }
 
   void ComponentEditor::propertyUnsignedInteger(const std::string& key, std::function<unsigned int()> getter, std::function<void(unsigned int)> setter, unsigned int defaultValue, std::function<bool(unsigned int)> validityChecker, std::function<void()> removeFunction) {
-    getProperties().addProperty(std::make_unique<PropertyNativeUnsignedInteger>(cMetadata.back()->getPropertyData(key), *this, getter, setter, validityChecker, removeFunction));
+    getProperties().addProperty(std::make_unique<PropertyNativeUnsignedInteger>(getCurrentMetadata().getPropertyData(key), *this, getter, setter, validityChecker, removeFunction));
   }
 
   void ComponentEditor::scopeModule(Module& module, std::function<void()> removeFunction) {
@@ -208,7 +202,7 @@ namespace IsoRealms {
     if (hint.getOption(Options::PROPERTY_NO_EDIT) == "true") {
       return;
     }
-    getProperties().addProperty(std::make_unique<PropertyStruct>(getParent(), mergePropertyMetadata(cMetadata.back()->getPropertyData(key), hint), *this, value, subProperties, removeFunction, icon));
+    getProperties().addProperty(std::make_unique<PropertyStruct>(getParent(), mergePropertyMetadata(getCurrentMetadata().getPropertyData(key), hint), *this, value, subProperties, removeFunction, icon));
   }
 
   void ComponentEditor::spacer(float height) {
@@ -255,11 +249,7 @@ namespace IsoRealms {
   }
   
   void ComponentEditor::pushComponentTypeMetadata(const Metadata& metadata) {
-    cMetadata.push_back(&metadata);
-  }
-
-  void ComponentEditor::popComponentTypeMetadata() {
-    cMetadata.pop_back();
+    getProperties().setMetadata(metadata);
   }
 
   PropertyData ComponentEditor::mergePropertyMetadata(const PropertyData& metadata, const Options& hint) {
@@ -267,14 +257,6 @@ namespace IsoRealms {
     std::string mDescription = hint.hasOption("description") ? hint.getOption("description") : metadata.getTooltip();
     std::string mValue       = hint.hasOption("value")       ? hint.getOption("value")       : metadata.getValue();
     return PropertyData(mName, mDescription, mValue);
-  }
-
-  void ComponentEditor::pushApplicationMetadata(const std::string& section) {
-    cMetadata.push_back(cApplicationMetadata[section].get());
-  }
-
-  void ComponentEditor::popApplicationMetadata() {
-    cMetadata.pop_back();
   }
 
 

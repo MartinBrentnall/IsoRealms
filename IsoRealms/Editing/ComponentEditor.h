@@ -41,9 +41,11 @@ namespace IsoRealms {
     ComponentEditor(Application& application, IDialogManager& dialogManager);
 
     void refreshMetadata(Project& project);
-    void openMenu(IComponentData& parent, IPropertyManager& properties);
+    void openMenu(IPropertyManager& properties);
     void closeMenu();
-    void resetMetadataForMenu();
+
+    const Metadata& getApplicationMetadata(const std::string& section) const;
+    const Metadata& getParentMenuMetadata() const;
 
     void propertyAdd(             const std::string& key, const std::string& value, std::function<void()> addPropertyFunction, const Options& hint = Options::EMPTY) override;
     void propertyBoolean(         const std::string& key, std::function<bool()>         getter, std::function<void(bool)>               setter, bool               defaultValue,                                                          std::function<void()> removeFunction) override;
@@ -79,24 +81,18 @@ namespace IsoRealms {
     void promoteComponentToProject() override;
 
     void pushComponentTypeMetadata(const Metadata& metadata);
-    void pushApplicationMetadata(const std::string& section);
-    void popComponentTypeMetadata();
 
     private:
-    IComponentData& getParent() const;
-    IPropertyManager& getProperties() const;
-
     Application& cApplication;
-    std::vector<IComponentData*> cParents;
-    std::vector<IPropertyManager*> cPropertyManagers;
-    std::vector<const Metadata*> cMetadata;
-    std::vector<std::size_t> cMetadataDepthAtMenuOpen;
     IDialogManager& cDialogManager;
+    std::vector<IPropertyManager*> cPropertyManagers;
     std::map<std::string, std::unique_ptr<Metadata>> cApplicationMetadata;
     std::map<std::string, std::unique_ptr<ModuleMetadata>> cModuleMetadata;
-    
-    void popApplicationMetadata();
 
     static PropertyData mergePropertyMetadata(const PropertyData& metadata, const Options& hint);
+
+    IComponentData& getParent() const;
+    IPropertyManager& getProperties() const;
+    const Metadata& getCurrentMetadata() const;
   };
 }

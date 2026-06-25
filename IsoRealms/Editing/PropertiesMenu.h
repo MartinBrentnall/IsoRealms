@@ -23,6 +23,7 @@
 #include "Menu.h"
 #include "MenuItemProperty.h"
 #include "MenuItemSpacer.h"
+#include "Metadata.h"
 #include "Property/IPropertyManager.h"
 
 namespace IsoRealms {
@@ -63,6 +64,9 @@ namespace IsoRealms {
     void edit(IEditable* editor) override;
     void refreshProperties() override;
     IUIStyle& getPropertyStyle() override;
+    IComponentData& getOwner() override;
+    void setMetadata(const Metadata& metadata) override;
+    const Metadata& getMetadata() const override;
 
     private:
     enum class Action {
@@ -72,7 +76,9 @@ namespace IsoRealms {
     };
 
     ComponentEditor& cComponentEditor;
+    IComponentData& cOwner;
     std::function<void(IComponentDefiner&)> cPropertyFetcher;
+    const Metadata* cMetadata;
     
     std::unique_ptr<IPropertyEditor> cEditingProperty;
     std::unique_ptr<IPropertyEditor> cClosingProperty;

@@ -30,6 +30,7 @@ namespace IsoRealms {
   PropertiesMenu::PropertiesMenu(UIManager& manager, IUIStyle& style, ComponentEditor& componentEditor, IComponentData& owner, std::function<void(IComponentDefiner& definer)> propertyFetcher) : 
             Menu(manager, style),
             cComponentEditor(componentEditor),
+            cOwner(owner),
             cPropertyFetcher(propertyFetcher),
             cEditingProperty(nullptr),
             cClosingProperty(nullptr),
@@ -40,7 +41,8 @@ namespace IsoRealms {
             cAction(Action::SELECT),
             cFetching(false),
             cIndentLevel(0) {
-    cComponentEditor.openMenu(owner, *this);
+    cComponentEditor.openMenu(*this);
+    cMetadata = &cComponentEditor.getParentMenuMetadata();
     refreshProperties();
   }
 
@@ -313,7 +315,6 @@ namespace IsoRealms {
     cEditingProperty = nullptr;
     cClosingProperty = nullptr;
     cIndentLevel = 0;
-    cComponentEditor.resetMetadataForMenu();
     cFetching = true;
     cPropertyFetcher(cComponentEditor);
     cFetching = false;
@@ -322,6 +323,18 @@ namespace IsoRealms {
   
   IUIStyle& PropertiesMenu::getPropertyStyle() {
     return getStyle();
+  }
+
+  IComponentData& PropertiesMenu::getOwner() {
+    return cOwner;
+  }
+
+  void PropertiesMenu::setMetadata(const Metadata& metadata) {
+    cMetadata = &metadata;
+  }
+
+  const Metadata& PropertiesMenu::getMetadata() const {
+    return *cMetadata;
   }
 
   void PropertiesMenu::onClose() {
