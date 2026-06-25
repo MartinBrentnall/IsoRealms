@@ -307,6 +307,27 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
+  void ComponentLoader::keyedArray(const std::string& key, const std::string& addKey, IKeyedArraySource& source, const Options& hint) {
+    loadKeyedArray(key, [&source](const std::string& memberKey, bool isNull) {
+      if (isNull) {
+        assert(false);
+      }
+      source.defineNewMember(memberKey);
+    }, hint);
+  }
+
+  void ComponentLoader::array(const std::string& key, const std::string& addKey, IArraySource& source, const Options& hint) {
+    loadPropertyArray(key, [&source]() {
+      source.defineNewMember();
+    }, hint);
+  }
+
+  void ComponentLoader::fixedArray(const std::string& key, IFixedArraySource& source, const Options& hint) {
+    loadFixedPropertyArray(key, source.getCount(), [&source](unsigned int index) {
+      source.defineAtIndex(index);
+    });
+  }
+
   void ComponentLoader::confirm(const std::string& message, std::function<void()> confirm, std::function<void()> cancel) {
     confirm();
   }

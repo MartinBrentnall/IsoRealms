@@ -215,6 +215,32 @@ namespace IsoRealms {
     getProperties().addSpacer(height);
   }
 
+  void ComponentEditor::keyedArray(const std::string& key, const std::string& addKey, IKeyedArraySource& source, const Options& hint) {
+    source.forEachMember([](const std::string&, const std::function<void()>& define) {
+      define();
+    });
+    if (hint.getOption(Options::PROPERTY_NO_ADD) != "true" && !addKey.empty()) {
+      propertyAdd(addKey, "Add...", [&source]() {
+        source.defineNewMember("");
+      }, hint);
+    }
+  }
+
+  void ComponentEditor::array(const std::string& key, const std::string& addKey, IArraySource& source, const Options& hint) {
+    source.forEachMember([](const std::function<void()>& define) {
+      define();
+    });
+    propertyAdd(addKey, "Add...", [&source]() {
+      source.defineNewMember();
+    }, hint);
+  }
+
+  void ComponentEditor::fixedArray(const std::string& key, IFixedArraySource& source, const Options& hint) {
+    source.forEachMember([](unsigned int, const std::function<void()>& define) {
+      define();
+    });
+  }
+
   bool ComponentEditor::isComponentReadOnly() const {
     return getParent().isReadOnly();
   }

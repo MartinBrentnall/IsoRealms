@@ -207,6 +207,48 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
+  void ComponentSaver::keyedArray(const std::string& key, const std::string& addKey, IKeyedArraySource& source, const Options& hint) {
+    if (source.isEmpty()) {
+      return;
+    }
+    if (!beginSaveKeyedArray(key)) {
+      return;
+    }
+    source.forEachMember([this](const std::string& name, const std::function<void()>& define) {
+      beginSaveKeyedMember(name);
+      define();
+      endSaveKeyedMember();
+    });
+    endSaveKeyedArray();
+  }
+
+  void ComponentSaver::array(const std::string& key, const std::string& addKey, IArraySource& source, const Options& hint) {
+    if (source.isEmpty()) {
+      return;
+    }
+    if (!beginSavePropertyArray(key)) {
+      return;
+    }
+    source.forEachMember([this](const std::function<void()>& define) {
+      beginSavePropertyArrayElement();
+      define();
+      endSavePropertyArrayElement();
+    });
+    endSavePropertyArray();
+  }
+
+  void ComponentSaver::fixedArray(const std::string& key, IFixedArraySource& source, const Options& hint) {
+    if (!beginSavePropertyArray(key)) {
+      return;
+    }
+    source.forEachMember([this](unsigned int, const std::function<void()>& define) {
+      beginSavePropertyArrayElement();
+      define();
+      endSavePropertyArrayElement();
+    });
+    endSavePropertyArray();
+  }
+
   void ComponentSaver::confirm(const std::string& message, std::function<void()> confirm, std::function<void()> cancel) {
     // Nothing to do.
   }

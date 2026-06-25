@@ -66,6 +66,10 @@ namespace IsoRealms {
     void scopeModule(Module& module, std::function<void()> removeFunction) override;
     void scope(const std::string& key, const std::string& value, std::function<void()> subProperties, std::function<void()> removeFunction = nullptr, const Options& hint = Options::EMPTY, std::function<bool()> icon = nullptr) override;
     void spacer(float height) override;
+
+    void keyedArray(const std::string& key, const std::string& addKey, IKeyedArraySource& source, const Options& hint = Options::EMPTY) override;
+    void array(const std::string& key, const std::string& addKey, IArraySource& source, const Options& hint = Options::EMPTY) override;
+    void fixedArray(const std::string& key, IFixedArraySource& source, const Options& hint = Options::EMPTY) override;
     
     /*************************************\
      * Implements IComponentAccessManager *

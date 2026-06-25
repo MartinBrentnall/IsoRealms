@@ -111,14 +111,16 @@ namespace IsoRealms {
         cDefProjectFileStructure.define(definer, *this, false);
       });
       definer.scope("launchConfigurations", "Edit...", [this, &definer]() {
-        definer.array("LaunchConfigurationAdd", cDefTestLaunchConfigurations, [](const std::unique_ptr<ProjectLaunchConfiguration>& i)->ProjectLaunchConfiguration& {return *i;}, [this, &definer](ProjectLaunchConfiguration& launchConfiguration) {
-          definer.scope("LaunchConfiguration", launchConfiguration.getName(), [this, &launchConfiguration, &definer]() {
+        definer.keyedArray("launchConfigurations", "launchConfigurationAdd", cDefTestLaunchConfigurations, [](const std::unique_ptr<ProjectLaunchConfiguration>& launchConfiguration) -> ProjectLaunchConfiguration& {
+          return *launchConfiguration;
+        }, [this, &definer](ProjectLaunchConfiguration& launchConfiguration) {
+          definer.scope("launchConfiguration", launchConfiguration.getName(), [&launchConfiguration, &definer, this]() {
             launchConfiguration.define(definer, *this);
           }, [this, &launchConfiguration]() {
             Utils::removeElementUnique(cDefTestLaunchConfigurations, &launchConfiguration);
           });
-        }, [this]() -> ProjectLaunchConfiguration& {
-          return *cDefTestLaunchConfigurations.emplace_back(std::make_unique<ProjectLaunchConfiguration>(*this, cDefProjectFileStructure));
+        }, [this](const std::string& key) -> ProjectLaunchConfiguration& {
+          return *cDefTestLaunchConfigurations.emplace_back(std::make_unique<ProjectLaunchConfiguration>(*this, cDefProjectFileStructure, key));
         });
       });
       cDefActionOnStart.define(       definer, "onStart",        loadOwner);
@@ -130,14 +132,18 @@ namespace IsoRealms {
 
     // Modules.
     definer.spacer(0.5f);
-    definer.keyedArray("modules", cDefModules, [](const std::unique_ptr<Module>& module) -> Module& {
+    Options mModulesHint;
+    mModulesHint.addOption(Options::PROPERTY_NO_ADD, "true");
+    definer.keyedArray("modules", "", cDefModules, [](const std::unique_ptr<Module>& module) -> Module& {
       return *module;
-    }, [&definer, this](const std::string& moduleName, bool isNull) {
-      definer.scopeModule(*getModule(moduleName), [this, moduleName]() {
-        unloadModule(moduleName);
+    }, [&definer, this](Module& module) {
+      definer.scopeModule(module, [this, &module]() {
+        unloadModule(module.getName());
       });
       definer.spacer(0.5f);
-    });
+    }, [this](const std::string& moduleName) -> Module& {
+      return *getModule(moduleName);
+    }, mModulesHint);
 
     // Module chooser for loading new modules.
     if (!definer.loadsPersistedValues() && !definer.savesPersistedValues()) {

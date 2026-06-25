@@ -76,6 +76,10 @@ namespace IsoRealms {
     void scopeModule(Module& module, std::function<void()> removeFunction) override;
     void scope(const std::string& key, const std::string& value, std::function<void()> subProperties, std::function<void()> removeFunction = nullptr, const Options& hint = Options::EMPTY, std::function<bool()> icon = nullptr) override;
     void spacer(float height) override;
+
+    void keyedArray(const std::string& key, const std::string& addKey, IKeyedArraySource& source, const Options& hint = Options::EMPTY) override;
+    void array(const std::string& key, const std::string& addKey, IArraySource& source, const Options& hint = Options::EMPTY) override;
+    void fixedArray(const std::string& key, IFixedArraySource& source, const Options& hint = Options::EMPTY) override;
     
     /**************************************\
      * Implements IComponentAccessManager *
@@ -84,15 +88,12 @@ namespace IsoRealms {
     bool isComponentReadOnly() const override;
     void promoteComponentToProject() override;
 
-    protected:
-    bool loadPropertyArray(const std::string& key, const std::function<void()>& addAndLoadElement, const Options& hint = Options::EMPTY) override;
-    void loadKeyedArray(const std::string& key, const std::function<void(const std::string& memberKey, bool isNull)>& loadMember, const Options& hint = Options::EMPTY) override;
-    bool loadFixedPropertyArray(const std::string& key, unsigned int count, const std::function<void(unsigned int index)>& loadElement) override;
-
     private:
-    bool loadKeyedMembers(const std::function<void(const std::string& key, bool isNull)>& loadMember) override;
+    bool loadPropertyArray(const std::string& key, const std::function<void()>& addAndLoadElement, const Options& hint = Options::EMPTY);
+    void loadKeyedArray(const std::string& key, const std::function<void(const std::string& memberKey, bool isNull)>& loadMember, const Options& hint = Options::EMPTY);
+    bool loadFixedPropertyArray(const std::string& key, unsigned int count, const std::function<void(unsigned int index)>& loadElement);
+    bool loadKeyedMembers(const std::function<void(const std::string& key, bool isNull)>& loadMember);
 
-    private:
     IComponentData& cComponentData;
     std::vector<std::unique_ptr<JSONDocument>> cDocuments;
     std::vector<JSONObject> cObjects;

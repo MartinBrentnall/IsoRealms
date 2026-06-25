@@ -28,7 +28,7 @@ namespace IsoRealms {
 
   class ProjectLaunchConfiguration {
     public:
-    ProjectLaunchConfiguration(Project& parent, ProjectFile& owner);
+    ProjectLaunchConfiguration(Project& parent, ProjectFile& owner, const std::string& name = "");
     std::string getName() const;
     void define(IComponentDefiner& definer, Project& project);
     bool isOwnedBy(const ProjectFile& project) const;
@@ -37,10 +37,10 @@ namespace IsoRealms {
     private:
     class Option {
       public:
-      Option(Project& parent, ProjectLaunchConfiguration& launch);
+      Option(Project& parent, ProjectLaunchConfiguration& launch, const std::string& name = "");
       std::string getName() const;
       std::string getValue() const;
-      void getProperties(IComponentDefiner& definer, ProjectLaunchConfiguration& launch);
+      void getProperties(IComponentDefiner& definer, ProjectLaunchConfiguration& launch, const Options& hint = Options::EMPTY);
 
       private:
       std::string cDefName;

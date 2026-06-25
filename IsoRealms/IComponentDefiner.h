@@ -19,7 +19,6 @@
 #pragma once
 
 #include <functional>
-#include <iterator>
 #include <memory>
 #include <optional>
 #include <string>
@@ -28,6 +27,7 @@
 #include <SFML/Window/Event.hpp>
 
 #include "IsoRealms/Editing/IComponentAccessManager.h"
+#include "IsoRealms/IComponentArraySource.h"
 #include "IsoRealms/Project/Options.h"
 
 namespace IsoRealms {
@@ -77,130 +77,26 @@ namespace IsoRealms {
     virtual void scope(const std::string& key, const std::string& value, std::function<void()> subProperties, std::function<void()> removeFunction = nullptr, const Options& hint = Options::EMPTY, std::function<bool()> icon = nullptr) = 0;
     virtual void spacer(float height) = 0;
 
-    template <typename CONTAINER, typename VALUE_FUNC, typename PROPERTY_FUNC>
-    void keyedArray(const std::string& key, const CONTAINER& container, VALUE_FUNC value, PROPERTY_FUNC createProperty, const Options& hint = Options::EMPTY) {
-      if (savesPersistedValues() && std::begin(container) == std::end(container)) {
-        return;
-      }
-      if (beginSaveKeyedArray(key)) {
-        for (const auto& mElement : container) {
-          const std::string mMemberKey = value(mElement).getName();
-          beginSaveKeyedMember(mMemberKey);
-          createProperty(mMemberKey, false);
-          endSaveKeyedMember();
-        }
-        endSaveKeyedArray();
-        return;
-      }
-      if (loadsPersistedValues()) {
-        loadKeyedArray(key, [&createProperty](const std::string& memberKey, bool isNull) {
-          createProperty(memberKey, isNull);
-        }, hint);
-        return;
-      }
-      for (const auto& mElement : container) {
-        createProperty(value(mElement).getName(), false);
-      }
+    virtual void keyedArray(const std::string& key, const std::string& addKey, IKeyedArraySource& source, const Options& hint = Options::EMPTY) = 0;
+    virtual void array(const std::string& key, const std::string& addKey, IArraySource& source, const Options& hint = Options::EMPTY) = 0;
+    virtual void fixedArray(const std::string& key, IFixedArraySource& source, const Options& hint = Options::EMPTY) = 0;
+
+    template <typename CONTAINER, typename VALUE_FUNC, typename PROPERTY_FUNC, typename ADD_FUNC>
+    void keyedArray(const std::string& key, const std::string& addKey, const CONTAINER& container, VALUE_FUNC value, PROPERTY_FUNC createProperty, ADD_FUNC add, const Options& hint = Options::EMPTY) {
+      KeyedArraySource<CONTAINER, VALUE_FUNC, PROPERTY_FUNC, ADD_FUNC> mSource(container, value, createProperty, add);
+      keyedArray(key, addKey, mSource, hint);
     }
 
     template <typename CONTAINER, typename VALUE_FUNC, typename PROPERTY_FUNC, typename ADD_FUNC>
     void array(const std::string& key, const CONTAINER& container, VALUE_FUNC value, PROPERTY_FUNC createProperty, ADD_FUNC add, const Options& hint = Options::EMPTY) {
-      if (savesPersistedValues() && std::begin(container) == std::end(container)) {
-        return;
-      }
-      if (beginSavePropertyArray(key)) {
-        for (const auto& mElement : container) {
-          beginSavePropertyArrayElement();
-          createProperty(value(mElement));
-          endSavePropertyArrayElement();
-        }
-        endSavePropertyArray();
-        return;
-      }
-      if (loadPropertyArray(key, [&]() {
-        createProperty(add());
-      }, hint)) {
-        return;
-      }
-      for (const auto& mElement : container) {
-        createProperty(value(mElement));
-      }
-      propertyAdd(key, "Add...", [createProperty, add]() {
-        createProperty(add());
-      }, hint);
+      ArraySource<CONTAINER, VALUE_FUNC, PROPERTY_FUNC, ADD_FUNC> mSource(container, value, createProperty, add);
+      array(key, key, mSource, hint);
     }
 
     template <typename CONTAINER, typename VALUE_FUNC, typename PROPERTY_FUNC>
-    void fixedArray(const std::string& key, const CONTAINER& container, VALUE_FUNC value, PROPERTY_FUNC createProperty) {
-      const unsigned int mCount = static_cast<unsigned int>(std::distance(std::begin(container), std::end(container)));
-      std::function<void(unsigned int)> mCreateAtIndex = [&](unsigned int mIndex) {
-        auto mElement = std::begin(container);
-        std::advance(mElement, mIndex);
-        createProperty(value(*mElement), mIndex);
-      };
-      if (beginSavePropertyArray(key)) {
-        unsigned int mIndex = 0;
-        for (typename CONTAINER::const_reference mElement : container) {
-          beginSavePropertyArrayElement();
-          createProperty(value(mElement), mIndex++);
-          endSavePropertyArrayElement();
-        }
-        endSavePropertyArray();
-        return;
-      }
-      if (loadFixedPropertyArray(key, mCount, mCreateAtIndex)) {
-        return;
-      }
-      if (loadsPersistedValues()) {
-        return;
-      }
-      unsigned int mIndex = 0;
-      for (typename CONTAINER::const_reference mElement : container) {
-        createProperty(value(mElement), mIndex++);
-      }
-    }
-
-    protected:
-    virtual bool beginSavePropertyArray(const std::string& key) {
-      return false;
-    }
-
-    virtual void beginSavePropertyArrayElement() {
-    }
-
-    virtual void endSavePropertyArrayElement() {
-    }
-
-    virtual void endSavePropertyArray() {
-    }
-
-    virtual bool loadPropertyArray(const std::string& key, const std::function<void()>& addAndLoadElement, const Options& hint = Options::EMPTY) {
-      return false;
-    }
-
-    virtual void loadKeyedArray(const std::string& key, const std::function<void(const std::string& memberKey, bool isNull)>& loadMember, const Options& hint = Options::EMPTY) {
-    }
-
-    virtual bool beginSaveKeyedArray(const std::string& key) {
-      return false;
-    }
-
-    virtual void beginSaveKeyedMember(const std::string& memberKey) {
-    }
-
-    virtual void endSaveKeyedMember() {
-    }
-
-    virtual void endSaveKeyedArray() {
-    }
-
-    virtual bool loadFixedPropertyArray(const std::string& key, unsigned int count, const std::function<void(unsigned int index)>& loadElement) {
-      return false;
-    }
-
-    private:
-    virtual bool loadKeyedMembers(const std::function<void(const std::string& key, bool isNull)>& loadMember) {
-      return false;
+    void fixedArray(const std::string& key, const CONTAINER& container, VALUE_FUNC value, PROPERTY_FUNC createProperty, const Options& hint = Options::EMPTY) {
+      FixedArraySource<CONTAINER, VALUE_FUNC, PROPERTY_FUNC> mSource(container, value, createProperty);
+      fixedArray(key, mSource, hint);
     }
   };
 }
