@@ -19,6 +19,7 @@
 #include "World.h"
 
 #include "IsoRealms/Project/Options.h"
+#include "IsoRealms/Utils.h"
 
 #include "Modules/Equilibria/Resources/Type/IPhysicalObjectType.h"
 #include "Modules/Equilibria/Resources/Type/IWorldEditorTool.h"
@@ -74,11 +75,15 @@ World::World(Equilibria& equilibria, IComponentData& data) :
       definer.propertyInteger( "editorMaxY",              [this]() {return cEditorMaxY;},                   [this](int   value) {cEditorMaxY                   = value;}, DEFAULT_EDITOR_MAX_Y);
       definer.propertyInteger( "editorMinZ",              [this]() {return cEditorMinZ;},                   [this](int   value) {cEditorMinZ                   = value;}, DEFAULT_EDITOR_MIN_Z);
       definer.propertyInteger( "editorMaxZ",              [this]() {return cEditorMaxZ;},                   [this](int   value) {cEditorMaxZ                   = value;}, DEFAULT_EDITOR_MAX_Z);
-      for (unsigned int i = 0; i < cAvailableWorldEditorTools.size(); i++) {
-        definer.propertyResource("editorTool", *cAvailableWorldEditorTools[i].get(), Options::EMPTY, [this, i]() {
-          cAvailableWorldEditorTools.erase(cAvailableWorldEditorTools.begin() + i);
+      definer.array("editorTools", cAvailableWorldEditorTools, [](const std::unique_ptr<WorldEditorTool>& tool) -> WorldEditorTool& {
+        return *tool;
+      }, [this, &definer](WorldEditorTool& tool) {
+        definer.propertyResource("editorTool", tool, Options::EMPTY, [this, &tool]() {
+          Utils::removeElementUnique(cAvailableWorldEditorTools, &tool);
         });
-      }
+      }, [this]() -> WorldEditorTool& {
+        return *cAvailableWorldEditorTools.emplace_back(std::make_unique<WorldEditorTool>(cEquilibria)).get();
+      });
     });
 
     // None editable definition follows.
