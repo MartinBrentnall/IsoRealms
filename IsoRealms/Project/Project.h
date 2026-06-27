@@ -89,9 +89,9 @@ namespace IsoRealms {
 
     // Functions used by an editor host.
     void updateEditing(unsigned int milliseconds);
-    void save() const;
+    void save();
     void save(const std::string& file);
-    void save(const ProjectFile& file) const;
+    void save(ProjectFile& file);
     bool isUser();
     IEditable* getDefaultEditable();
     IScreen* getScreenProxy(IScreen* screen);
@@ -297,7 +297,6 @@ namespace IsoRealms {
 
     // Private functions.
     void updateTasks();
-    void saveRecursive(const ProjectFile& file) const;
   };
 
   template<> struct ResourceContainerTraits<IAction>        {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cActions;       }};

@@ -86,6 +86,29 @@ namespace IsoRealms {
     mOutput.open(mFullPath, std::ios::out | std::ios::binary);
     return mOutput;
   }
+
+  void System::writeFile(const std::string& path, const std::string& contents) {
+    const std::string mTempPath = path + ".tmp";
+    {
+      std::ofstream mOutputStream = openOutputStream(mTempPath);
+      mOutputStream << contents;
+      if (!mOutputStream.good()) {
+        throw ArgumentException("ERROR: System::writeFile: Failed to write \"" + mTempPath + "\".");
+      }
+    }
+    const std::string mFullPath = getPath(path, true);
+    const std::string mFullTempPath = getPath(mTempPath, true);
+    std::error_code mError;
+    std::filesystem::rename(mFullTempPath, mFullPath, mError);
+    if (mError) {
+      std::filesystem::remove(mFullPath, mError);
+      mError.clear();
+      std::filesystem::rename(mFullTempPath, mFullPath, mError);
+      if (mError) {
+        throw ArgumentException("ERROR: System::writeFile: Failed to replace \"" + path + "\".");
+      }
+    }
+  }
   
   std::ifstream System::openInputStream(const std::string& path, bool user) {
     std::ifstream mInput;

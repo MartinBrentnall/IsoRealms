@@ -23,6 +23,7 @@
 #include "IsoRealms/Input/HatHandler.h"
 #include "IsoRealms/Persistence/ParseException.h"
 #include "IsoRealms/Persistence/ComponentLoader.h"
+#include "IsoRealms/Persistence/ComponentSaver.h"
 #include "IsoRealms/Project/Options.h"
 #include "IsoRealms/Project/Project.h"
 #include "IsoRealms/System.h"
@@ -88,8 +89,12 @@ namespace IsoRealms {
     }
   }
 
-  std::unique_ptr<ComponentLoader> Application::createComponentLoader(Project& project, const std::string& file, bool user) {
+  std::unique_ptr<IComponentDefiner> Application::createComponentLoader(Project& project, const std::string& file, bool user) {
     return std::make_unique<ComponentLoader>(project, file, user);
+  }
+
+  std::unique_ptr<IComponentDefiner> Application::createComponentSaver(Project& project, const std::string& file) {
+    return std::make_unique<ComponentSaver>(project, file);
   }
 
   int Application::run(Options& options) {

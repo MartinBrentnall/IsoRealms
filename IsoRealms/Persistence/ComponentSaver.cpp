@@ -21,14 +21,31 @@
 #include "IsoRealms/Condition/Condition.h"
 #include "IsoRealms/Editing/Property/ITreeSelectorObject.h"
 #include "IsoRealms/IComponentData.h"
+#include "IsoRealms/Persistence/JSONDocument.h"
 #include "IsoRealms/Project/Module.h"
 #include "IsoRealms/Project/ComponentType.h"
 #include "IsoRealms/Resources/Type/IEditable.h"
 
 namespace IsoRealms {
-  ComponentSaver::ComponentSaver(IComponentData& resourceData, JSONObject object) :
+  ComponentSaver::ComponentSaver(IComponentData& resourceData, const std::string& file) :
             cComponentData(resourceData) {
-    cObjects.push_back(object);
+    pushDocument(file);
+  }
+
+  void ComponentSaver::pushDocument(const std::string& file) {
+    cDocuments.push_back(std::make_unique<JSONDocument>());
+    cFilenames.push_back(file);
+    cObjects.push_back(cDocuments.back()->addObject("project"));
+  }
+
+  void ComponentSaver::popDocument() {
+    cDocuments.pop_back();
+    cFilenames.pop_back();
+    cObjects.pop_back();
+  }
+
+  void ComponentSaver::finish() {
+    cDocuments.back()->save(cFilenames.back());
   }
 
   JSONObject& ComponentSaver::currentObject() {
@@ -88,10 +105,9 @@ namespace IsoRealms {
     }
   }
 
-  void ComponentSaver::saveTreeSelectorResourceProperties(const ITreeSelectorObject& item, JSONObject object, const Options& hint) const {
+  void ComponentSaver::saveTreeSelectorResourceProperties(ITreeSelectorObject& item, const Options& hint) {
     if (item.hasConfiguration()) {
-      ComponentSaver mSaver(cComponentData, object);
-      const_cast<ITreeSelectorObject&>(item).defineTreeItem(mSaver);
+      item.defineTreeItem(*this);
     }
   }
 
@@ -166,11 +182,11 @@ namespace IsoRealms {
 
   void ComponentSaver::propertyResource(const std::string& key, ITreeSelectorObject& item, const Options& hint, std::function<void()> removeFunction) {
     if (hint.getOption(IComponentDefiner::HINT_KEY_INLINE) == "true") {
-      saveTreeSelectorResourceProperties(item, currentObject(), hint);
+      saveTreeSelectorResourceProperties(item, hint);
     } else {
-      if (item.hasConfiguration()) {
-        saveTreeSelectorResourceProperties(item, currentObject().getObject(key), hint);
-      }
+      pushObject(currentObject().addObject(key));
+      saveTreeSelectorResourceProperties(item, hint);
+      popObject();
     }
   }
 
@@ -195,6 +211,17 @@ namespace IsoRealms {
   void ComponentSaver::scope(const std::string& key, const std::string& value, std::function<void()> subProperties, std::function<void()> removeFunction, const Options& hint, std::function<bool()> icon) {
     if (hint.getOption(IComponentDefiner::HINT_KEY_HIDDEN) == "true") {
       subProperties();
+      return;
+    }
+    const std::string mFilePath = hint.getOption(IComponentDefiner::HINT_KEY_DOCUMENT);
+    if (!mFilePath.empty()) {
+      const bool mWritable = hint.getOption(IComponentDefiner::HINT_KEY_WRITABLE) == "true";
+      if (!mWritable) {
+        return;
+      }
+      pushDocument(mFilePath);
+      subProperties();
+      popDocument();
       return;
     }
     if (hint.getOption(IComponentDefiner::HINT_KEY_NESTED) == "true") {

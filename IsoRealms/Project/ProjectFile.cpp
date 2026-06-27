@@ -102,7 +102,7 @@ namespace IsoRealms {
         definer.propertyResource("filename", inclusion.cFile, IComponentDefiner::HINT_IMMEDIATE);
         definer.scope("", "", [&project, &inclusion, &definer]() {
           project.define(definer, &inclusion);
-        }, nullptr, IComponentDefiner::externalScopeHint(inclusion.cFile.getRelativePath(), inclusion.cFile.isUser()));
+        }, nullptr, IComponentDefiner::externalScopeHint(inclusion.cFile.getRelativePath(), inclusion.cFile.isUser(), inclusion.isModifiable()));
       }
     }, [this, &project]() -> ProjectFile& {
       return *cInclusions.emplace_back(std::make_unique<ProjectFile>(project)).get();

@@ -120,6 +120,7 @@ namespace IsoRealms {
      * @return Output stream to file at the specified path.
      */ 
     static std::ofstream openOutputStream(const std::string& path); 
+    static void writeFile(const std::string& path, const std::string& contents);
     static std::ifstream openInputStream(const std::string& path, bool user);
 
     /**

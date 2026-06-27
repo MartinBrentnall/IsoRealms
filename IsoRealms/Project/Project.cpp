@@ -19,10 +19,9 @@
 #include "Project.h"
 
 #include "IsoRealms/Application.h"
+#include "IsoRealms/IComponentDefiner.h"
 #include "IsoRealms/Resources/Type/IScreenListener.h"
 #include "IsoRealms/DisplayResolution.h"
-#include "IsoRealms/Persistence/JSONDocument.h"
-#include "IsoRealms/Persistence/ComponentLoader.h"
 #include "IsoRealms/Utils.h"
 
 #include "Module.h"
@@ -69,7 +68,7 @@ namespace IsoRealms {
     cDefProjectFileStructure.rename(file, user);
 
     // Load modules and any components declared within them
-    std::unique_ptr<ComponentLoader> mLoader = application.createComponentLoader(*this, file, user);
+    std::unique_ptr<IComponentDefiner> mLoader = application.createComponentLoader(*this, file, user);
     define(*mLoader, getProjectFile());
 
     for (const std::unique_ptr<Module>& mModule : cDefModules) {
@@ -154,6 +153,8 @@ namespace IsoRealms {
         loadModule(value);
       }, nullptr, mNamelessHint);
     }
+
+    definer.finish();
   }
   
   Module* Project::getModule(const std::string& name) {
@@ -242,8 +243,8 @@ namespace IsoRealms {
     updateTasks();
   }
 
-  void Project::save() const {
-    saveRecursive(cDefProjectFileStructure);
+  void Project::save() {
+    save(cDefProjectFileStructure);
   }
 
   void Project::save(const std::string& filename) {
@@ -251,28 +252,10 @@ namespace IsoRealms {
     save();
   }
 
-  void Project::save(const ProjectFile& file) const {
-    // if (file.cFile.isSet() && file.isModifiable()) {
-    //   JSONDocument mJSONDocument;
-    //   JSONObject mProjectObject = mJSONDocument.addObject("project");
-    //   file.save(mProjectObject);
-
-    //   // Save modules
-    //   JSONObject mModulesObject = mProjectObject.addObject("modules");
-    //   for (const std::unique_ptr<Module>& mModule : cDefModules) {
-    //     if (mModule->needsSaving(&file)) {
-    //       mModule->save(mModulesObject, &file);
-    //     }
-    //   }
-
-    //   mJSONDocument.save(file.cFile.getRelativePath());
-    // }
-  }
-
-  void Project::saveRecursive(const ProjectFile& file) const {
-    save(file);
-    for (const std::unique_ptr<ProjectFile>& mIncludedProject : file.cInclusions) {
-      saveRecursive(*mIncludedProject.get());
+  void Project::save(ProjectFile& file) {
+    if (file.cFile.isSet() && file.isModifiable()) {
+      std::unique_ptr<IComponentDefiner> mSaver = cApplication.createComponentSaver(*this, file.cFile.getRelativePath());
+      define(*mSaver, &file);
     }
   }
   

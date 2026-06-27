@@ -38,12 +38,14 @@
 #include "Common/ScreenArea.h"
 #include "DisplayResolution.h"
 #include "Exception/ApplicationException.h"
+#include "IComponentDefiner.h"
 #include "Input/HatHandler.h"
 #include "Persistence/JSONDocument.h"
 #include "System.h"
  
 namespace IsoRealms {
   class ComponentLoader;
+  class ComponentSaver;
   class Options;
   class Project;
   
@@ -208,7 +210,8 @@ namespace IsoRealms {
 
     int run(Options& options);
 
-    std::unique_ptr<ComponentLoader> createComponentLoader(Project& project, const std::string& file, bool user);
+    std::unique_ptr<IComponentDefiner> createComponentLoader(Project& project, const std::string& file, bool user);
+    std::unique_ptr<IComponentDefiner> createComponentSaver(Project& project, const std::string& file);
 
     JSONDocument createDocument();
     JSONDocument openDocument(const std::string& name);

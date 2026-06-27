@@ -75,6 +75,9 @@ namespace IsoRealms {
     /** Used with HINT_KEY_DOCUMENT; "true" if the document is in user space. */
     inline static const std::string HINT_KEY_USER_DOCUMENT = "userDocument";
 
+    /** Used with HINT_KEY_DOCUMENT; "true" if the document should be written during saving. */
+    inline static const std::string HINT_KEY_WRITABLE = "writable";
+
     /** Defer scope sub-properties until after the current definition pass completes. */
     inline static const std::string HINT_KEY_DEFER = "defer";
 
@@ -94,8 +97,8 @@ namespace IsoRealms {
     inline static const Options HINT_TRANSIENT    {{HINT_KEY_TRANSIENT,    "true"}};
     inline static const Options HINT_INLINE_IMMEDIATE = HINT_INLINE + HINT_IMMEDIATE;
 
-    static Options externalScopeHint(const std::string& documentPath, bool userDocument) {
-      return {{HINT_KEY_DOCUMENT, documentPath}, {HINT_KEY_USER_DOCUMENT, userDocument ? "true" : "false"}};
+    static Options externalScopeHint(const std::string& documentPath, bool userDocument, bool writable = true) {
+      return {{HINT_KEY_DOCUMENT, documentPath}, {HINT_KEY_USER_DOCUMENT, userDocument ? "true" : "false"}, {HINT_KEY_WRITABLE, writable ? "true" : "false"}};
     }
 
     static Options resourceMetadataHint(const std::string& moduleName, const std::string& resourceType) {
@@ -108,6 +111,10 @@ namespace IsoRealms {
 
     virtual void onPersisted(std::function<void()> callback) {
       // Only invoked after persisted values have been written during saving.
+    }
+
+    virtual void finish() {
+      // Invoked once at the end of a successful define pass.
     }
 
     virtual void propertyAdd(             const std::string& key, const std::string& value, std::function<void()> addPropertyFunction, const Options& hint = Options::EMPTY) = 0;

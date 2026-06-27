@@ -18,10 +18,12 @@
  */
 #pragma once
 
+#include <memory>
 #include <vector>
 
 #include "IsoRealms/IComponentDefiner.h"
 #include "IsoRealms/Persistence/JSONArray.h"
+#include "IsoRealms/Persistence/JSONDocument.h"
 #include "IsoRealms/Persistence/JSONObject.h"
 #include "IsoRealms/Project/Options.h"
 
@@ -32,6 +34,7 @@ namespace IsoRealms {
   class IEditable;
   class IOptionalObject;
   class ITreeSelectorObject;
+  class JSONDocument;
 
   /**
    * Persists field values by invoking the same property declarations used for
@@ -40,7 +43,9 @@ namespace IsoRealms {
    */
   class ComponentSaver : public IComponentDefiner {
     public:
-    ComponentSaver(IComponentData& resourceData, JSONObject object);
+    ComponentSaver(IComponentData& resourceData, const std::string& file);
+
+    void finish() override;
 
     void propertyAdd(             const std::string& key, const std::string& value, std::function<void()> addPropertyFunction, const Options& hint = Options::EMPTY) override;
     void propertyBoolean(         const std::string& key, std::function<bool()>         getter, std::function<void(bool)>               setter, bool               defaultValue,                                                          std::function<void()> removeFunction, PropertyBooleanConfirmCallback confirmCustom = nullptr) override;
@@ -80,7 +85,12 @@ namespace IsoRealms {
     void endSaveKeyedMember();
     void endSaveKeyedArray();
 
+    void pushDocument(const std::string& file);
+    void popDocument();
+
     IComponentData& cComponentData;
+    std::vector<std::unique_ptr<JSONDocument>> cDocuments;
+    std::vector<std::string> cFilenames;
     std::vector<JSONObject> cObjects;
     std::vector<std::string> cSaveArrayKeys;
     std::vector<std::string> cSaveKeyedArrayKeys;
@@ -89,6 +99,6 @@ namespace IsoRealms {
     const JSONObject& currentObject() const;
     void pushObject(JSONObject object);
     void popObject();
-    void saveTreeSelectorResourceProperties(const ITreeSelectorObject& item, JSONObject object, const Options& hint) const;
+    void saveTreeSelectorResourceProperties(ITreeSelectorObject& item, const Options& hint);
   };
 }
