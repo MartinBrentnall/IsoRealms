@@ -180,7 +180,10 @@ namespace IsoRealms {
     getProperties().addProperty(std::make_unique<PropertyTreeSelector>(*this, getParent(), mergePropertyMetadata(getCurrentMetadata().getPropertyData(key), hint), item, removeFunction));
   }
 
-  void ComponentEditor::propertyString(const std::string& key, std::function<std::string()> getter, std::function<void(const std::string&)> setter, const std::string& defaultValue, std::function<bool(const std::string&)> validityChecker, std::function<void()> removeFunction, PropertyConfirmCallback confirmCustom) {
+  void ComponentEditor::propertyString(const std::string& key, std::function<std::string()> getter, std::function<void(const std::string&)> setter, const std::string& defaultValue, std::function<bool(const std::string&)> validityChecker, std::function<void()> removeFunction, PropertyConfirmCallback confirmCustom, const Options& hint) {
+    if (hint.getOption(IComponentDefiner::HINT_KEY_HIDDEN) == "true") {
+      return;
+    }
     getProperties().addProperty(std::make_unique<PropertyNativeString>(getCurrentMetadata().getPropertyData(key), *this, getter, setter, validityChecker, removeFunction, confirmCustom));
   }
 

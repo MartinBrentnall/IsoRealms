@@ -39,14 +39,14 @@ namespace IsoRealms {
   namespace {
     template <typename VALIDITY_CHECKER>
     void requireValidPropertyValue(const std::string& key, const std::string& value, VALIDITY_CHECKER validityChecker) {
-      if (!validityChecker(value)) {
+      if (validityChecker && !validityChecker(value)) {
         throw ArgumentException("ERROR: ComponentLoader: Invalid value \"" + value + "\" for property \"" + key + "\".");
       }
     }
 
     template <typename T, typename VALIDITY_CHECKER>
     void requireValidPropertyValue(const std::string& key, const T& value, VALIDITY_CHECKER validityChecker) {
-      if (!validityChecker(value)) {
+      if (validityChecker && !validityChecker(value)) {
         throw ArgumentException("ERROR: ComponentLoader: Invalid value \"" + Utils::toString(value) + "\" for property \"" + key + "\".");
       }
     }
@@ -252,7 +252,10 @@ namespace IsoRealms {
     }
   }
 
-  void ComponentLoader::propertyString(const std::string& key, std::function<std::string()> getter, std::function<void(const std::string&)> setter, const std::string& defaultValue, std::function<bool(const std::string&)> validityChecker, std::function<void()> removeFunction, PropertyConfirmCallback confirmCustom) {
+  void ComponentLoader::propertyString(const std::string& key, std::function<std::string()> getter, std::function<void(const std::string&)> setter, const std::string& defaultValue, std::function<bool(const std::string&)> validityChecker, std::function<void()> removeFunction, PropertyConfirmCallback confirmCustom, const Options& hint) {
+    if (hint.getOption(IComponentDefiner::HINT_KEY_TRANSIENT) == "true") {
+      return;
+    }
     std::string mValue = currentObject().getString(key, defaultValue);
     requireValidPropertyValue(key, mValue, validityChecker);
     setter(mValue);

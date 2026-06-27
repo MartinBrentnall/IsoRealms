@@ -32,7 +32,7 @@ namespace IsoRealms {
   }
   
   bool PropertyNativeString::confirmValue() {
-    if (!cValidityChecker(cValue)) {
+    if (cValidityChecker && !cValidityChecker(cValue)) {
       return false;
     }
 

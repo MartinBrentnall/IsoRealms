@@ -174,7 +174,10 @@ namespace IsoRealms {
     }
   }
 
-  void ComponentSaver::propertyString(const std::string& key, std::function<std::string()> getter, std::function<void(const std::string&)> setter, const std::string& defaultValue, std::function<bool(const std::string&)> validityChecker, std::function<void()> removeFunction, PropertyConfirmCallback confirmCustom) {
+  void ComponentSaver::propertyString(const std::string& key, std::function<std::string()> getter, std::function<void(const std::string&)> setter, const std::string& defaultValue, std::function<bool(const std::string&)> validityChecker, std::function<void()> removeFunction, PropertyConfirmCallback confirmCustom, const Options& hint) {
+    if (hint.getOption(IComponentDefiner::HINT_KEY_TRANSIENT) == "true") {
+      return;
+    }
     currentObject().addString(key, getter(), defaultValue);
   }
 

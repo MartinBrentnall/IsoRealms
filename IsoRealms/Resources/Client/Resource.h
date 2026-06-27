@@ -81,7 +81,7 @@ namespace IsoRealms {
     void defineTreeItem(IComponentDefiner& definer) override {
       definer.propertyString("key", [this]() {return getRawID();}, [this](const std::string& value) {
         setID(value);
-      });
+      }, "", nullptr, nullptr, nullptr, IComponentDefiner::HINT_HIDDEN);
       defineWrapper(definer);
       cResource->defineResource(definer);
     }
