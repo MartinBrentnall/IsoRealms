@@ -85,16 +85,15 @@ namespace IsoRealms::Basics {
           cRuntimeProject->reset();
           cDefReadyAction.execute();
           cRuntimeLoading = false;
+          if (cRuntimeResetPostponed) {
+            cRuntimeResetPostponed = false;
+            cRuntimeProject->reset(cRuntimeOptions);
+          }
         }
       } catch (ParseException& parseException) {
         cDefErrorAction.execute();
         cRuntimeLoading = false;
         return;
-      }
-
-      if (cRuntimeResetPostponed) {
-        cRuntimeResetPostponed = false;
-        cRuntimeProject->reset(cRuntimeOptions);
       }
     }
 

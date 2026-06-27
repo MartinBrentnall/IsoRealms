@@ -85,7 +85,7 @@
       "description": "Trigger actions upon changes of boolean values.",
       "category": "Logic",
       "properties": {
-        "value": {"name": "Value", "description": "Boolean value on which changes will trigger actions."},
+        "value": {"name": "Monitored Value", "description": "Boolean value on which changes will trigger actions."},
         "onBecomingTrue": {"name": "Action on True", "description": "Action to perform on value becoming TRUE."},
         "onBecomingFalse": {"name": "Action on False", "description": "Action to perform on value becoming FALSE."}
       }
