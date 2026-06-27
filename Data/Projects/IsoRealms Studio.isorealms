@@ -23,7 +23,7 @@
           "variable": "closeAllMenusFunction",
           "to": {
             "key": ":Action",
-            "asset": {
+            "resource": {
               "key": "Basics/Function/CloseAllMenus",
               "bindings": []
             }
@@ -33,14 +33,14 @@
           "variable": "showMenuFunction",
           "to": {
             "key": ":Action",
-            "asset": {
+            "resource": {
               "key": "Basics/Function/Options Enter Screen",
               "bindings": [
                 {
                   "argument": "menuScreen",
                   "to": {
                     "key": ":Screen",
-                    "asset": {
+                    "resource": {
                       "key": "UI/Menu/Main"
                     }
                   }
@@ -55,7 +55,7 @@
                   "argument": "menuInput",
                   "to": {
                     "key": ":InputHandler",
-                    "asset": {
+                    "resource": {
                       "key": "UI/Menu/Main"
                     }
                   }
@@ -74,7 +74,7 @@
           "variable": "inputHandlerMenu",
           "to": {
             "key": ":InputHandler",
-            "asset": {
+            "resource": {
               "key": "Basics/InputSwitch/Options Screen"
             }
           }
@@ -83,7 +83,7 @@
           "variable": "optionsLoaderFunction",
           "to": {
             "key": ":Action",
-            "asset": {
+            "resource": {
               "key": "Basics/Function/Options Reload Configuration",
               "bindings": []
             }
@@ -96,7 +96,7 @@
           }
         }
       ],
-      "code": "optionsLoaderFunction:execute()\napplication:setName(\"IsoRealms Development Environment\")\ncloseAllMenusFunction:execute()\nshowMenuFunction:execute()\ninteractiveInput:setInputHandler(inputHandlerMenu)"
+      "code": "optionsLoaderFunction:execute()\napplication:setName(\"IsoRealms Studio\")\ncloseAllMenusFunction:execute()\nshowMenuFunction:execute()\ninteractiveInput:setInputHandler(inputHandlerMenu)"
     },
     "onCloseRequest": {
       "key": "Basics/Script",
@@ -105,7 +105,7 @@
           "variable": "stopProjectExecutionFunction",
           "to": {
             "key": ":Action",
-            "asset": {
+            "resource": {
               "key": "Basics/Function/StopProjectExecution",
               "bindings": []
             }
@@ -127,7 +127,7 @@
           "variable": "inputHandlerMenu",
           "to": {
             "key": ":InputHandler",
-            "asset": {
+            "resource": {
               "key": "Basics/InputSwitch/Options Screen"
             }
           }
@@ -136,14 +136,14 @@
           "variable": "confirmQuitFunction",
           "to": {
             "key": ":Action",
-            "asset": {
+            "resource": {
               "key": "Basics/Function/Options Enter Screen",
               "bindings": [
                 {
                   "argument": "menuScreen",
                   "to": {
                     "key": ":Screen",
-                    "asset": {
+                    "resource": {
                       "key": "UI/Prompt/Close"
                     }
                   }
@@ -158,7 +158,7 @@
                   "argument": "menuInput",
                   "to": {
                     "key": ":InputHandler",
-                    "asset": {
+                    "resource": {
                       "key": "UI/Prompt/Close"
                     }
                   }
@@ -257,7 +257,7 @@
                   "variable": "editorInput",
                   "to": {
                     "key": ":InputHandler",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/InputGroup/EditorInput"
                     }
                   }
@@ -266,7 +266,7 @@
                   "variable": "editorScreen",
                   "to": {
                     "key": ":Screen",
-                    "asset": {
+                    "resource": {
                       "key": "UI/Layout/Main"
                     }
                   }
@@ -275,7 +275,7 @@
                   "variable": "resumeEditorFunction",
                   "to": {
                     "key": ":Action",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Function/ResumeEditor",
                       "bindings": []
                     }
@@ -542,14 +542,14 @@
                 "variable": "confirmLoadFunction",
                 "to": {
                   "key": ":Action",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/Function/Options Enter Screen",
                     "bindings": [
                       {
                         "argument": "menuScreen",
                         "to": {
                           "key": ":Screen",
-                          "asset": {
+                          "resource": {
                             "key": "UI/Prompt/Load"
                           }
                         }
@@ -564,7 +564,7 @@
                         "argument": "menuInput",
                         "to": {
                           "key": ":InputHandler",
-                          "asset": {
+                          "resource": {
                             "key": "UI/Prompt/Load"
                           }
                         }
@@ -610,7 +610,7 @@
                 "variable": "closeAllMenusFunction",
                 "to": {
                   "key": ":Action",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/Function/CloseAllMenus",
                     "bindings": []
                   }
@@ -626,7 +626,7 @@
                 "variable": "inputHandlerEditor",
                 "to": {
                   "key": ":InputHandler",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/InputGroup/EditorInput"
                   }
                 }
@@ -635,7 +635,7 @@
                 "variable": "startMenuFunction",
                 "to": {
                   "key": ":Action",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/Function/StartMenu",
                     "bindings": []
                   }
@@ -649,7 +649,7 @@
               }
             ],
             "arguments": [],
-            "code": "-- If there's an active editor, resume it, otherwise go to the main menu.\napplication:setName(\"IsoRealms Development Environment\")\nif gActiveEditor ~= nil then\n  gActiveProjectConfigurer = nil\n  closeAllMenusFunction:execute()\n  interactiveInput:setInputHandler(inputHandlerEditor)\n  gActiveEditor:notifyGainedFocus()\nelse\n  startMenuFunction:execute()\nend"
+            "code": "-- If there's an active editor, resume it, otherwise go to the main menu.\napplication:setName(\"IsoRealms Studio\")\nif gActiveEditor ~= nil then\n  gActiveProjectConfigurer = nil\n  closeAllMenusFunction:execute()\n  interactiveInput:setInputHandler(inputHandlerEditor)\n  gActiveEditor:notifyGainedFocus()\nelse\n  startMenuFunction:execute()\nend"
           },
           "StartEditor": {
             "bindings": [
@@ -681,7 +681,7 @@
                 "variable": "editorInput",
                 "to": {
                   "key": ":InputHandler",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/InputGroup/EditorInput"
                   }
                 }
@@ -696,7 +696,7 @@
                 "variable": "font",
                 "to": {
                   "key": ":Font",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/Font/Application Main Font"
                   }
                 }
@@ -711,7 +711,7 @@
                 "variable": "digitalInputCancel",
                 "to": {
                   "key": ":Boolean",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/DigitalControl/Cancel"
                   }
                 }
@@ -720,7 +720,7 @@
                 "variable": "digitalInputConfigureTool",
                 "to": {
                   "key": ":Boolean",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/DigitalControl/ConfigureTool"
                   }
                 }
@@ -729,7 +729,7 @@
                 "variable": "digitalInputNextTheme",
                 "to": {
                   "key": ":Boolean",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/DigitalControl/NextTheme"
                   }
                 }
@@ -738,7 +738,7 @@
                 "variable": "digitalInputNextTool",
                 "to": {
                   "key": ":Boolean",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/DigitalControl/NextTool"
                   }
                 }
@@ -747,7 +747,7 @@
                 "variable": "digitalInputPreviousTheme",
                 "to": {
                   "key": ":Boolean",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/DigitalControl/PreviousTheme"
                   }
                 }
@@ -756,7 +756,7 @@
                 "variable": "digitalInputPreviousTool",
                 "to": {
                   "key": ":Boolean",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/DigitalControl/PreviousTool"
                   }
                 }
@@ -765,7 +765,7 @@
                 "variable": "digitalInputToolMode",
                 "to": {
                   "key": ":Boolean",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/DigitalControl/ToolMode"
                   }
                 }
@@ -774,7 +774,7 @@
                 "variable": "digitalInputUseTool",
                 "to": {
                   "key": ":Boolean",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/DigitalControl/UseTool"
                   }
                 }
@@ -783,7 +783,7 @@
                 "variable": "digitalInputMoveCursorBackward",
                 "to": {
                   "key": ":Boolean",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/DigitalControl/MoveCursorBackward"
                   }
                 }
@@ -792,7 +792,7 @@
                 "variable": "digitalInputMoveCursorDown",
                 "to": {
                   "key": ":Boolean",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/DigitalControl/MoveCursorDown"
                   }
                 }
@@ -801,7 +801,7 @@
                 "variable": "digitalInputMoveCursorFaster",
                 "to": {
                   "key": ":Boolean",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/DigitalControl/MoveCursorFaster"
                   }
                 }
@@ -810,7 +810,7 @@
                 "variable": "digitalInputMoveCursorForward",
                 "to": {
                   "key": ":Boolean",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/DigitalControl/MoveCursorForward"
                   }
                 }
@@ -819,7 +819,7 @@
                 "variable": "digitalInputMoveCursorLeft",
                 "to": {
                   "key": ":Boolean",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/DigitalControl/MoveCursorLeft"
                   }
                 }
@@ -828,7 +828,7 @@
                 "variable": "digitalInputMoveCursorRight",
                 "to": {
                   "key": ":Boolean",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/DigitalControl/MoveCursorRight"
                   }
                 }
@@ -837,7 +837,7 @@
                 "variable": "digitalInputMoveCursorSlower",
                 "to": {
                   "key": ":Boolean",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/DigitalControl/MoveCursorSlower"
                   }
                 }
@@ -846,7 +846,7 @@
                 "variable": "digitalInputMoveCursorUp",
                 "to": {
                   "key": ":Boolean",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/DigitalControl/MoveCursorUp"
                   }
                 }
@@ -855,7 +855,7 @@
                 "variable": "digitalInputMoveView",
                 "to": {
                   "key": ":Boolean",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/DigitalControl/MoveView"
                   }
                 }
@@ -864,7 +864,7 @@
                 "variable": "digitalInputRotateView",
                 "to": {
                   "key": ":Boolean",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/DigitalControl/RotateView"
                   }
                 }
@@ -873,7 +873,7 @@
                 "variable": "digitalInputEditorMenu",
                 "to": {
                   "key": ":Boolean",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/DigitalControl/EditorMenu"
                   }
                 }
@@ -882,7 +882,7 @@
                 "variable": "analogueInputMoveCursorX",
                 "to": {
                   "key": ":Float",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/AnalogueControl/MoveCursorX"
                   }
                 }
@@ -891,7 +891,7 @@
                 "variable": "analogueInputMoveCursorY",
                 "to": {
                   "key": ":Float",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/AnalogueControl/MoveCursorY"
                   }
                 }
@@ -900,7 +900,7 @@
                 "variable": "analogueInputMoveViewIn",
                 "to": {
                   "key": ":Float",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/AnalogueControl/MoveViewIn"
                   }
                 }
@@ -909,7 +909,7 @@
                 "variable": "analogueInputMoveViewOut",
                 "to": {
                   "key": ":Float",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/AnalogueControl/MoveViewOut"
                   }
                 }
@@ -918,7 +918,7 @@
                 "variable": "analogueInputRotateViewYaw",
                 "to": {
                   "key": ":Float",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/AnalogueControl/RotateViewYaw"
                   }
                 }
@@ -927,7 +927,7 @@
                 "variable": "analogueInputRotateViewPitch",
                 "to": {
                   "key": ":Float",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/AnalogueControl/RotateViewPitch"
                   }
                 }
@@ -936,7 +936,7 @@
                 "variable": "startMenuFunction",
                 "to": {
                   "key": ":Action",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/Function/StartMenu",
                     "bindings": []
                   }
@@ -952,7 +952,7 @@
                 "variable": "closeAllMenusFunction",
                 "to": {
                   "key": ":Action",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/Function/CloseAllMenus",
                     "bindings": []
                   }
@@ -968,7 +968,7 @@
                 "variable": "inputHandlerMenu",
                 "to": {
                   "key": ":InputHandler",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/InputSwitch/Options Screen"
                   }
                 }
@@ -977,14 +977,14 @@
                 "variable": "showMenuFunction",
                 "to": {
                   "key": ":Action",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/Function/Options Enter Screen",
                     "bindings": [
                       {
                         "argument": "menuScreen",
                         "to": {
                           "key": ":Screen",
-                          "asset": {
+                          "resource": {
                             "key": "UI/Menu/Main"
                           }
                         }
@@ -999,7 +999,7 @@
                         "argument": "menuInput",
                         "to": {
                           "key": ":InputHandler",
-                          "asset": {
+                          "resource": {
                             "key": "UI/Menu/Main"
                           }
                         }
@@ -1024,7 +1024,7 @@
                 "variable": "editorScreen",
                 "to": {
                   "key": ":Screen",
-                  "asset": {
+                  "resource": {
                     "key": "UI/Layout/Main"
                   }
                 }
@@ -1039,7 +1039,7 @@
                 "variable": "editorInput",
                 "to": {
                   "key": ":InputHandler",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/InputGroup/EditorInput"
                   }
                 }
@@ -1054,7 +1054,7 @@
                 "variable": "resumeEditorFunction",
                 "to": {
                   "key": ":Action",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/Function/ResumeEditor",
                     "bindings": []
                   }
@@ -1251,7 +1251,7 @@
                   "variable": "startMenuFunction",
                   "to": {
                     "key": ":Action",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Function/StartMenu",
                       "bindings": []
                     }
@@ -1273,7 +1273,7 @@
                   "variable": "startEditorFunction",
                   "to": {
                     "key": ":Action",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Function/StartEditor",
                       "bindings": []
                     }
@@ -1283,7 +1283,7 @@
                   "variable": "startMenuFunction",
                   "to": {
                     "key": ":Action",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Function/StartMenu",
                       "bindings": []
                     }
@@ -1328,7 +1328,7 @@
                   "variable": "startEditorFunction",
                   "to": {
                     "key": ":Action",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Function/StartEditor",
                       "bindings": []
                     }
@@ -1740,7 +1740,7 @@
                         "variable": "testInputHandler",
                         "to": {
                           "key": ":InputHandler",
-                          "asset": {
+                          "resource": {
                             "key": "Basics/InputGroup/Test"
                           }
                         }
@@ -1779,7 +1779,7 @@
                         "variable": "testInputHandler",
                         "to": {
                           "key": ":InputHandler",
-                          "asset": {
+                          "resource": {
                             "key": "Basics/InputGroup/Test"
                           }
                         }
@@ -1839,14 +1839,14 @@
                         "variable": "showLauncherMenuFunction",
                         "to": {
                           "key": ":Action",
-                          "asset": {
+                          "resource": {
                             "key": "Basics/Function/Options Enter Screen",
                             "bindings": [
                               {
                                 "argument": "menuScreen",
                                 "to": {
                                   "key": ":Screen",
-                                  "asset": {
+                                  "resource": {
                                     "key": "UI/Menu/Launcher"
                                   }
                                 }
@@ -1861,7 +1861,7 @@
                                 "argument": "menuInput",
                                 "to": {
                                   "key": ":InputHandler",
-                                  "asset": {
+                                  "resource": {
                                     "key": "UI/Menu/Launcher"
                                   }
                                 }
@@ -1886,7 +1886,7 @@
                         "variable": "closeAllMenusFunction",
                         "to": {
                           "key": ":Action",
-                          "asset": {
+                          "resource": {
                             "key": "Basics/Function/CloseAllMenus",
                             "bindings": []
                           }
@@ -1902,7 +1902,7 @@
                         "variable": "inputHandlerEditor",
                         "to": {
                           "key": ":InputHandler",
-                          "asset": {
+                          "resource": {
                             "key": "Basics/InputGroup/EditorInput"
                           }
                         }
@@ -1917,7 +1917,7 @@
                         "variable": "configurerInput",
                         "to": {
                           "key": ":InputHandler",
-                          "asset": {
+                          "resource": {
                             "key": "Basics/ProjectConfigurer/ProjectConfigurer"
                           }
                         }
@@ -1956,7 +1956,7 @@
                         "variable": "resumeEditorFunction",
                         "to": {
                           "key": ":Action",
-                          "asset": {
+                          "resource": {
                             "key": "Basics/Function/ResumeEditor",
                             "bindings": []
                           }
@@ -1966,14 +1966,14 @@
                         "variable": "saveAsFunction",
                         "to": {
                           "key": ":Action",
-                          "asset": {
+                          "resource": {
                             "key": "Basics/Function/Options Enter Screen",
                             "bindings": [
                               {
                                 "argument": "menuScreen",
                                 "to": {
                                   "key": ":Screen",
-                                  "asset": {
+                                  "resource": {
                                     "key": "UI/Layout/SaveAs"
                                   }
                                 }
@@ -1988,7 +1988,7 @@
                                 "argument": "menuInput",
                                 "to": {
                                   "key": ":InputHandler",
-                                  "asset": {
+                                  "resource": {
                                     "key": "UI/VirtualKeyboard/SaveAsPrompt"
                                   }
                                 }
@@ -2013,7 +2013,7 @@
                         "argument": "menuScreen",
                         "to": {
                           "key": ":Screen",
-                          "asset": {
+                          "resource": {
                             "key": "UI/Layout/SaveAs"
                           }
                         }
@@ -2028,7 +2028,7 @@
                         "argument": "menuInput",
                         "to": {
                           "key": ":InputHandler",
-                          "asset": {
+                          "resource": {
                             "key": "UI/VirtualKeyboard/SaveAsPrompt"
                           }
                         }
@@ -2048,7 +2048,7 @@
                         "argument": "menuScreen",
                         "to": {
                           "key": ":Screen",
-                          "asset": {
+                          "resource": {
                             "key": "UI/Menu/UserMissions"
                           }
                         }
@@ -2063,7 +2063,7 @@
                         "argument": "menuInput",
                         "to": {
                           "key": ":InputHandler",
-                          "asset": {
+                          "resource": {
                             "key": "UI/Menu/UserMissions"
                           }
                         }
@@ -2083,7 +2083,7 @@
                         "argument": "menuScreen",
                         "to": {
                           "key": ":Screen",
-                          "asset": {
+                          "resource": {
                             "key": "UI/Prompt/New"
                           }
                         }
@@ -2098,7 +2098,7 @@
                         "argument": "menuInput",
                         "to": {
                           "key": ":InputHandler",
-                          "asset": {
+                          "resource": {
                             "key": "UI/Prompt/New"
                           }
                         }
@@ -2118,7 +2118,7 @@
                         "argument": "menuScreen",
                         "to": {
                           "key": ":Screen",
-                          "asset": {
+                          "resource": {
                             "key": "UI/Menu/Options"
                           }
                         }
@@ -2133,7 +2133,7 @@
                         "argument": "menuInput",
                         "to": {
                           "key": ":InputHandler",
-                          "asset": {
+                          "resource": {
                             "key": "UI/Menu/Options"
                           }
                         }
@@ -2153,7 +2153,7 @@
                         "argument": "menuScreen",
                         "to": {
                           "key": ":Screen",
-                          "asset": {
+                          "resource": {
                             "key": "UI/Prompt/Quit"
                           }
                         }
@@ -2168,7 +2168,7 @@
                         "argument": "menuInput",
                         "to": {
                           "key": ":InputHandler",
-                          "asset": {
+                          "resource": {
                             "key": "UI/Prompt/Quit"
                           }
                         }
@@ -2202,7 +2202,7 @@
                         "argument": "mission",
                         "to": {
                           "key": ":String",
-                          "asset": {
+                          "resource": {
                             "key": "Literal",
                             "value": "Projects/Spindizzy/Worlds/Hangworld.isorealms"
                           }
@@ -2212,7 +2212,7 @@
                         "argument": "user",
                         "to": {
                           "key": ":Boolean",
-                          "asset": {
+                          "resource": {
                             "key": "False"
                           }
                         }
@@ -2234,7 +2234,7 @@
                         "argument": "mission",
                         "to": {
                           "key": ":String",
-                          "asset": {
+                          "resource": {
                             "key": "UI/Menu/UserMissions/List"
                           }
                         }
@@ -2243,7 +2243,7 @@
                         "argument": "user",
                         "to": {
                           "key": ":Boolean",
-                          "asset": {
+                          "resource": {
                             "key": "True"
                           }
                         }
@@ -2276,7 +2276,7 @@
                   "variable": "cancelCloseIDEFunction",
                   "to": {
                     "key": ":Action",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Function/ResumeEditor",
                       "bindings": []
                     }
@@ -2309,7 +2309,7 @@
                   "variable": "file",
                   "to": {
                     "key": ":String",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/String/MissionToLoad"
                     }
                   }
@@ -2318,7 +2318,7 @@
                   "variable": "type",
                   "to": {
                     "key": ":String",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/String/MissionType"
                     }
                   }
@@ -2327,7 +2327,7 @@
                   "variable": "closeAllMenusFunction",
                   "to": {
                     "key": ":Action",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Function/CloseAllMenus",
                       "bindings": []
                     }
@@ -2343,7 +2343,7 @@
                   "variable": "throbber",
                   "to": {
                     "key": ":Screen",
-                    "asset": {
+                    "resource": {
                       "key": "UI/Throbber/LoadingScreen"
                     }
                   }
@@ -2379,7 +2379,7 @@
                   "variable": "closeAllMenusFunction",
                   "to": {
                     "key": ":Action",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Function/CloseAllMenus",
                       "bindings": []
                     }
@@ -2395,7 +2395,7 @@
                   "variable": "throbber",
                   "to": {
                     "key": ":Screen",
-                    "asset": {
+                    "resource": {
                       "key": "UI/Throbber/LoadingScreen"
                     }
                   }
@@ -2410,7 +2410,7 @@
                   "variable": "editorPlaceHolder",
                   "to": {
                     "key": ":Screen",
-                    "asset": {
+                    "resource": {
                       "key": "UI/Layout/EditorPlaceHolder"
                     }
                   }
@@ -2452,7 +2452,7 @@
                   "variable": "filename",
                   "to": {
                     "key": ":String",
-                    "asset": {
+                    "resource": {
                       "key": "UI/VirtualKeyboard/SaveAsPrompt"
                     }
                   }
@@ -2461,7 +2461,7 @@
                   "variable": "resumeEditorFunction",
                   "to": {
                     "key": ":Action",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Function/ResumeEditor",
                       "bindings": []
                     }
@@ -2531,7 +2531,7 @@
                   "variable": "filename",
                   "to": {
                     "key": ":String",
-                    "asset": {
+                    "resource": {
                       "key": "UI/VirtualKeyboard/SaveAsPrompt"
                     }
                   }
@@ -2540,14 +2540,14 @@
                   "variable": "confirmOverwriteFunction",
                   "to": {
                     "key": ":Action",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Function/Options Enter Screen",
                       "bindings": [
                         {
                           "argument": "menuScreen",
                           "to": {
                             "key": ":Screen",
-                            "asset": {
+                            "resource": {
                               "key": "UI/Prompt/Overwrite"
                             }
                           }
@@ -2562,7 +2562,7 @@
                           "argument": "menuInput",
                           "to": {
                             "key": ":InputHandler",
-                            "asset": {
+                            "resource": {
                               "key": "UI/Prompt/Overwrite"
                             }
                           }
@@ -2575,7 +2575,7 @@
                   "variable": "resumeEditorFunction",
                   "to": {
                     "key": ":Action",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Function/ResumeEditor",
                       "bindings": []
                     }

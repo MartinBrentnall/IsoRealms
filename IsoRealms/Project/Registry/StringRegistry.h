@@ -22,6 +22,7 @@
 #include <set>
 #include <stdexcept>
 
+#include "IsoRealms/IComponentDefiner.h"
 #include "IsoRealms/Resources/Client/Float.h"
 #include "IsoRealms/Resources/Client/Integer.h"
 #include "IsoRealms/Resources/Providers/ResourceLiteralDummy.h"
@@ -192,6 +193,10 @@ namespace IsoRealms {
 
         bool isConfigurable() const override {
           return cDefValue.hasConfiguration();
+        }
+
+        void defineResource(IComponentDefiner& definer) override {
+          definer.propertyResource("resource", cDefValue, IComponentDefiner::HINT_HIDDEN);
         }
 
         private:

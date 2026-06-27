@@ -50283,7 +50283,7 @@
                   "argument": "DELETE",
                   "to": {
                     "key": ":Integer",
-                    "asset": {
+                    "resource": {
                       "key": "Literal"
                     }
                   }

@@ -84,7 +84,7 @@
           "variable": "optionsLoader",
           "to": {
             "key": ":Action",
-            "asset": {
+            "resource": {
               "key": "Basics/Function/Options Reload Configuration",
               "bindings": []
             }
@@ -197,7 +197,7 @@
                   "variable": "sound",
                   "to": {
                     "key": ":Action",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Sound/Jewel Collected"
                     }
                   }
@@ -231,7 +231,7 @@
                   "variable": "zoneCount",
                   "to": {
                     "key": ":Integer",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Integer/Remaining Zones Count"
                     }
                   }
@@ -246,7 +246,7 @@
                   "variable": "ending",
                   "to": {
                     "key": ":Action",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Function/Equilibria Play Ending Cutscene",
                       "bindings": []
                     }
@@ -287,7 +287,7 @@
                   "variable": "zoneEnterFunction",
                   "to": {
                     "key": ":Action",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Function/Equilibria Handle Zone Entered",
                       "bindings": []
                     }
@@ -297,7 +297,7 @@
                   "variable": "optionsLoader",
                   "to": {
                     "key": ":Action",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Function/Options Reload Configuration",
                       "bindings": []
                     }
@@ -327,7 +327,7 @@
                   "variable": "zoneExitFunction",
                   "to": {
                     "key": ":Action",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Function/Equilibria Handle Zone Exited",
                       "bindings": []
                     }
@@ -371,7 +371,7 @@
                   "variable": "indicator",
                   "to": {
                     "key": ":Screen",
-                    "asset": {
+                    "resource": {
                       "key": "UI/Layout/Equilibria Damage Indicator"
                     }
                   }
@@ -448,7 +448,7 @@
                   "variable": "indicator",
                   "to": {
                     "key": ":Screen",
-                    "asset": {
+                    "resource": {
                       "key": "UI/Layout/Equilibria Damage Indicator"
                     }
                   }
@@ -842,7 +842,7 @@
                   "variable": "soundRespawnHard",
                   "to": {
                     "key": ":Action",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Sound/GERALD Respawn"
                     }
                   }
@@ -891,7 +891,7 @@
                   "variable": "soundImpactHard",
                   "to": {
                     "key": ":Action",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Sound/GERALD Surface Impact Hard"
                     }
                   }
@@ -900,7 +900,7 @@
                   "variable": "soundImpactMedium",
                   "to": {
                     "key": ":Action",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Sound/GERALD Surface Impact Medium"
                     }
                   }
@@ -909,7 +909,7 @@
                   "variable": "soundImpactSoft",
                   "to": {
                     "key": ":Action",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Sound/GERALD Surface Impact Soft"
                     }
                   }
@@ -972,7 +972,7 @@
                   "variable": "zoneEnterFunction",
                   "to": {
                     "key": ":Action",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Function/Equilibria Handle Zone Entered",
                       "bindings": []
                     }
@@ -982,7 +982,7 @@
                   "variable": "zoneExitFunction",
                   "to": {
                     "key": ":Action",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Function/Equilibria Handle Zone Exited",
                       "bindings": []
                     }
@@ -1044,7 +1044,7 @@
                   "argument": "Icon",
                   "to": {
                     "key": ":Screen",
-                    "asset": {
+                    "resource": {
                       "key": "Equilibria/WorldView/Icon Active State 1"
                     }
                   }
@@ -1053,7 +1053,7 @@
                   "argument": "Sound",
                   "to": {
                     "key": ":Action",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Sound/Activate State 1"
                     }
                   }
@@ -1136,7 +1136,7 @@
                   "argument": "switchIcon",
                   "to": {
                     "key": ":Screen",
-                    "asset": {
+                    "resource": {
                       "key": "Equilibria/WorldView/Icon Active State 10"
                     }
                   }
@@ -1145,7 +1145,7 @@
                   "argument": "sound",
                   "to": {
                     "key": ":Action",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Sound/Activate State 10"
                     }
                   }
@@ -1228,7 +1228,7 @@
                   "argument": "switchIcon",
                   "to": {
                     "key": ":Screen",
-                    "asset": {
+                    "resource": {
                       "key": "Equilibria/WorldView/Icon Active State 11"
                     }
                   }
@@ -1237,7 +1237,7 @@
                   "argument": "sound",
                   "to": {
                     "key": ":Action",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Sound/Activate State 11"
                     }
                   }
@@ -1320,7 +1320,7 @@
                   "argument": "Icon",
                   "to": {
                     "key": ":Screen",
-                    "asset": {
+                    "resource": {
                       "key": "Equilibria/WorldView/Icon Active State 2"
                     }
                   }
@@ -1329,7 +1329,7 @@
                   "argument": "Sound",
                   "to": {
                     "key": ":Action",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Sound/Activate State 2"
                     }
                   }
@@ -1414,7 +1414,7 @@
                   "argument": "Icon",
                   "to": {
                     "key": ":Screen",
-                    "asset": {
+                    "resource": {
                       "key": "Equilibria/WorldView/Icon Active State 3"
                     }
                   }
@@ -1423,7 +1423,7 @@
                   "argument": "Sound",
                   "to": {
                     "key": ":Action",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Sound/Activate State 3"
                     }
                   }
@@ -1506,7 +1506,7 @@
                   "argument": "Icon",
                   "to": {
                     "key": ":Screen",
-                    "asset": {
+                    "resource": {
                       "key": "Equilibria/WorldView/Icon Active State 4"
                     }
                   }
@@ -1515,7 +1515,7 @@
                   "argument": "Sound",
                   "to": {
                     "key": ":Action",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Sound/Activate State 4"
                     }
                   }
@@ -1598,7 +1598,7 @@
                   "argument": "Icon",
                   "to": {
                     "key": ":Screen",
-                    "asset": {
+                    "resource": {
                       "key": "Equilibria/WorldView/Icon Active State 5"
                     }
                   }
@@ -1607,7 +1607,7 @@
                   "argument": "Sound",
                   "to": {
                     "key": ":Action",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Sound/Activate State 5"
                     }
                   }
@@ -1692,7 +1692,7 @@
                   "argument": "Icon",
                   "to": {
                     "key": ":Screen",
-                    "asset": {
+                    "resource": {
                       "key": "Equilibria/WorldView/Icon Active State 6"
                     }
                   }
@@ -1701,7 +1701,7 @@
                   "argument": "Sound",
                   "to": {
                     "key": ":Action",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Sound/Activate State 6"
                     }
                   }
@@ -1784,7 +1784,7 @@
                   "argument": "Icon",
                   "to": {
                     "key": ":Screen",
-                    "asset": {
+                    "resource": {
                       "key": "Equilibria/WorldView/Icon Active State 7"
                     }
                   }
@@ -1793,7 +1793,7 @@
                   "argument": "Sound",
                   "to": {
                     "key": ":Action",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Sound/Activate State 7"
                     }
                   }
@@ -1876,7 +1876,7 @@
                   "argument": "switchIcon",
                   "to": {
                     "key": ":Screen",
-                    "asset": {
+                    "resource": {
                       "key": "Equilibria/WorldView/Icon Active State 8"
                     }
                   }
@@ -1885,7 +1885,7 @@
                   "argument": "sound",
                   "to": {
                     "key": ":Action",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Sound/Activate State 8"
                     }
                   }
@@ -1968,7 +1968,7 @@
                   "argument": "switchIcon",
                   "to": {
                     "key": ":Screen",
-                    "asset": {
+                    "resource": {
                       "key": "Equilibria/WorldView/Icon Active State 9"
                     }
                   }
@@ -1977,7 +1977,7 @@
                   "argument": "sound",
                   "to": {
                     "key": ":Action",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Sound/Activate State 9"
                     }
                   }
@@ -2615,7 +2615,7 @@
                   "argument": "hintIcon",
                   "to": {
                     "key": ":Screen",
-                    "asset": {
+                    "resource": {
                       "key": "Equilibria/WorldView/Icon Hint State 1"
                     }
                   }
@@ -2635,7 +2635,7 @@
                   "argument": "hintIcon",
                   "to": {
                     "key": ":Screen",
-                    "asset": {
+                    "resource": {
                       "key": "Equilibria/WorldView/Icon Hint State 10"
                     }
                   }
@@ -2655,7 +2655,7 @@
                   "argument": "hintIcon",
                   "to": {
                     "key": ":Screen",
-                    "asset": {
+                    "resource": {
                       "key": "Equilibria/WorldView/Icon Hint State 11"
                     }
                   }
@@ -2675,7 +2675,7 @@
                   "argument": "hintIcon",
                   "to": {
                     "key": ":Screen",
-                    "asset": {
+                    "resource": {
                       "key": "Equilibria/WorldView/Icon Hint State 2"
                     }
                   }
@@ -2695,7 +2695,7 @@
                   "argument": "hintIcon",
                   "to": {
                     "key": ":Screen",
-                    "asset": {
+                    "resource": {
                       "key": "Equilibria/WorldView/Icon Hint State 3"
                     }
                   }
@@ -2715,7 +2715,7 @@
                   "argument": "hintIcon",
                   "to": {
                     "key": ":Screen",
-                    "asset": {
+                    "resource": {
                       "key": "Equilibria/WorldView/Icon Hint State 4"
                     }
                   }
@@ -2735,7 +2735,7 @@
                   "argument": "hintIcon",
                   "to": {
                     "key": ":Screen",
-                    "asset": {
+                    "resource": {
                       "key": "Equilibria/WorldView/Icon Hint State 5"
                     }
                   }
@@ -2755,7 +2755,7 @@
                   "argument": "hintIcon",
                   "to": {
                     "key": ":Screen",
-                    "asset": {
+                    "resource": {
                       "key": "Equilibria/WorldView/Icon Hint State 6"
                     }
                   }
@@ -2775,7 +2775,7 @@
                   "argument": "hintIcon",
                   "to": {
                     "key": ":Screen",
-                    "asset": {
+                    "resource": {
                       "key": "Equilibria/WorldView/Icon Hint State 7"
                     }
                   }
@@ -2795,7 +2795,7 @@
                   "argument": "hintIcon",
                   "to": {
                     "key": ":Screen",
-                    "asset": {
+                    "resource": {
                       "key": "Equilibria/WorldView/Icon Hint State 8"
                     }
                   }
@@ -2815,7 +2815,7 @@
                   "argument": "hintIcon",
                   "to": {
                     "key": ":Screen",
-                    "asset": {
+                    "resource": {
                       "key": "Equilibria/WorldView/Icon Hint State 9"
                     }
                   }
@@ -4837,7 +4837,7 @@
                   "variable": "soundImpactHard",
                   "to": {
                     "key": ":Action",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Sound/GERALD Surface Impact Hard"
                     }
                   }
@@ -5268,7 +5268,7 @@
                 "variable": "sound",
                 "to": {
                   "key": ":Action",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/Sound/Deactivate All States"
                   }
                 }
@@ -5301,7 +5301,7 @@
                 "variable": "screenMenu",
                 "to": {
                   "key": ":Screen",
-                  "asset": {
+                  "resource": {
                     "key": "UI/Menu/Pause"
                   }
                 }
@@ -5322,7 +5322,7 @@
                 "variable": "inputHandlerMenu",
                 "to": {
                   "key": ":InputHandler",
-                  "asset": {
+                  "resource": {
                     "key": "UI/Menu/Pause"
                   }
                 }
@@ -5349,7 +5349,7 @@
                 "variable": "optionsInput",
                 "to": {
                   "key": ":InputHandler",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/InputSwitch/Options Screen"
                   }
                 }
@@ -5394,7 +5394,7 @@
                 "variable": "gameControls",
                 "to": {
                   "key": ":InputHandler",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/InputGroup/Equilibria Game Controls"
                   }
                 }
@@ -5475,7 +5475,7 @@
                 "variable": "jewelsCollected",
                 "to": {
                   "key": ":Integer",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/Integer/Collected Jewel Count"
                   }
                 }
@@ -5490,7 +5490,7 @@
                 "variable": "ending",
                 "to": {
                   "key": ":Action",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/Function/Equilibria Play Ending Cutscene",
                     "bindings": []
                   }
@@ -5512,7 +5512,7 @@
                 "variable": "currentZoneColour",
                 "to": {
                   "key": ":Colour",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/Sequence/Colour Cycle (Overview Current Zone)/Instance/Colour"
                   }
                 }
@@ -5539,7 +5539,7 @@
                 "variable": "doneColour",
                 "to": {
                   "key": ":Colour",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/Colour/C64 Palette 8"
                   }
                 }
@@ -5548,7 +5548,7 @@
                 "variable": "missedColour",
                 "to": {
                   "key": ":Colour",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/Colour/C64 Palette 5"
                   }
                 }
@@ -5605,7 +5605,7 @@
                 "variable": "score",
                 "to": {
                   "key": ":Integer",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/Integer/Score"
                   }
                 }
@@ -5644,7 +5644,7 @@
                 "variable": "click1",
                 "to": {
                   "key": ":Action",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/Sound/Lift Click Variant 1"
                   }
                 }
@@ -5653,7 +5653,7 @@
                 "variable": "click2",
                 "to": {
                   "key": ":Action",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/Sound/Lift Click Variant 2"
                   }
                 }
@@ -5662,7 +5662,7 @@
                 "variable": "click3",
                 "to": {
                   "key": ":Action",
-                  "asset": {
+                  "resource": {
                     "key": "Basics/Sound/Lift Click Variant 3"
                   }
                 }
@@ -7115,7 +7115,7 @@
                             "variable": "jewelsCollected",
                             "to": {
                               "key": ":Integer",
-                              "asset": {
+                              "resource": {
                                 "key": "Basics/Integer/Collected Jewel Count"
                               }
                             }
@@ -7124,7 +7124,7 @@
                             "variable": "zoneCount",
                             "to": {
                               "key": ":Integer",
-                              "asset": {
+                              "resource": {
                                 "key": "Basics/Integer/Remaining Zones Count"
                               }
                             }
@@ -7200,7 +7200,7 @@
                             "variable": "zoneEnterFunction",
                             "to": {
                               "key": ":Action",
-                              "asset": {
+                              "resource": {
                                 "key": "Basics/Function/Equilibria Handle Zone Entered",
                                 "bindings": []
                               }
@@ -8009,7 +8009,7 @@
                   "alignment": "Left",
                   "value": {
                     "key": ":Integer",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Integer/Remaining Zones Count"
                     }
                   },
@@ -8178,7 +8178,7 @@
                   "alignment": "Right",
                   "value": {
                     "key": ":Integer",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Integer/Score"
                     }
                   },
@@ -8240,7 +8240,7 @@
                   "alignment": "Right",
                   "value": {
                     "key": ":Integer",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Integer/Collected Jewel Count"
                     }
                   },
@@ -9548,7 +9548,7 @@
                         "argument": "menuScreen",
                         "to": {
                           "key": ":Screen",
-                          "asset": {
+                          "resource": {
                             "key": "UI/Menu/Options"
                           }
                         }
@@ -9563,7 +9563,7 @@
                         "argument": "menuInput",
                         "to": {
                           "key": ":InputHandler",
-                          "asset": {
+                          "resource": {
                             "key": "UI/Menu/Options"
                           }
                         }
@@ -9583,7 +9583,7 @@
                         "argument": "menuScreen",
                         "to": {
                           "key": ":Screen",
-                          "asset": {
+                          "resource": {
                             "key": "UI/Prompt/Abort Mission"
                           }
                         }
@@ -9598,7 +9598,7 @@
                         "argument": "menuInput",
                         "to": {
                           "key": ":InputHandler",
-                          "asset": {
+                          "resource": {
                             "key": "UI/Prompt/Abort Mission"
                           }
                         }

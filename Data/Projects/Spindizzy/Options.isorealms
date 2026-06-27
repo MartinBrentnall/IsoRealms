@@ -1,6 +1,6 @@
 {
   "project": {
-    "description": "Options Menus ",
+    "description": "Options Menus",
     "include": [],
     "modules": {
       "Basics": {
@@ -246,7 +246,7 @@
                 "variable": "menuScreen",
                 "to": {
                   "key": ":Screen",
-                  "asset": {
+                  "resource": {
                     "key": "UI/Menu/Options Configure Input"
                   }
                 }
@@ -255,7 +255,7 @@
                 "variable": "menuInput",
                 "to": {
                   "key": ":InputHandler",
-                  "asset": {
+                  "resource": {
                     "key": "UI/Menu/Options Configure Input"
                   }
                 }
@@ -847,7 +847,7 @@
                         "argument": "name",
                         "to": {
                           "key": ":String",
-                          "asset": {
+                          "resource": {
                             "key": "Literal",
                             "value": "Configure Input: Left"
                           }
@@ -875,7 +875,7 @@
                         "argument": "name",
                         "to": {
                           "key": ":String",
-                          "asset": {
+                          "resource": {
                             "key": "Literal",
                             "value": "Configure Input: Right"
                           }
@@ -903,7 +903,7 @@
                         "argument": "name",
                         "to": {
                           "key": ":String",
-                          "asset": {
+                          "resource": {
                             "key": "Literal",
                             "value": "Configure Input: Up"
                           }
@@ -931,7 +931,7 @@
                         "argument": "name",
                         "to": {
                           "key": ":String",
-                          "asset": {
+                          "resource": {
                             "key": "Literal",
                             "value": "Configure Input: Down"
                           }
@@ -959,7 +959,7 @@
                         "argument": "name",
                         "to": {
                           "key": ":String",
-                          "asset": {
+                          "resource": {
                             "key": "Literal",
                             "value": "Configure Input: Thrust"
                           }
@@ -987,7 +987,7 @@
                         "argument": "name",
                         "to": {
                           "key": ":String",
-                          "asset": {
+                          "resource": {
                             "key": "Literal",
                             "value": "Configure Input: Brake"
                           }
@@ -1015,7 +1015,7 @@
                         "argument": "name",
                         "to": {
                           "key": ":String",
-                          "asset": {
+                          "resource": {
                             "key": "Literal",
                             "value": "Configure Input: Rotate View Left"
                           }
@@ -1043,7 +1043,7 @@
                         "argument": "name",
                         "to": {
                           "key": ":String",
-                          "asset": {
+                          "resource": {
                             "key": "Literal",
                             "value": "Configure Input: Rotate View Right"
                           }
@@ -1071,7 +1071,7 @@
                         "argument": "name",
                         "to": {
                           "key": ":String",
-                          "asset": {
+                          "resource": {
                             "key": "Literal",
                             "value": "Configure Input: Reverse View"
                           }
@@ -1099,7 +1099,7 @@
                         "argument": "name",
                         "to": {
                           "key": ":String",
-                          "asset": {
+                          "resource": {
                             "key": "Literal",
                             "value": "Configure Input: Reset View"
                           }
@@ -1127,7 +1127,7 @@
                         "argument": "name",
                         "to": {
                           "key": ":String",
-                          "asset": {
+                          "resource": {
                             "key": "Literal",
                             "value": "Configure Input: Toggle Map"
                           }
@@ -1155,7 +1155,7 @@
                         "argument": "name",
                         "to": {
                           "key": ":String",
-                          "asset": {
+                          "resource": {
                             "key": "Literal",
                             "value": "Configure Input: Toggle Craft"
                           }
@@ -1183,7 +1183,7 @@
                         "argument": "name",
                         "to": {
                           "key": ":String",
-                          "asset": {
+                          "resource": {
                             "key": "Literal",
                             "value": "Configure Input: Toggle Pause"
                           }
@@ -1211,7 +1211,7 @@
                         "argument": "name",
                         "to": {
                           "key": ":String",
-                          "asset": {
+                          "resource": {
                             "key": "Literal",
                             "value": "Configure Input: Self Destruct"
                           }
@@ -1238,7 +1238,7 @@
                         "argument": "menuScreen",
                         "to": {
                           "key": ":Screen",
-                          "asset": {
+                          "resource": {
                             "key": "UI/Prompt/Reset Input Configuration"
                           }
                         }
@@ -1253,7 +1253,7 @@
                         "argument": "menuInput",
                         "to": {
                           "key": ":InputHandler",
-                          "asset": {
+                          "resource": {
                             "key": "UI/Prompt/Reset Input Configuration"
                           }
                         }
@@ -1287,7 +1287,7 @@
                         "argument": "menuScreen",
                         "to": {
                           "key": ":Screen",
-                          "asset": {
+                          "resource": {
                             "key": "UI/Menu/Visual"
                           }
                         }
@@ -1302,7 +1302,7 @@
                         "argument": "menuInput",
                         "to": {
                           "key": ":InputHandler",
-                          "asset": {
+                          "resource": {
                             "key": "UI/Menu/Visual"
                           }
                         }
@@ -1322,7 +1322,7 @@
                         "argument": "menuScreen",
                         "to": {
                           "key": ":Screen",
-                          "asset": {
+                          "resource": {
                             "key": "UI/Menu/Audio"
                           }
                         }
@@ -1337,7 +1337,7 @@
                         "argument": "menuInput",
                         "to": {
                           "key": ":InputHandler",
-                          "asset": {
+                          "resource": {
                             "key": "UI/Menu/Audio"
                           }
                         }
@@ -1357,7 +1357,7 @@
                         "argument": "menuScreen",
                         "to": {
                           "key": ":Screen",
-                          "asset": {
+                          "resource": {
                             "key": "UI/Menu/Control"
                           }
                         }
@@ -1372,7 +1372,7 @@
                         "argument": "menuInput",
                         "to": {
                           "key": ":InputHandler",
-                          "asset": {
+                          "resource": {
                             "key": "UI/Menu/Control"
                           }
                         }
@@ -1397,7 +1397,7 @@
                   "variable": "screenPopper",
                   "to": {
                     "key": ":Action",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Function/Options Leave Screen",
                       "bindings": []
                     }
@@ -1407,7 +1407,7 @@
                   "variable": "optionsLoader",
                   "to": {
                     "key": ":Action",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Function/Options Reload Configuration",
                       "bindings": []
                     }
@@ -1532,7 +1532,7 @@
                         "variable": "promptScreen",
                         "to": {
                           "key": ":Screen",
-                          "asset": {
+                          "resource": {
                             "key": "UI/Prompt/Confirm Video Mode"
                           }
                         }
@@ -1541,7 +1541,7 @@
                         "variable": "promptInput",
                         "to": {
                           "key": ":InputHandler",
-                          "asset": {
+                          "resource": {
                             "key": "UI/Prompt/Confirm Video Mode"
                           }
                         }
@@ -1707,7 +1707,7 @@
                   "variable": "optionsLoader",
                   "to": {
                     "key": ":Action",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Function/Options Reload Configuration",
                       "bindings": []
                     }
@@ -1717,7 +1717,7 @@
                   "variable": "screenPopper",
                   "to": {
                     "key": ":Action",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Function/Options Leave Screen",
                       "bindings": []
                     }
