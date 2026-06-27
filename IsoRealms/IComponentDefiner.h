@@ -28,6 +28,7 @@
 
 #include "IsoRealms/IComponentArraySource.h"
 #include "IsoRealms/Project/Options.h"
+#include "IsoRealms/Project/ProjectFile.h"
 
 namespace IsoRealms {
   class Condition;
@@ -97,8 +98,8 @@ namespace IsoRealms {
     inline static const Options HINT_TRANSIENT    {{HINT_KEY_TRANSIENT,    "true"}};
     inline static const Options HINT_INLINE_IMMEDIATE = HINT_INLINE + HINT_IMMEDIATE;
 
-    static Options externalScopeHint(const std::string& documentPath, bool userDocument, bool writable = true) {
-      return {{HINT_KEY_DOCUMENT, documentPath}, {HINT_KEY_USER_DOCUMENT, userDocument ? "true" : "false"}, {HINT_KEY_WRITABLE, writable ? "true" : "false"}};
+    static Options externalScopeHint(const ProjectFile& file, bool writable = true) {
+      return {{HINT_KEY_DOCUMENT, file.cFile.getRelativePath()}, {HINT_KEY_USER_DOCUMENT, file.cFile.isUser() ? "true" : "false"}, {HINT_KEY_WRITABLE, writable ? "true" : "false"}};
     }
 
     static Options resourceMetadataHint(const std::string& moduleName, const std::string& resourceType) {
@@ -109,12 +110,20 @@ namespace IsoRealms {
       // Only invoked after persisted values have been applied during loading.
     }
 
+    virtual void onResourceLoaded(std::function<void()> callback) {
+      // Only invoked after a propertyResource value has been applied during loading.
+    }
+
     virtual void onPersisted(std::function<void()> callback) {
       // Only invoked after persisted values have been written during saving.
     }
 
     virtual void finish() {
       // Invoked once at the end of a successful define pass.
+    }
+
+    virtual void scopeOwnedResource(ProjectFile* ownerProjectFile, ProjectFile* loadingProjectFile, std::function<void()> scopeMember) {
+      scopeMember();
     }
 
     virtual void propertyAdd(             const std::string& key, const std::string& value, std::function<void()> addPropertyFunction, const Options& hint = Options::EMPTY) = 0;
@@ -140,6 +149,9 @@ namespace IsoRealms {
     virtual void spacer(float height) = 0;
 
     virtual void keyedArray(const std::string& key, const std::string& addKey, IKeyedArraySource& source, const Options& hint = Options::EMPTY) = 0;
+    virtual void scopeComponents(const std::string& key, const std::string& addKey, IComponentKeyedArraySource& source, std::function<void(IComponent& component)> scopeMember, const Options& hint = Options::EMPTY) = 0;
+    virtual void scopeModules(const std::string& key, const std::string& addKey, IModuleKeyedArraySource& source, std::function<void(Module& module)> scopeMember, const Options& hint = Options::EMPTY) = 0;
+    virtual void scopeOwnedKeyedArray(const std::string& key, const std::string& addKey, IOwnedKeyedArraySource& source, std::function<void(IOwnedKeyedMember& member)> scopeMember, const Options& hint = Options::EMPTY) = 0;
     virtual void array(const std::string& key, const std::string& addKey, IArraySource& source, const Options& hint = Options::EMPTY) = 0;
     virtual void fixedArray(const std::string& key, IFixedArraySource& source, const Options& hint = Options::EMPTY) = 0;
 
@@ -147,6 +159,24 @@ namespace IsoRealms {
     void keyedArray(const std::string& key, const std::string& addKey, const CONTAINER& container, VALUE_FUNC value, PROPERTY_FUNC createProperty, ADD_FUNC add, const Options& hint = Options::EMPTY) {
       KeyedArraySource<CONTAINER, VALUE_FUNC, PROPERTY_FUNC, ADD_FUNC> mSource(container, value, createProperty, add);
       keyedArray(key, addKey, mSource, hint);
+    }
+
+    template <typename CONTAINER, typename GET_COMPONENT_FUNC, typename SCOPE_MEMBER_FUNC, typename ADD_FUNC>
+    void scopeComponents(const std::string& key, const std::string& addKey, const CONTAINER& container, GET_COMPONENT_FUNC getComponent, SCOPE_MEMBER_FUNC scopeMember, ADD_FUNC add, const Options& hint = Options::EMPTY) {
+      ComponentKeyedArraySource<CONTAINER, GET_COMPONENT_FUNC, ADD_FUNC> mSource(container, getComponent, add);
+      scopeComponents(key, addKey, mSource, scopeMember, hint);
+    }
+
+    template <typename CONTAINER, typename GET_KEY_FUNC, typename GET_MODULE_FUNC, typename SCOPE_MEMBER_FUNC, typename ADD_FUNC>
+    void scopeModules(const std::string& key, const std::string& addKey, const CONTAINER& container, GET_KEY_FUNC getKey, GET_MODULE_FUNC getModule, SCOPE_MEMBER_FUNC scopeMember, ADD_FUNC add, const Options& hint = Options::EMPTY) {
+      ModuleKeyedArraySource<CONTAINER, GET_KEY_FUNC, GET_MODULE_FUNC, ADD_FUNC> mSource(container, getKey, getModule, add);
+      scopeModules(key, addKey, mSource, scopeMember, hint);
+    }
+
+    template <typename CONTAINER, typename GET_MEMBER_FUNC, typename SCOPE_MEMBER_FUNC, typename ADD_FUNC>
+    void scopeOwnedKeyedArray(const std::string& key, const std::string& addKey, const CONTAINER& container, GET_MEMBER_FUNC getMember, SCOPE_MEMBER_FUNC scopeMember, ADD_FUNC add, const Options& hint = Options::EMPTY) {
+      OwnedKeyedArraySource<CONTAINER, GET_MEMBER_FUNC, ADD_FUNC> mSource(container, getMember, add);
+      scopeOwnedKeyedArray(key, addKey, mSource, scopeMember, hint);
     }
 
     template <typename CONTAINER, typename VALUE_FUNC, typename PROPERTY_FUNC, typename ADD_FUNC>

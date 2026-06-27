@@ -93,7 +93,7 @@ namespace IsoRealms {
     return std::make_unique<ComponentLoader>(project, file, user);
   }
 
-  std::unique_ptr<IComponentDefiner> Application::createComponentSaver(Project& project, const std::string& file) {
+  std::unique_ptr<IComponentDefiner> Application::createComponentSaver(Project& project, ProjectFile& file) {
     return std::make_unique<ComponentSaver>(project, file);
   }
 

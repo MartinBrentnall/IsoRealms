@@ -36,6 +36,7 @@ namespace IsoRealms {
     void reloadComponent(const std::string& resourceName);
     bool needsSaving(const ProjectFile* savingProject) const;
 
+    std::string const getName() const;
     std::string const getPlural() const;
     std::string const getSingular() const;
     bool forEachComponent(std::function<bool(IComponent*)> resourceFunction);

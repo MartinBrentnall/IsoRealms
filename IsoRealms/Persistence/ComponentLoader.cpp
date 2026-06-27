@@ -31,6 +31,7 @@
 #include "IsoRealms/Project/ComponentType.h"
 #include "IsoRealms/Project/ComponentType.h"
 #include "IsoRealms/Project/Module.h"
+#include "IsoRealms/Project/Project.h"
 #include "IsoRealms/Resources/Fixed/DigitalInput/KeyboardKey.h"
 #include "IsoRealms/Resources/Type/IEditable.h"
 #include "IsoRealms/Utils.h"
@@ -69,6 +70,28 @@ namespace IsoRealms {
             cComponentData(resourceData) {
     cDocuments.push_back(std::make_unique<JSONDocument>(file, user));
     cObjects.push_back(cDocuments.back()->getObject("project"));
+    cPersistingProjectFiles.push_back(cComponentData.getProject().getProjectFile());
+  }
+
+  ProjectFile* ComponentLoader::getPersistingProjectFile() {
+    return cPersistingProjectFiles.empty() ? nullptr : cPersistingProjectFiles.back();
+  }
+
+  void ComponentLoader::scopeOwnedResource(ProjectFile* ownerProjectFile, ProjectFile* loadingProjectFile, std::function<void()> scopeMember) {
+    const ProjectFile* mPersistingProjectFile = getPersistingProjectFile();
+    if (mPersistingProjectFile == nullptr || loadingProjectFile == mPersistingProjectFile) {
+      scopeMember();
+    }
+  }
+
+  void ComponentLoader::onResourceLoaded(std::function<void()> callback) {
+    cResourceLoadedCallbacks.push_back(std::move(callback));
+  }
+
+  void ComponentLoader::invokeResourceLoadedCallbacks(const std::vector<std::function<void()>>& loadedCallbacks) {
+    for (const std::function<void()>& mCallback : loadedCallbacks) {
+      mCallback();
+    }
   }
 
   JSONObject& ComponentLoader::currentObject() {
@@ -87,21 +110,23 @@ namespace IsoRealms {
     cObjects.pop_back();
   }
 
-  void ComponentLoader::loadTreeSelectorResourceProperties(ITreeSelectorObject& item, JSONObject object, const Options& hint) {
+  void ComponentLoader::loadTreeSelectorResourceProperties(ITreeSelectorObject& item, JSONObject object, const Options& hint, const std::vector<std::function<void()>>& loadedCallbacks) {
     if (hint.getOption(IComponentDefiner::HINT_KEY_IMMEDIATE) == "true") {
       pushObject(object);
       item.defineTreeItem(*this);
       popObject();
+      invokeResourceLoadedCallbacks(loadedCallbacks);
       return;
     }
 
     std::vector<JSONObject> mObjectStack = cObjects;
     mObjectStack.push_back(object);
     ITreeSelectorObject* mItem = &item;
-    deferDuringLoad(cComponentData, [this, mItem, object]() {
+    deferDuringLoad(cComponentData, [this, mItem, object, loadedCallbacks]() {
       pushObject(object);
       mItem->defineTreeItem(*this);
       popObject();
+      invokeResourceLoadedCallbacks(loadedCallbacks);
     });
   }
 
@@ -243,11 +268,13 @@ namespace IsoRealms {
     if (hint.getOption(IComponentDefiner::HINT_KEY_TRANSIENT) == "true") {
       return;
     }
+    std::vector<std::function<void()>> mLoadedCallbacks = std::move(cResourceLoadedCallbacks);
+    cResourceLoadedCallbacks.clear();
     if (hint.getOption(IComponentDefiner::HINT_KEY_INLINE) == "true") {
-      loadTreeSelectorResourceProperties(item, currentObject(), hint);
+      loadTreeSelectorResourceProperties(item, currentObject(), hint, mLoadedCallbacks);
     } else {
       if (hint.getOption(IComponentDefiner::HINT_KEY_OPTIONAL) != "true" || currentObject().hasMember(key)) {
-        loadTreeSelectorResourceProperties(item, currentObject().getObject(key), hint);
+        loadTreeSelectorResourceProperties(item, currentObject().getObject(key), hint, mLoadedCallbacks);
       }
     }
   }
@@ -295,10 +322,16 @@ namespace IsoRealms {
     const std::string mFilePath = hint.getOption(IComponentDefiner::HINT_KEY_DOCUMENT);
     if (!mFilePath.empty()) {
       const bool mUser = hint.getOption(IComponentDefiner::HINT_KEY_USER_DOCUMENT) == "true";
+      ProjectFile* mPersistingProjectFile = nullptr;
+      if (!mFilePath.empty()) {
+        mPersistingProjectFile = cComponentData.getProject().getProjectFileByPath(mFilePath);
+      }
+      cPersistingProjectFiles.push_back(mPersistingProjectFile);
       cDocuments.push_back(std::make_unique<JSONDocument>(mFilePath, mUser));
       pushObject(cDocuments.back()->getObject("project"));
       subProperties();
       popObject();
+      cPersistingProjectFiles.pop_back();
       return;
     }
     if (hint.getOption(IComponentDefiner::HINT_KEY_NESTED) == "true") {
@@ -320,6 +353,34 @@ namespace IsoRealms {
         assert(false);
       }
       source.defineNewMember(memberKey);
+    }, hint);
+  }
+
+  void ComponentLoader::scopeModules(const std::string& key, const std::string& addKey, IModuleKeyedArraySource& source, std::function<void(Module& module)> scopeMember, const Options& hint) {
+    loadKeyedArray(key, [&source, &scopeMember](const std::string& memberKey, bool isNull) {
+      if (isNull) {
+        assert(false);
+      }
+      scopeMember(source.defineNewMember(memberKey));
+    }, hint);
+  }
+
+  void ComponentLoader::scopeOwnedKeyedArray(const std::string& key, const std::string& addKey, IOwnedKeyedArraySource& source, std::function<void(IOwnedKeyedMember& member)> scopeMember, const Options& hint) {
+    loadKeyedArray(key, [&source, &scopeMember](const std::string& memberKey, bool isNull) {
+      if (isNull) {
+        assert(false);
+      }
+      scopeMember(source.defineNewMember(memberKey));
+    }, hint);
+  }
+
+  void ComponentLoader::scopeComponents(const std::string& key, const std::string& addKey, IComponentKeyedArraySource& source, std::function<void(IComponent& component)> scopeMember, const Options& hint) {
+    ProjectFile* mOwnerProject = getPersistingProjectFile();
+    loadKeyedArray(key, [&source, &scopeMember, mOwnerProject](const std::string& memberKey, bool isNull) {
+      if (isNull) {
+        assert(false);
+      }
+      scopeMember(source.defineNewMember(memberKey, mOwnerProject));
     }, hint);
   }
 

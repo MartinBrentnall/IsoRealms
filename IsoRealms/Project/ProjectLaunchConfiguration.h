@@ -18,6 +18,7 @@
  */
 #pragma once
 
+#include "IsoRealms/IComponentArraySource.h"
 #include "IsoRealms/Resources/Client/ComponentOwner.h"
 #include "IsoRealms/Types.h"
 
@@ -26,10 +27,12 @@
 namespace IsoRealms {
   class Project;
 
-  class ProjectLaunchConfiguration {
+  class ProjectLaunchConfiguration : public IOwnedKeyedMember {
     public:
     ProjectLaunchConfiguration(Project& parent, ProjectFile& owner, const std::string& name = "");
-    std::string getName() const;
+    std::string getName() const override;
+    ProjectFile* getOwnerProjectFile() const override;
+    bool needsSaving(const ProjectFile* savingProject) const override;
     void define(IComponentDefiner& definer, Project& project);
     bool isOwnedBy(const ProjectFile& project) const;
     void getOptions(Options& options) const;

@@ -66,6 +66,19 @@ namespace IsoRealms {
     return nullptr; // TODO: Throw?
   }
 
+  ProjectFile* ProjectFile::getFileByPath(const std::string& path) {
+    if (cFile.isSet() && cFile.getRelativePath() == path) {
+      return this;
+    }
+    for (const std::unique_ptr<ProjectFile>& mInclusion : cInclusions) {
+      ProjectFile* mFile = mInclusion->getFileByPath(path);
+      if (mFile != nullptr) {
+        return mFile;
+      }
+    }
+    return nullptr;
+  }
+
   bool ProjectFile::isModifiable() const {
     return cAllowModifications && cFile.isUser();
   }
@@ -102,7 +115,7 @@ namespace IsoRealms {
         definer.propertyResource("filename", inclusion.cFile, IComponentDefiner::HINT_IMMEDIATE);
         definer.scope("", "", [&project, &inclusion, &definer]() {
           project.define(definer, &inclusion);
-        }, nullptr, IComponentDefiner::externalScopeHint(inclusion.cFile.getRelativePath(), inclusion.cFile.isUser(), inclusion.isModifiable()));
+        }, nullptr, IComponentDefiner::externalScopeHint(inclusion, inclusion.isModifiable()));
       }
     }, [this, &project]() -> ProjectFile& {
       return *cInclusions.emplace_back(std::make_unique<ProjectFile>(project)).get();

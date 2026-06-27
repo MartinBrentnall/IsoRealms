@@ -36,21 +36,32 @@ namespace IsoRealms {
       return &cResource;
     }
 
+    ProjectFile* getOwnerProjectFile() const {
+      return cOwner.getProjectFile();
+    }
+
+    bool needsSaving(const ProjectFile* savingProject) const {
+      return savingProject != nullptr && savingProject == cOwner.getProjectFile();
+    }
+
     void define(IComponentDefiner& definer, const std::string& name, ProjectFile* loadOwner) {
+      ProjectFile* mLoadingProjectFile = loadOwner != nullptr ? loadOwner : cOwner.getProjectFile();
+      definer.scopeOwnedResource(cOwner.getProjectFile(), mLoadingProjectFile, [this, name, loadOwner, &definer]() {
+        auto mAssignOwner = [this, loadOwner]() {
+          cOwner.setProjectFile(loadOwner != nullptr ? loadOwner : cOwner.getProjectFile());
+        };
 
-      // Nest the resource inside a folder if it's configurable.
-      if (cOwner.isConfigurable()) {
-        definer.scope(name, cResource.getTreeItemLabel(), [this, name, &definer]() {
+        // Nest the resource inside a folder if it's configurable.
+        if (cOwner.isConfigurable()) {
+          definer.scope(name, cResource.getTreeItemLabel(), [this, name, &definer, mAssignOwner]() {
+            definer.onResourceLoaded(mAssignOwner);
+            definer.propertyResource(name, cResource, IComponentDefiner::HINT_OPTIONAL);
+            cOwner.define(definer, "Owner");
+          });
+        } else {
+          definer.onResourceLoaded(mAssignOwner);
           definer.propertyResource(name, cResource, IComponentDefiner::HINT_OPTIONAL);
-          cOwner.define(definer, "Owner");
-        });
-      } else {
-        definer.propertyResource(name, cResource, IComponentDefiner::HINT_OPTIONAL);
-      }
-
-      // Set the owner project file when the resource is initialised.
-      definer.onInitialised([this, loadOwner]() {
-        cOwner.setProjectFile(loadOwner);
+        }
       });
     }
 

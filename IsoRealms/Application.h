@@ -211,7 +211,7 @@ namespace IsoRealms {
     int run(Options& options);
 
     std::unique_ptr<IComponentDefiner> createComponentLoader(Project& project, const std::string& file, bool user);
-    std::unique_ptr<IComponentDefiner> createComponentSaver(Project& project, const std::string& file);
+    std::unique_ptr<IComponentDefiner> createComponentSaver(Project& project, ProjectFile& file);
 
     JSONDocument createDocument();
     JSONDocument openDocument(const std::string& name);

@@ -37,6 +37,7 @@ namespace IsoRealms {
   class ITreeSelectorObject;
   class JSONDocument;
   class JSONObject;
+  class ProjectFile;
 
   /**
    * Loads persisted field values by invoking the same property declarations used
@@ -71,12 +72,19 @@ namespace IsoRealms {
     void spacer(float height) override;
 
     void keyedArray(const std::string& key, const std::string& addKey, IKeyedArraySource& source, const Options& hint = Options::EMPTY) override;
+    void scopeComponents(const std::string& key, const std::string& addKey, IComponentKeyedArraySource& source, std::function<void(IComponent& component)> scopeMember, const Options& hint = Options::EMPTY) override;
+    void scopeModules(const std::string& key, const std::string& addKey, IModuleKeyedArraySource& source, std::function<void(Module& module)> scopeMember, const Options& hint = Options::EMPTY) override;
+    void scopeOwnedKeyedArray(const std::string& key, const std::string& addKey, IOwnedKeyedArraySource& source, std::function<void(IOwnedKeyedMember& member)> scopeMember, const Options& hint = Options::EMPTY) override;
     void array(const std::string& key, const std::string& addKey, IArraySource& source, const Options& hint = Options::EMPTY) override;
     void fixedArray(const std::string& key, IFixedArraySource& source, const Options& hint = Options::EMPTY) override;
 
     void onInitialised(std::function<void()> callback, const Options& hint = Options::EMPTY) override;
+    void onResourceLoaded(std::function<void()> callback) override;
+
+    void scopeOwnedResource(ProjectFile* ownerProjectFile, ProjectFile* loadingProjectFile, std::function<void()> scopeMember) override;
 
     private:
+    ProjectFile* getPersistingProjectFile();
     bool loadPropertyArray(const std::string& key, const std::function<void()>& addAndLoadElement, const Options& hint = Options::EMPTY);
     void loadKeyedArray(const std::string& key, const std::function<void(const std::string& memberKey, bool isNull)>& loadMember, const Options& hint = Options::EMPTY);
     bool loadFixedPropertyArray(const std::string& key, unsigned int count, const std::function<void(unsigned int index)>& loadElement);
@@ -84,12 +92,15 @@ namespace IsoRealms {
 
     IComponentData& cComponentData;
     std::vector<std::unique_ptr<JSONDocument>> cDocuments;
+    std::vector<ProjectFile*> cPersistingProjectFiles;
     std::vector<JSONObject> cObjects;
+    std::vector<std::function<void()>> cResourceLoadedCallbacks;
 
     const JSONObject& currentObject() const;
     JSONObject& currentObject();
     void pushObject(JSONObject object);
     void popObject();
-    void loadTreeSelectorResourceProperties(ITreeSelectorObject& item, JSONObject object, const Options& hint);
+    void loadTreeSelectorResourceProperties(ITreeSelectorObject& item, JSONObject object, const Options& hint, const std::vector<std::function<void()>>& loadedCallbacks);
+    void invokeResourceLoadedCallbacks(const std::vector<std::function<void()>>& loadedCallbacks);
   };
 }

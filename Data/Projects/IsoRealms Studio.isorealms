@@ -7,30 +7,20 @@
         }
       }
     ],
-    "screen": {
-      "key": "UI/Layout/Runtime"
-    },
-    "input": {
-      "key": "Basics/InputSwitch/Main"
-    },
-    "editor": {
-      "key": "None"
-    },
     "onStart": {
       "key": "Basics/Script",
       "bindings": [
         {
-          "variable": "closeAllMenusFunction",
           "to": {
             "key": ":Action",
             "resource": {
               "key": "Basics/Function/CloseAllMenus",
               "bindings": []
             }
-          }
+          },
+          "variable": "closeAllMenusFunction"
         },
         {
-          "variable": "showMenuFunction",
           "to": {
             "key": ":Action",
             "resource": {
@@ -62,38 +52,39 @@
                 }
               ]
             }
-          }
+          },
+          "variable": "showMenuFunction"
         },
         {
-          "variable": "interactiveInput",
           "to": {
             "key": "Basics/InputSwitch/Main"
-          }
+          },
+          "variable": "interactiveInput"
         },
         {
-          "variable": "inputHandlerMenu",
           "to": {
             "key": ":InputHandler",
             "resource": {
               "key": "Basics/InputSwitch/Options Screen"
             }
-          }
+          },
+          "variable": "inputHandlerMenu"
         },
         {
-          "variable": "optionsLoaderFunction",
           "to": {
             "key": ":Action",
             "resource": {
               "key": "Basics/Function/Options Reload Configuration",
               "bindings": []
             }
-          }
+          },
+          "variable": "optionsLoaderFunction"
         },
         {
-          "variable": "application",
           "to": {
             "key": "Application"
-          }
+          },
+          "variable": "application"
         }
       ],
       "code": "optionsLoaderFunction:execute()\napplication:setName(\"IsoRealms Studio\")\ncloseAllMenusFunction:execute()\nshowMenuFunction:execute()\ninteractiveInput:setInputHandler(inputHandlerMenu)"
@@ -102,38 +93,37 @@
       "key": "Basics/Script",
       "bindings": [
         {
-          "variable": "stopProjectExecutionFunction",
           "to": {
             "key": ":Action",
             "resource": {
               "key": "Basics/Function/StopProjectExecution",
               "bindings": []
             }
-          }
+          },
+          "variable": "stopProjectExecutionFunction"
         },
         {
-          "variable": "projectConfigurer",
           "to": {
             "key": "Basics/ProjectConfigurer/ProjectConfigurer"
-          }
+          },
+          "variable": "projectConfigurer"
         },
         {
-          "variable": "interactiveInput",
           "to": {
             "key": "Basics/InputSwitch/Main"
-          }
+          },
+          "variable": "interactiveInput"
         },
         {
-          "variable": "inputHandlerMenu",
           "to": {
             "key": ":InputHandler",
             "resource": {
               "key": "Basics/InputSwitch/Options Screen"
             }
-          }
+          },
+          "variable": "inputHandlerMenu"
         },
         {
-          "variable": "confirmQuitFunction",
           "to": {
             "key": ":Action",
             "resource": {
@@ -165,10 +155,20 @@
                 }
               ]
             }
-          }
+          },
+          "variable": "confirmQuitFunction"
         }
       ],
       "code": "if gCloseIDERequested == nil then\n  if gActiveProjectConfigurer then\n    projectConfigurer:hide()\n  end\n  stopProjectExecutionFunction:execute()\n  interactiveInput:setInputHandler(inputHandlerMenu)\n  confirmQuitFunction:execute()\n  gCloseIDERequested = true\nend"
+    },
+    "input": {
+      "key": "Basics/InputSwitch/Main"
+    },
+    "screen": {
+      "key": "UI/Layout/Runtime"
+    },
+    "editor": {
+      "key": "None"
     },
     "modules": {
       "Basics": {
@@ -236,50 +236,50 @@
               "key": "Basics/Script",
               "bindings": [
                 {
-                  "variable": "project",
                   "to": {
                     "key": "Basics/Project/Project"
-                  }
+                  },
+                  "variable": "project"
                 },
                 {
-                  "variable": "interactiveDisplay",
                   "to": {
                     "key": "UI/Layout/Runtime/Screen"
-                  }
+                  },
+                  "variable": "interactiveDisplay"
                 },
                 {
-                  "variable": "interactiveInput",
                   "to": {
                     "key": "Basics/InputSwitch/Main"
-                  }
+                  },
+                  "variable": "interactiveInput"
                 },
                 {
-                  "variable": "editorInput",
                   "to": {
                     "key": ":InputHandler",
                     "resource": {
                       "key": "Basics/InputGroup/EditorInput"
                     }
-                  }
+                  },
+                  "variable": "editorInput"
                 },
                 {
-                  "variable": "editorScreen",
                   "to": {
                     "key": ":Screen",
                     "resource": {
                       "key": "UI/Layout/Main"
                     }
-                  }
+                  },
+                  "variable": "editorScreen"
                 },
                 {
-                  "variable": "resumeEditorFunction",
                   "to": {
                     "key": ":Action",
                     "resource": {
                       "key": "Basics/Function/ResumeEditor",
                       "bindings": []
                     }
-                  }
+                  },
+                  "variable": "resumeEditorFunction"
                 }
               ],
               "code": "gActiveEditor:notifyVisible()\ninteractiveDisplay:setScreen(editorScreen)\ninteractiveInput:setInputHandler(editorInput)\nproject:reset()\nproject:setEditing(true)\nproject:setRunning(false)\ngProjectExecuting = nil\nresumeEditorFunction:execute()"
@@ -521,25 +521,23 @@
           "CloseAllMenus": {
             "bindings": [
               {
-                "variable": "menuDisplay",
                 "to": {
                   "key": "UI/Layout/Main/Menu"
-                }
+                },
+                "variable": "menuDisplay"
               },
               {
-                "variable": "interactiveInput",
                 "to": {
                   "key": "Basics/InputSwitch/Main"
-                }
+                },
+                "variable": "interactiveInput"
               }
             ],
-            "arguments": [],
             "code": "gMenuScreenStack = {}\ngMenuInputStack = {}\nmenuDisplay:setScreen(nil)\ninteractiveInput:setInputHandler(nil)"
           },
           "LoadWorld": {
             "bindings": [
               {
-                "variable": "confirmLoadFunction",
                 "to": {
                   "key": ":Action",
                   "resource": {
@@ -571,35 +569,36 @@
                       }
                     ]
                   }
-                }
+                },
+                "variable": "confirmLoadFunction"
               },
               {
-                "variable": "missionToLoad",
                 "to": {
                   "key": "Basics/String/MissionToLoad"
-                }
+                },
+                "variable": "missionToLoad"
               },
               {
-                "variable": "missionType",
                 "to": {
                   "key": "Basics/String/MissionType"
-                }
+                },
+                "variable": "missionType"
               }
             ],
             "arguments": [
               {
                 "name": "mission",
-                "luaName": "mission",
                 "type": {
                   "key": "Any"
-                }
+                },
+                "luaName": "mission"
               },
               {
                 "name": "user",
-                "luaName": "user",
                 "type": {
                   "key": "Any"
-                }
+                },
+                "luaName": "user"
               }
             ],
             "code": "missionFileName = mission:getValue()\nmissionToLoad:setValue(missionFileName);\nmissionUser = user:getValue()\nif missionUser then\n  missionType:setValue(\"user\")\nelse\n  missionType:setValue(\"program\")\nend\nconfirmLoadFunction:execute()"
@@ -607,374 +606,371 @@
           "ResumeEditor": {
             "bindings": [
               {
-                "variable": "closeAllMenusFunction",
                 "to": {
                   "key": ":Action",
                   "resource": {
                     "key": "Basics/Function/CloseAllMenus",
                     "bindings": []
                   }
-                }
+                },
+                "variable": "closeAllMenusFunction"
               },
               {
-                "variable": "interactiveInput",
                 "to": {
                   "key": "Basics/InputSwitch/Main"
-                }
+                },
+                "variable": "interactiveInput"
               },
               {
-                "variable": "inputHandlerEditor",
                 "to": {
                   "key": ":InputHandler",
                   "resource": {
                     "key": "Basics/InputGroup/EditorInput"
                   }
-                }
+                },
+                "variable": "inputHandlerEditor"
               },
               {
-                "variable": "startMenuFunction",
                 "to": {
                   "key": ":Action",
                   "resource": {
                     "key": "Basics/Function/StartMenu",
                     "bindings": []
                   }
-                }
+                },
+                "variable": "startMenuFunction"
               },
               {
-                "variable": "application",
                 "to": {
                   "key": "Application"
-                }
+                },
+                "variable": "application"
               }
             ],
-            "arguments": [],
             "code": "-- If there's an active editor, resume it, otherwise go to the main menu.\napplication:setName(\"IsoRealms Studio\")\nif gActiveEditor ~= nil then\n  gActiveProjectConfigurer = nil\n  closeAllMenusFunction:execute()\n  interactiveInput:setInputHandler(inputHandlerEditor)\n  gActiveEditor:notifyGainedFocus()\nelse\n  startMenuFunction:execute()\nend"
           },
           "StartEditor": {
             "bindings": [
               {
-                "variable": "project",
                 "to": {
                   "key": "Basics/Project/Project"
-                }
+                },
+                "variable": "project"
               },
               {
-                "variable": "interactiveDisplay",
                 "to": {
                   "key": "UI/Layout/Main/Editor"
-                }
+                },
+                "variable": "interactiveDisplay"
               },
               {
-                "variable": "interactiveInput",
                 "to": {
                   "key": "Basics/InputSwitch/Main"
-                }
+                },
+                "variable": "interactiveInput"
               },
               {
-                "variable": "directEditorInput",
                 "to": {
                   "key": "Basics/InputSwitch/DirectEditorInput"
-                }
+                },
+                "variable": "directEditorInput"
               },
               {
-                "variable": "editorInput",
                 "to": {
                   "key": ":InputHandler",
                   "resource": {
                     "key": "Basics/InputGroup/EditorInput"
                   }
-                }
+                },
+                "variable": "editorInput"
               },
               {
-                "variable": "menuDisplay",
                 "to": {
                   "key": "UI/Layout/Main/Menu"
-                }
+                },
+                "variable": "menuDisplay"
               },
               {
-                "variable": "font",
                 "to": {
                   "key": ":Font",
                   "resource": {
                     "key": "Basics/Font/Application Main Font"
                   }
-                }
+                },
+                "variable": "font"
               },
               {
-                "variable": "projectConfigurer",
                 "to": {
                   "key": "Basics/ProjectConfigurer/ProjectConfigurer"
-                }
+                },
+                "variable": "projectConfigurer"
               },
               {
-                "variable": "digitalInputCancel",
                 "to": {
                   "key": ":Boolean",
                   "resource": {
                     "key": "Basics/DigitalControl/Cancel"
                   }
-                }
+                },
+                "variable": "digitalInputCancel"
               },
               {
-                "variable": "digitalInputConfigureTool",
                 "to": {
                   "key": ":Boolean",
                   "resource": {
                     "key": "Basics/DigitalControl/ConfigureTool"
                   }
-                }
+                },
+                "variable": "digitalInputConfigureTool"
               },
               {
-                "variable": "digitalInputNextTheme",
                 "to": {
                   "key": ":Boolean",
                   "resource": {
                     "key": "Basics/DigitalControl/NextTheme"
                   }
-                }
+                },
+                "variable": "digitalInputNextTheme"
               },
               {
-                "variable": "digitalInputNextTool",
                 "to": {
                   "key": ":Boolean",
                   "resource": {
                     "key": "Basics/DigitalControl/NextTool"
                   }
-                }
+                },
+                "variable": "digitalInputNextTool"
               },
               {
-                "variable": "digitalInputPreviousTheme",
                 "to": {
                   "key": ":Boolean",
                   "resource": {
                     "key": "Basics/DigitalControl/PreviousTheme"
                   }
-                }
+                },
+                "variable": "digitalInputPreviousTheme"
               },
               {
-                "variable": "digitalInputPreviousTool",
                 "to": {
                   "key": ":Boolean",
                   "resource": {
                     "key": "Basics/DigitalControl/PreviousTool"
                   }
-                }
+                },
+                "variable": "digitalInputPreviousTool"
               },
               {
-                "variable": "digitalInputToolMode",
                 "to": {
                   "key": ":Boolean",
                   "resource": {
                     "key": "Basics/DigitalControl/ToolMode"
                   }
-                }
+                },
+                "variable": "digitalInputToolMode"
               },
               {
-                "variable": "digitalInputUseTool",
                 "to": {
                   "key": ":Boolean",
                   "resource": {
                     "key": "Basics/DigitalControl/UseTool"
                   }
-                }
+                },
+                "variable": "digitalInputUseTool"
               },
               {
-                "variable": "digitalInputMoveCursorBackward",
                 "to": {
                   "key": ":Boolean",
                   "resource": {
                     "key": "Basics/DigitalControl/MoveCursorBackward"
                   }
-                }
+                },
+                "variable": "digitalInputMoveCursorBackward"
               },
               {
-                "variable": "digitalInputMoveCursorDown",
                 "to": {
                   "key": ":Boolean",
                   "resource": {
                     "key": "Basics/DigitalControl/MoveCursorDown"
                   }
-                }
+                },
+                "variable": "digitalInputMoveCursorDown"
               },
               {
-                "variable": "digitalInputMoveCursorFaster",
                 "to": {
                   "key": ":Boolean",
                   "resource": {
                     "key": "Basics/DigitalControl/MoveCursorFaster"
                   }
-                }
+                },
+                "variable": "digitalInputMoveCursorFaster"
               },
               {
-                "variable": "digitalInputMoveCursorForward",
                 "to": {
                   "key": ":Boolean",
                   "resource": {
                     "key": "Basics/DigitalControl/MoveCursorForward"
                   }
-                }
+                },
+                "variable": "digitalInputMoveCursorForward"
               },
               {
-                "variable": "digitalInputMoveCursorLeft",
                 "to": {
                   "key": ":Boolean",
                   "resource": {
                     "key": "Basics/DigitalControl/MoveCursorLeft"
                   }
-                }
+                },
+                "variable": "digitalInputMoveCursorLeft"
               },
               {
-                "variable": "digitalInputMoveCursorRight",
                 "to": {
                   "key": ":Boolean",
                   "resource": {
                     "key": "Basics/DigitalControl/MoveCursorRight"
                   }
-                }
+                },
+                "variable": "digitalInputMoveCursorRight"
               },
               {
-                "variable": "digitalInputMoveCursorSlower",
                 "to": {
                   "key": ":Boolean",
                   "resource": {
                     "key": "Basics/DigitalControl/MoveCursorSlower"
                   }
-                }
+                },
+                "variable": "digitalInputMoveCursorSlower"
               },
               {
-                "variable": "digitalInputMoveCursorUp",
                 "to": {
                   "key": ":Boolean",
                   "resource": {
                     "key": "Basics/DigitalControl/MoveCursorUp"
                   }
-                }
+                },
+                "variable": "digitalInputMoveCursorUp"
               },
               {
-                "variable": "digitalInputMoveView",
                 "to": {
                   "key": ":Boolean",
                   "resource": {
                     "key": "Basics/DigitalControl/MoveView"
                   }
-                }
+                },
+                "variable": "digitalInputMoveView"
               },
               {
-                "variable": "digitalInputRotateView",
                 "to": {
                   "key": ":Boolean",
                   "resource": {
                     "key": "Basics/DigitalControl/RotateView"
                   }
-                }
+                },
+                "variable": "digitalInputRotateView"
               },
               {
-                "variable": "digitalInputEditorMenu",
                 "to": {
                   "key": ":Boolean",
                   "resource": {
                     "key": "Basics/DigitalControl/EditorMenu"
                   }
-                }
+                },
+                "variable": "digitalInputEditorMenu"
               },
               {
-                "variable": "analogueInputMoveCursorX",
                 "to": {
                   "key": ":Float",
                   "resource": {
                     "key": "Basics/AnalogueControl/MoveCursorX"
                   }
-                }
+                },
+                "variable": "analogueInputMoveCursorX"
               },
               {
-                "variable": "analogueInputMoveCursorY",
                 "to": {
                   "key": ":Float",
                   "resource": {
                     "key": "Basics/AnalogueControl/MoveCursorY"
                   }
-                }
+                },
+                "variable": "analogueInputMoveCursorY"
               },
               {
-                "variable": "analogueInputMoveViewIn",
                 "to": {
                   "key": ":Float",
                   "resource": {
                     "key": "Basics/AnalogueControl/MoveViewIn"
                   }
-                }
+                },
+                "variable": "analogueInputMoveViewIn"
               },
               {
-                "variable": "analogueInputMoveViewOut",
                 "to": {
                   "key": ":Float",
                   "resource": {
                     "key": "Basics/AnalogueControl/MoveViewOut"
                   }
-                }
+                },
+                "variable": "analogueInputMoveViewOut"
               },
               {
-                "variable": "analogueInputRotateViewYaw",
                 "to": {
                   "key": ":Float",
                   "resource": {
                     "key": "Basics/AnalogueControl/RotateViewYaw"
                   }
-                }
+                },
+                "variable": "analogueInputRotateViewYaw"
               },
               {
-                "variable": "analogueInputRotateViewPitch",
                 "to": {
                   "key": ":Float",
                   "resource": {
                     "key": "Basics/AnalogueControl/RotateViewPitch"
                   }
-                }
+                },
+                "variable": "analogueInputRotateViewPitch"
               },
               {
-                "variable": "startMenuFunction",
                 "to": {
                   "key": ":Action",
                   "resource": {
                     "key": "Basics/Function/StartMenu",
                     "bindings": []
                   }
-                }
+                },
+                "variable": "startMenuFunction"
               }
             ],
-            "arguments": [],
             "code": "if gEditorToStart ~= gEditorRunning then\n  gEditorRunning = gEditorToStart\n  if gActiveEditor ~= nil then\n    gActiveEditor:notifyHidden()\n  end\n  gActiveEditor = gEditorToStart:createEditableScreen(project:getProject(), projectConfigurer:getDialogManager())\n  gActiveEditor:setAppearance(font, 0.03)\n\n  gActiveEditor:setDigitalInput(\"Cancel\",             digitalInputCancel)\n  gActiveEditor:setDigitalInput(\"ConfigureTool\",      digitalInputConfigureTool)\n  gActiveEditor:setDigitalInput(\"MoveCursorBackward\", digitalInputMoveCursorBackward)\n  gActiveEditor:setDigitalInput(\"MoveCursorDown\",     digitalInputMoveCursorDown)\n  gActiveEditor:setDigitalInput(\"MoveCursorFaster\",   digitalInputMoveCursorFaster)\n  gActiveEditor:setDigitalInput(\"MoveCursorForward\",  digitalInputMoveCursorForward)\n  gActiveEditor:setDigitalInput(\"MoveCursorLeft\",     digitalInputMoveCursorLeft)\n  gActiveEditor:setDigitalInput(\"MoveCursorRight\",    digitalInputMoveCursorRight)\n  gActiveEditor:setDigitalInput(\"MoveCursorSlower\",   digitalInputMoveCursorSlower)\n  gActiveEditor:setDigitalInput(\"MoveCursorUp\",       digitalInputMoveCursorUp)\n  gActiveEditor:setDigitalInput(\"MoveView\",           digitalInputMoveView)\n  gActiveEditor:setDigitalInput(\"NextTheme\",          digitalInputNextTheme)\n  gActiveEditor:setDigitalInput(\"NextTool\",           digitalInputNextTool)\n  gActiveEditor:setDigitalInput(\"PreviousTheme\",      digitalInputPreviousTheme)\n  gActiveEditor:setDigitalInput(\"PreviousTool\",       digitalInputPreviousTool)\n  gActiveEditor:setDigitalInput(\"RotateView\",         digitalInputRotateView)\n  gActiveEditor:setDigitalInput(\"ToolMode\",           digitalInputToolMode)\n  gActiveEditor:setDigitalInput(\"UseTool\",            digitalInputUseTool)\n  gActiveEditor:setDigitalInput(\"Exit\",               digitalInputEditorMenu)\n\n  gActiveEditor:setAnalogueInput(\"MoveCursorX\",     analogueInputMoveCursorX)\n  gActiveEditor:setAnalogueInput(\"MoveCursorY\",     analogueInputMoveCursorY)\n  gActiveEditor:setAnalogueInput(\"MoveViewIn\",      analogueInputMoveViewIn)\n  gActiveEditor:setAnalogueInput(\"MoveViewOut\",     analogueInputMoveViewOut)\n  gActiveEditor:setAnalogueInput(\"RotateViewPitch\", analogueInputRotateViewPitch)\n  gActiveEditor:setAnalogueInput(\"RotateViewYaw\",   analogueInputRotateViewYaw)\n\n  gActiveEditor:setExitAction(startMenuFunction)\n  \n  gActiveEditor:notifyVisible()\n  interactiveDisplay:setScreen(gActiveEditor:screen())\n  interactiveInput:setInputHandler(editorInput)\n  directEditorInput:setInputHandler(gActiveEditor:inputHandler())\n  menuDisplay:setScreen(nil)\nelse\n  gActiveEditor:notifyGainedFocus()\nend"
           },
           "StartMenu": {
             "bindings": [
               {
-                "variable": "closeAllMenusFunction",
                 "to": {
                   "key": ":Action",
                   "resource": {
                     "key": "Basics/Function/CloseAllMenus",
                     "bindings": []
                   }
-                }
+                },
+                "variable": "closeAllMenusFunction"
               },
               {
-                "variable": "interactiveInput",
                 "to": {
                   "key": "Basics/InputSwitch/Main"
-                }
+                },
+                "variable": "interactiveInput"
               },
               {
-                "variable": "inputHandlerMenu",
                 "to": {
                   "key": ":InputHandler",
                   "resource": {
                     "key": "Basics/InputSwitch/Options Screen"
                   }
-                }
+                },
+                "variable": "inputHandlerMenu"
               },
               {
-                "variable": "showMenuFunction",
                 "to": {
                   "key": ":Action",
                   "resource": {
@@ -1006,62 +1002,61 @@
                       }
                     ]
                   }
-                }
+                },
+                "variable": "showMenuFunction"
               }
             ],
-            "arguments": [],
             "code": "closeAllMenusFunction:execute()\ninteractiveInput:setInputHandler(inputHandlerMenu)\nif gActiveEditor ~= nil then\n  gActiveEditor:notifyLostFocus()\nend\nshowMenuFunction:execute()"
           },
           "StopProjectExecution": {
             "bindings": [
               {
-                "variable": "interactiveDisplay",
                 "to": {
                   "key": "UI/Layout/Runtime/Screen"
-                }
+                },
+                "variable": "interactiveDisplay"
               },
               {
-                "variable": "editorScreen",
                 "to": {
                   "key": ":Screen",
                   "resource": {
                     "key": "UI/Layout/Main"
                   }
-                }
+                },
+                "variable": "editorScreen"
               },
               {
-                "variable": "interactiveInput",
                 "to": {
                   "key": "Basics/InputSwitch/Main"
-                }
+                },
+                "variable": "interactiveInput"
               },
               {
-                "variable": "editorInput",
                 "to": {
                   "key": ":InputHandler",
                   "resource": {
                     "key": "Basics/InputGroup/EditorInput"
                   }
-                }
+                },
+                "variable": "editorInput"
               },
               {
-                "variable": "project",
                 "to": {
                   "key": "Basics/Project/Project"
-                }
+                },
+                "variable": "project"
               },
               {
-                "variable": "resumeEditorFunction",
                 "to": {
                   "key": ":Action",
                   "resource": {
                     "key": "Basics/Function/ResumeEditor",
                     "bindings": []
                   }
-                }
+                },
+                "variable": "resumeEditorFunction"
               }
             ],
-            "arguments": [],
             "code": "if gProjectExecuting ~= nil then\n  if gActiveEditor ~= nil then\n    gActiveEditor:notifyVisible()\n  end\n  interactiveDisplay:setScreen(editorScreen)\n  interactiveInput:setInputHandler(editorInput)\n  project:reset()\n  project:setEditing(true)\n  project:setRunning(false)\n  gProjectExecuting = nil\n  resumeEditorFunction:execute()\nend"
           }
         },
@@ -1248,14 +1243,14 @@
               "key": "Basics/Script",
               "bindings": [
                 {
-                  "variable": "startMenuFunction",
                   "to": {
                     "key": ":Action",
                     "resource": {
                       "key": "Basics/Function/StartMenu",
                       "bindings": []
                     }
-                  }
+                  },
+                  "variable": "startMenuFunction"
                 }
               ],
               "code": "print(\"ERROR LOADING PROJECT\")\nstartMenuFunction:execute()"
@@ -1264,30 +1259,30 @@
               "key": "Basics/Script",
               "bindings": [
                 {
-                  "variable": "project",
                   "to": {
                     "key": "Basics/Project/Project"
-                  }
+                  },
+                  "variable": "project"
                 },
                 {
-                  "variable": "startEditorFunction",
                   "to": {
                     "key": ":Action",
                     "resource": {
                       "key": "Basics/Function/StartEditor",
                       "bindings": []
                     }
-                  }
+                  },
+                  "variable": "startEditorFunction"
                 },
                 {
-                  "variable": "startMenuFunction",
                   "to": {
                     "key": ":Action",
                     "resource": {
                       "key": "Basics/Function/StartMenu",
                       "bindings": []
                     }
-                  }
+                  },
+                  "variable": "startMenuFunction"
                 }
               ],
               "code": "gEditorToStart = project:getDefaultEditor()\nif gEditorToStart ~= nil then\n  startEditorFunction:execute()\nelse\n  startMenuFunction:execute()\nend"
@@ -1296,14 +1291,14 @@
         },
         "ProjectConfigurer": {
           "ProjectConfigurer": {
-            "fontSize": 0.029999999329447748,
-            "codeFontSize": 0.014999999664723874,
             "font": {
               "key": "Basics/Font/Application Main Font"
             },
+            "fontSize": 0.029999999329447748,
             "codeFont": {
               "key": "Basics/Font/Code"
             },
+            "codeFontSize": 0.014999999664723874,
             "onExit": {
               "key": "Basics/Function/ResumeEditor",
               "bindings": []
@@ -1312,33 +1307,33 @@
               "key": "Basics/Script",
               "bindings": [
                 {
-                  "variable": "projectConfigurer",
                   "to": {
                     "key": "Basics/ProjectConfigurer/ProjectConfigurer"
-                  }
+                  },
+                  "variable": "projectConfigurer"
                 },
                 {
-                  "variable": "editor",
                   "to": {
                     "key": "~",
                     "local": "Editor"
-                  }
+                  },
+                  "variable": "editor"
                 },
                 {
-                  "variable": "startEditorFunction",
                   "to": {
                     "key": ":Action",
                     "resource": {
                       "key": "Basics/Function/StartEditor",
                       "bindings": []
                     }
-                  }
+                  },
+                  "variable": "startEditorFunction"
                 },
                 {
-                  "variable": "directConfigurerInput",
                   "to": {
                     "key": "Basics/InputSwitch/DirectConfigurerInput"
-                  }
+                  },
+                  "variable": "directConfigurerInput"
                 }
               ],
               "code": "projectConfigurer:hide()\ngActiveProjectConfigurer = nil\ngEditorToStart = editor\nstartEditorFunction:execute()\ndirectConfigurerInput:setInputHandler(nil)"
@@ -1371,22 +1366,6 @@
                   },
                   "orientation": "Horizontal"
                 },
-                "top": {
-                  "location": {
-                    "key": "Absolute"
-                  },
-                  "offset": {
-                    "key": "Absolute"
-                  }
-                },
-                "bottom": {
-                  "location": {
-                    "key": "Absolute"
-                  },
-                  "offset": {
-                    "key": "Absolute"
-                  }
-                },
                 "left": {
                   "location": {
                     "key": "Absolute"
@@ -1396,6 +1375,22 @@
                   }
                 },
                 "right": {
+                  "location": {
+                    "key": "Absolute"
+                  },
+                  "offset": {
+                    "key": "Absolute"
+                  }
+                },
+                "top": {
+                  "location": {
+                    "key": "Absolute"
+                  },
+                  "offset": {
+                    "key": "Absolute"
+                  }
+                },
+                "bottom": {
                   "location": {
                     "key": "Absolute"
                   },
@@ -1413,22 +1408,6 @@
                 "screen": {
                   "key": "UI/Layout/EditorPlaceHolder"
                 },
-                "top": {
-                  "location": {
-                    "key": "Absolute"
-                  },
-                  "offset": {
-                    "key": "Absolute"
-                  }
-                },
-                "bottom": {
-                  "location": {
-                    "key": "Absolute"
-                  },
-                  "offset": {
-                    "key": "Absolute"
-                  }
-                },
                 "left": {
                   "location": {
                     "key": "Absolute"
@@ -1444,12 +1423,6 @@
                   "offset": {
                     "key": "Absolute"
                   }
-                }
-              },
-              {
-                "id": "Menu",
-                "screen": {
-                  "key": "None"
                 },
                 "top": {
                   "location": {
@@ -1466,6 +1439,12 @@
                   "offset": {
                     "key": "Absolute"
                   }
+                }
+              },
+              {
+                "id": "Menu",
+                "screen": {
+                  "key": "None"
                 },
                 "left": {
                   "location": {
@@ -1484,16 +1463,6 @@
                   "offset": {
                     "key": "Absolute"
                   }
-                }
-              }
-            ]
-          },
-          "Runtime": {
-            "components": [
-              {
-                "id": "Project",
-                "screen": {
-                  "key": "Basics/Project/Project"
                 },
                 "top": {
                   "location": {
@@ -1510,6 +1479,16 @@
                   "offset": {
                     "key": "Absolute"
                   }
+                }
+              }
+            ]
+          },
+          "Runtime": {
+            "components": [
+              {
+                "id": "Project",
+                "screen": {
+                  "key": "Basics/Project/Project"
                 },
                 "left": {
                   "location": {
@@ -1520,6 +1499,22 @@
                   }
                 },
                 "right": {
+                  "location": {
+                    "key": "Absolute"
+                  },
+                  "offset": {
+                    "key": "Absolute"
+                  }
+                },
+                "top": {
+                  "location": {
+                    "key": "Absolute"
+                  },
+                  "offset": {
+                    "key": "Absolute"
+                  }
+                },
+                "bottom": {
                   "location": {
                     "key": "Absolute"
                   },
@@ -1533,22 +1528,6 @@
                 "screen": {
                   "key": "UI/Layout/Main"
                 },
-                "top": {
-                  "location": {
-                    "key": "Absolute"
-                  },
-                  "offset": {
-                    "key": "Absolute"
-                  }
-                },
-                "bottom": {
-                  "location": {
-                    "key": "Absolute"
-                  },
-                  "offset": {
-                    "key": "Absolute"
-                  }
-                },
                 "left": {
                   "location": {
                     "key": "Absolute"
@@ -1558,6 +1537,22 @@
                   }
                 },
                 "right": {
+                  "location": {
+                    "key": "Absolute"
+                  },
+                  "offset": {
+                    "key": "Absolute"
+                  }
+                },
+                "top": {
+                  "location": {
+                    "key": "Absolute"
+                  },
+                  "offset": {
+                    "key": "Absolute"
+                  }
+                },
+                "bottom": {
                   "location": {
                     "key": "Absolute"
                   },
@@ -1571,22 +1566,6 @@
                 "screen": {
                   "key": "Basics/ProjectConfigurer/ProjectConfigurer"
                 },
-                "top": {
-                  "location": {
-                    "key": "Absolute"
-                  },
-                  "offset": {
-                    "key": "Absolute"
-                  }
-                },
-                "bottom": {
-                  "location": {
-                    "key": "Absolute"
-                  },
-                  "offset": {
-                    "key": "Absolute"
-                  }
-                },
                 "left": {
                   "location": {
                     "key": "Absolute"
@@ -1596,6 +1575,22 @@
                   }
                 },
                 "right": {
+                  "location": {
+                    "key": "Absolute"
+                  },
+                  "offset": {
+                    "key": "Absolute"
+                  }
+                },
+                "top": {
+                  "location": {
+                    "key": "Absolute"
+                  },
+                  "offset": {
+                    "key": "Absolute"
+                  }
+                },
+                "bottom": {
                   "location": {
                     "key": "Absolute"
                   },
@@ -1612,7 +1607,6 @@
                 "id": "SaveAsLabel",
                 "screen": {
                   "key": "UI/Text",
-                  "alignment": "Center",
                   "value": {
                     "key": "Literal",
                     "value": "Enter a name for this project"
@@ -1620,12 +1614,29 @@
                   "font": {
                     "key": "Basics/Font/Application Main Font"
                   },
+                  "alignment": "Center",
                   "colour": {
                     "key": "Literal",
                     "red": 1.0,
                     "green": 1.0,
                     "blue": 1.0,
                     "alpha": 1.0
+                  }
+                },
+                "left": {
+                  "location": {
+                    "key": "Absolute"
+                  },
+                  "offset": {
+                    "key": "Absolute"
+                  }
+                },
+                "right": {
+                  "location": {
+                    "key": "Absolute"
+                  },
+                  "offset": {
+                    "key": "Absolute"
                   }
                 },
                 "top": {
@@ -1645,6 +1656,12 @@
                   "offset": {
                     "key": "Absolute"
                   }
+                }
+              },
+              {
+                "id": "Keyboard",
+                "screen": {
+                  "key": "UI/VirtualKeyboard/SaveAsPrompt"
                 },
                 "left": {
                   "location": {
@@ -1661,12 +1678,6 @@
                   "offset": {
                     "key": "Absolute"
                   }
-                }
-              },
-              {
-                "id": "Keyboard",
-                "screen": {
-                  "key": "UI/VirtualKeyboard/SaveAsPrompt"
                 },
                 "top": {
                   "location": {
@@ -1677,22 +1688,6 @@
                   }
                 },
                 "bottom": {
-                  "location": {
-                    "key": "Absolute"
-                  },
-                  "offset": {
-                    "key": "Absolute"
-                  }
-                },
-                "left": {
-                  "location": {
-                    "key": "Absolute"
-                  },
-                  "offset": {
-                    "key": "Absolute"
-                  }
-                },
-                "right": {
                   "location": {
                     "key": "Absolute"
                   },
@@ -1725,31 +1720,31 @@
                     "key": "Basics/Script",
                     "bindings": [
                       {
-                        "variable": "interactiveDisplay",
                         "to": {
                           "key": "UI/Layout/Runtime/Screen"
-                        }
+                        },
+                        "variable": "interactiveDisplay"
                       },
                       {
-                        "variable": "interactiveInput",
                         "to": {
                           "key": "Basics/InputSwitch/Main"
-                        }
+                        },
+                        "variable": "interactiveInput"
                       },
                       {
-                        "variable": "testInputHandler",
                         "to": {
                           "key": ":InputHandler",
                           "resource": {
                             "key": "Basics/InputGroup/Test"
                           }
-                        }
+                        },
+                        "variable": "testInputHandler"
                       },
                       {
-                        "variable": "project",
                         "to": {
                           "key": "Basics/Project/Project"
-                        }
+                        },
+                        "variable": "project"
                       }
                     ],
                     "code": "gProjectExecuting = true\nif gActiveEditor ~= nil then\n  gActiveEditor:notifyHidden()\nend\ninteractiveDisplay:setScreen(nil)\ninteractiveInput:setInputHandler(testInputHandler)\nproject:reset()\nproject:setRunning(true)\nproject:setEditing(false)"
@@ -1764,38 +1759,38 @@
                     "key": "Basics/Script",
                     "bindings": [
                       {
-                        "variable": "interactiveDisplay",
                         "to": {
                           "key": "UI/Layout/Runtime/Screen"
-                        }
+                        },
+                        "variable": "interactiveDisplay"
                       },
                       {
-                        "variable": "interactiveInput",
                         "to": {
                           "key": "Basics/InputSwitch/Main"
-                        }
+                        },
+                        "variable": "interactiveInput"
                       },
                       {
-                        "variable": "testInputHandler",
                         "to": {
                           "key": ":InputHandler",
                           "resource": {
                             "key": "Basics/InputGroup/Test"
                           }
-                        }
+                        },
+                        "variable": "testInputHandler"
                       },
                       {
-                        "variable": "project",
                         "to": {
                           "key": "Basics/Project/Project"
-                        }
+                        },
+                        "variable": "project"
                       },
                       {
-                        "variable": "launcher",
                         "to": {
                           "key": "~",
                           "local": "Launcher"
-                        }
+                        },
+                        "variable": "launcher"
                       }
                     ],
                     "code": "gProjectExecuting = true\nif gActiveEditor ~= nil then\n  gActiveEditor:notifyHidden()\nend\ninteractiveDisplay:setScreen(nil)\ninteractiveInput:setInputHandler(testInputHandler)\nproject:resetLauncher(launcher)\nproject:setRunning(true)\nproject:setEditing(false)"
@@ -1824,19 +1819,18 @@
                     "key": "Basics/Script",
                     "bindings": [
                       {
-                        "variable": "project",
                         "to": {
                           "key": "Basics/Project/Project"
-                        }
+                        },
+                        "variable": "project"
                       },
                       {
-                        "variable": "launcherMenu",
                         "to": {
                           "key": "UI/Menu/Launcher/LauncherList/List"
-                        }
+                        },
+                        "variable": "launcherMenu"
                       },
                       {
-                        "variable": "showLauncherMenuFunction",
                         "to": {
                           "key": ":Action",
                           "resource": {
@@ -1868,7 +1862,8 @@
                               }
                             ]
                           }
-                        }
+                        },
+                        "variable": "showLauncherMenuFunction"
                       }
                     ],
                     "code": "launcherMenu:setProject(project:getProject())\nshowLauncherMenuFunction:execute()"
@@ -1883,56 +1878,56 @@
                     "key": "Basics/Script",
                     "bindings": [
                       {
-                        "variable": "closeAllMenusFunction",
                         "to": {
                           "key": ":Action",
                           "resource": {
                             "key": "Basics/Function/CloseAllMenus",
                             "bindings": []
                           }
-                        }
+                        },
+                        "variable": "closeAllMenusFunction"
                       },
                       {
-                        "variable": "interactiveInput",
                         "to": {
                           "key": "Basics/InputSwitch/Main"
-                        }
+                        },
+                        "variable": "interactiveInput"
                       },
                       {
-                        "variable": "inputHandlerEditor",
                         "to": {
                           "key": ":InputHandler",
                           "resource": {
                             "key": "Basics/InputGroup/EditorInput"
                           }
-                        }
+                        },
+                        "variable": "inputHandlerEditor"
                       },
                       {
-                        "variable": "directConfigurerInput",
                         "to": {
                           "key": "Basics/InputSwitch/DirectConfigurerInput"
-                        }
+                        },
+                        "variable": "directConfigurerInput"
                       },
                       {
-                        "variable": "configurerInput",
                         "to": {
                           "key": ":InputHandler",
                           "resource": {
                             "key": "Basics/ProjectConfigurer/ProjectConfigurer"
                           }
-                        }
+                        },
+                        "variable": "configurerInput"
                       },
                       {
-                        "variable": "projectConfigurer",
                         "to": {
                           "key": "Basics/ProjectConfigurer/ProjectConfigurer"
-                        }
+                        },
+                        "variable": "projectConfigurer"
                       },
                       {
-                        "variable": "project",
                         "to": {
                           "key": "Basics/Project/Project"
-                        }
+                        },
+                        "variable": "project"
                       }
                     ],
                     "code": "-- Get rid of the menus.\ncloseAllMenusFunction:execute()\n\n-- Enable project configurer navigation input (mapped from editing inputs... TODO: Maybe I'll change or remove this).\ninteractiveInput:setInputHandler(inputHandlerEditor)\n\n-- Enable project configurer direct input (for text fields etc.)\ndirectConfigurerInput:setInputHandler(configurerInput)\n\n-- Show the application configuration menu.\ngActiveProjectConfigurer = true\nif projectConfigurer:isHidden() then\n  projectConfigurer:show()\nelse\n  projectConfigurer:setProject(project:getProject())\nend\n\n-- Is this still needed?\nif gActiveEditor ~= nil then\n  gActiveEditor:notifyLostFocus()\nend"
@@ -1947,23 +1942,22 @@
                     "key": "Basics/Script",
                     "bindings": [
                       {
-                        "variable": "project",
                         "to": {
                           "key": "Basics/Project/Project"
-                        }
+                        },
+                        "variable": "project"
                       },
                       {
-                        "variable": "resumeEditorFunction",
                         "to": {
                           "key": ":Action",
                           "resource": {
                             "key": "Basics/Function/ResumeEditor",
                             "bindings": []
                           }
-                        }
+                        },
+                        "variable": "resumeEditorFunction"
                       },
                       {
-                        "variable": "saveAsFunction",
                         "to": {
                           "key": ":Action",
                           "resource": {
@@ -1995,7 +1989,8 @@
                               }
                             ]
                           }
-                        }
+                        },
+                        "variable": "saveAsFunction"
                       }
                     ],
                     "code": "if project:isUser() then\n  project:save()\n  resumeEditorFunction:execute()\nelse\n  saveAsFunction:execute()\nend"
@@ -2257,249 +2252,249 @@
         },
         "Prompt": {
           "Close": {
-            "message": "Close IsoRealms?  Changes won't be saved!",
-            "cancelLabel": "Cancel",
-            "confirmLabel": "Close",
-            "selectionColour": {
-              "key": "Basics/Sequence/Colour Cycle (Menu Selection Highlight)/Instance/Colour"
-            },
             "font": {
               "key": "Basics/Font/Application Main Font"
             },
-            "onConfirm": {
-              "key": "Quit"
+            "selectionColour": {
+              "key": "Basics/Sequence/Colour Cycle (Menu Selection Highlight)/Instance/Colour"
             },
+            "message": "Close IsoRealms?  Changes won't be saved!",
+            "cancelLabel": "Cancel",
+            "confirmLabel": "Close",
             "onCancel": {
               "key": "Basics/Script",
               "bindings": [
                 {
-                  "variable": "cancelCloseIDEFunction",
                   "to": {
                     "key": ":Action",
                     "resource": {
                       "key": "Basics/Function/ResumeEditor",
                       "bindings": []
                     }
-                  }
+                  },
+                  "variable": "cancelCloseIDEFunction"
                 }
               ],
               "code": "gCloseIDERequested = nil\ncancelCloseIDEFunction:execute()"
+            },
+            "onConfirm": {
+              "key": "Quit"
             }
           },
           "Load": {
-            "message": "Load App?  Changes to the current App won't be saved!",
-            "cancelLabel": "Cancel",
-            "confirmLabel": "Load App",
+            "font": {
+              "key": "Basics/Font/Application Main Font"
+            },
             "selectionColour": {
               "key": "Basics/Sequence/Colour Cycle (Menu Selection Highlight)/Instance/Colour"
             },
-            "font": {
-              "key": "Basics/Font/Application Main Font"
+            "message": "Load App?  Changes to the current App won't be saved!",
+            "cancelLabel": "Cancel",
+            "confirmLabel": "Load App",
+            "onCancel": {
+              "key": "Basics/Function/Options Leave Screen",
+              "bindings": []
             },
             "onConfirm": {
               "key": "Basics/Script",
               "bindings": [
                 {
-                  "variable": "project",
                   "to": {
                     "key": "Basics/Project/Project"
-                  }
+                  },
+                  "variable": "project"
                 },
                 {
-                  "variable": "file",
                   "to": {
                     "key": ":String",
                     "resource": {
                       "key": "Basics/String/MissionToLoad"
                     }
-                  }
+                  },
+                  "variable": "file"
                 },
                 {
-                  "variable": "type",
                   "to": {
                     "key": ":String",
                     "resource": {
                       "key": "Basics/String/MissionType"
                     }
-                  }
+                  },
+                  "variable": "type"
                 },
                 {
-                  "variable": "closeAllMenusFunction",
                   "to": {
                     "key": ":Action",
                     "resource": {
                       "key": "Basics/Function/CloseAllMenus",
                       "bindings": []
                     }
-                  }
+                  },
+                  "variable": "closeAllMenusFunction"
                 },
                 {
-                  "variable": "menuDisplay",
                   "to": {
                     "key": "UI/Layout/Main/Menu"
-                  }
+                  },
+                  "variable": "menuDisplay"
                 },
                 {
-                  "variable": "throbber",
                   "to": {
                     "key": ":Screen",
                     "resource": {
                       "key": "UI/Throbber/LoadingScreen"
                     }
-                  }
+                  },
+                  "variable": "throbber"
                 }
               ],
               "code": "project:prepare(file:getValue(), type:getValue() == \"user\", true)\ncloseAllMenusFunction:execute()\nmenuDisplay:setScreen(throbber)"
-            },
-            "onCancel": {
-              "key": "Basics/Function/Options Leave Screen",
-              "bindings": []
             }
           },
           "New": {
-            "message": "Create new App?  Changes won't be saved!",
-            "cancelLabel": "Cancel",
-            "confirmLabel": "New App",
+            "font": {
+              "key": "Basics/Font/Application Main Font"
+            },
             "selectionColour": {
               "key": "Basics/Sequence/Colour Cycle (Menu Selection Highlight)/Instance/Colour"
             },
-            "font": {
-              "key": "Basics/Font/Application Main Font"
+            "message": "Create new App?  Changes won't be saved!",
+            "cancelLabel": "Cancel",
+            "confirmLabel": "New App",
+            "onCancel": {
+              "key": "Basics/Function/Options Leave Screen",
+              "bindings": []
             },
             "onConfirm": {
               "key": "Basics/Script",
               "bindings": [
                 {
-                  "variable": "project",
                   "to": {
                     "key": "Basics/Project/Project"
-                  }
+                  },
+                  "variable": "project"
                 },
                 {
-                  "variable": "closeAllMenusFunction",
                   "to": {
                     "key": ":Action",
                     "resource": {
                       "key": "Basics/Function/CloseAllMenus",
                       "bindings": []
                     }
-                  }
+                  },
+                  "variable": "closeAllMenusFunction"
                 },
                 {
-                  "variable": "menuDisplay",
                   "to": {
                     "key": "UI/Layout/Main/Menu"
-                  }
+                  },
+                  "variable": "menuDisplay"
                 },
                 {
-                  "variable": "throbber",
                   "to": {
                     "key": ":Screen",
                     "resource": {
                       "key": "UI/Throbber/LoadingScreen"
                     }
-                  }
+                  },
+                  "variable": "throbber"
                 },
                 {
-                  "variable": "editorDisplay",
                   "to": {
                     "key": "UI/Layout/Main/Editor"
-                  }
+                  },
+                  "variable": "editorDisplay"
                 },
                 {
-                  "variable": "editorPlaceHolder",
                   "to": {
                     "key": ":Screen",
                     "resource": {
                       "key": "UI/Layout/EditorPlaceHolder"
                     }
-                  }
+                  },
+                  "variable": "editorPlaceHolder"
                 },
                 {
-                  "variable": "directEditorInput",
                   "to": {
                     "key": "Basics/InputSwitch/DirectEditorInput"
-                  }
+                  },
+                  "variable": "directEditorInput"
                 }
               ],
               "code": "directEditorInput:setInputHandler(nil)\nproject:prepareNew()\ncloseAllMenusFunction:execute()\ngActiveEditor = nil\nmenuDisplay:setScreen(throbber)\neditorDisplay:setScreen(editorPlaceHolder)"
-            },
-            "onCancel": {
-              "key": "Basics/Function/Options Leave Screen",
-              "bindings": []
             }
           },
           "Overwrite": {
-            "message": "Overwrite existing project?",
-            "cancelLabel": "Cancel",
-            "confirmLabel": "Overwrite",
+            "font": {
+              "key": "Basics/Font/Application Main Font"
+            },
             "selectionColour": {
               "key": "Basics/Sequence/Colour Cycle (Menu Selection Highlight)/Instance/Colour"
             },
-            "font": {
-              "key": "Basics/Font/Application Main Font"
+            "message": "Overwrite existing project?",
+            "cancelLabel": "Cancel",
+            "confirmLabel": "Overwrite",
+            "onCancel": {
+              "key": "Basics/Function/Options Leave Screen",
+              "bindings": []
             },
             "onConfirm": {
               "key": "Basics/Script",
               "bindings": [
                 {
-                  "variable": "project",
                   "to": {
                     "key": "Basics/Project/Project"
-                  }
+                  },
+                  "variable": "project"
                 },
                 {
-                  "variable": "filename",
                   "to": {
                     "key": ":String",
                     "resource": {
                       "key": "UI/VirtualKeyboard/SaveAsPrompt"
                     }
-                  }
+                  },
+                  "variable": "filename"
                 },
                 {
-                  "variable": "resumeEditorFunction",
                   "to": {
                     "key": ":Action",
                     "resource": {
                       "key": "Basics/Function/ResumeEditor",
                       "bindings": []
                     }
-                  }
+                  },
+                  "variable": "resumeEditorFunction"
                 }
               ],
               "code": "project:saveAs(\"Projects/\" .. filename:getValue())\nresumeEditorFunction:execute()"
-            },
-            "onCancel": {
-              "key": "Basics/Function/Options Leave Screen",
-              "bindings": []
             }
           },
           "Quit": {
-            "message": "Quit Editor?  Changes won't be saved!",
-            "cancelLabel": "Cancel",
-            "confirmLabel": "Quit",
+            "font": {
+              "key": "Basics/Font/Application Main Font"
+            },
             "selectionColour": {
               "key": "Basics/Sequence/Colour Cycle (Menu Selection Highlight)/Instance/Colour"
             },
-            "font": {
-              "key": "Basics/Font/Application Main Font"
+            "message": "Quit Editor?  Changes won't be saved!",
+            "cancelLabel": "Cancel",
+            "confirmLabel": "Quit",
+            "onCancel": {
+              "key": "Basics/Function/Options Leave Screen",
+              "bindings": []
             },
             "onConfirm": {
               "key": "Basics/Script",
               "bindings": [
                 {
-                  "variable": "project",
                   "to": {
                     "key": "Project"
-                  }
+                  },
+                  "variable": "project"
                 }
               ],
               "code": "project:finish(false)"
-            },
-            "onCancel": {
-              "key": "Basics/Function/Options Leave Screen",
-              "bindings": []
             }
           }
         },
@@ -2511,80 +2506,7 @@
           }
         },
         "VirtualKeyboard": {
-          "SaveAsPrompt": {
-            "selectionColour": {
-              "key": "Basics/Sequence/Colour Cycle (Menu Selection Highlight)/Instance/Colour"
-            },
-            "font": {
-              "key": "Basics/Font/Application Main Font"
-            },
-            "onConfirm": {
-              "key": "Basics/Script",
-              "bindings": [
-                {
-                  "variable": "project",
-                  "to": {
-                    "key": "Basics/Project/Project"
-                  }
-                },
-                {
-                  "variable": "filename",
-                  "to": {
-                    "key": ":String",
-                    "resource": {
-                      "key": "UI/VirtualKeyboard/SaveAsPrompt"
-                    }
-                  }
-                },
-                {
-                  "variable": "confirmOverwriteFunction",
-                  "to": {
-                    "key": ":Action",
-                    "resource": {
-                      "key": "Basics/Function/Options Enter Screen",
-                      "bindings": [
-                        {
-                          "argument": "menuScreen",
-                          "to": {
-                            "key": ":Screen",
-                            "resource": {
-                              "key": "UI/Prompt/Overwrite"
-                            }
-                          }
-                        },
-                        {
-                          "argument": "menu",
-                          "to": {
-                            "key": "UI/Prompt/Overwrite"
-                          }
-                        },
-                        {
-                          "argument": "menuInput",
-                          "to": {
-                            "key": ":InputHandler",
-                            "resource": {
-                              "key": "UI/Prompt/Overwrite"
-                            }
-                          }
-                        }
-                      ]
-                    }
-                  }
-                },
-                {
-                  "variable": "resumeEditorFunction",
-                  "to": {
-                    "key": ":Action",
-                    "resource": {
-                      "key": "Basics/Function/ResumeEditor",
-                      "bindings": []
-                    }
-                  }
-                }
-              ],
-              "code": "if project:exists(\"Projects/\" .. filename:getValue()) then\n  confirmOverwriteFunction:execute()\nelse\n  project:saveAs(\"Projects/\" .. filename:getValue())\n  resumeEditorFunction:execute()\nend"
-            }
-          }
+          "SaveAsPrompt": {}
         }
       }
     }

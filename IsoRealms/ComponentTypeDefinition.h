@@ -129,7 +129,7 @@ namespace IsoRealms {
       Options mNamelessHint;
       mNamelessHint.addOption("name", "");
 
-      definer.keyedArray("", "Add...", cComponents, [](const std::pair<const std::string, std::unique_ptr<ComponentInfo>>& entry) -> IComponent& {
+      definer.scopeComponents("", "Add...", cComponents, [](const std::pair<const std::string, std::unique_ptr<ComponentInfo>>& entry) -> IComponent& {
         return *entry.second->getComponent();
       }, [&definer, this](IComponent& component) {
         Options mNamelessHint = Options{{"name", ""}};
@@ -143,11 +143,14 @@ namespace IsoRealms {
         }, mNamelessHint, [&component]() {
           return component.renderIcon();
         });
-      }, [this, &parent, &definer](const std::string& key) -> IComponent& {
-        if (key.empty()) {
-          return *createComponent(parent, "Unnamed " + parent.getSingular(), parent.getProjectFile());
+      }, [this, &parent, &definer](const std::string& key, ProjectFile* ownerProject) -> IComponent& {
+        if (ownerProject == nullptr) {
+          ownerProject = parent.getProjectFile();
         }
-        parent.loadPersistedMember(key, false, definer, parent.getProjectFile());
+        if (key.empty()) {
+          return *createComponent(parent, "Unnamed " + parent.getSingular(), ownerProject);
+        }
+        parent.loadPersistedMember(key, false, definer, ownerProject);
         return *getComponent2(key, false);
       }, mNamelessHint);
     }

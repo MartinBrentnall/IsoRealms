@@ -229,6 +229,39 @@ namespace IsoRealms {
     }
   }
 
+  void ComponentEditor::scopeModules(const std::string& key, const std::string& addKey, IModuleKeyedArraySource& source, std::function<void(Module& module)> scopeMember, const Options& hint) {
+    source.forEachModule([&scopeMember](const std::string&, Module& module) {
+      scopeMember(module);
+    });
+    if (hint.getOption(IComponentDefiner::HINT_KEY_NO_ADD) != "true" && !addKey.empty()) {
+      propertyAdd(addKey, "Add...", [&source, &scopeMember]() {
+        scopeMember(source.defineNewMember(""));
+      }, hint);
+    }
+  }
+
+  void ComponentEditor::scopeOwnedKeyedArray(const std::string& key, const std::string& addKey, IOwnedKeyedArraySource& source, std::function<void(IOwnedKeyedMember& member)> scopeMember, const Options& hint) {
+    source.forEachMember([&scopeMember](const std::string&, IOwnedKeyedMember& member) {
+      scopeMember(member);
+    });
+    if (hint.getOption(IComponentDefiner::HINT_KEY_NO_ADD) != "true" && !addKey.empty()) {
+      propertyAdd(addKey, "Add...", [&source, &scopeMember]() {
+        scopeMember(source.defineNewMember(""));
+      }, hint);
+    }
+  }
+
+  void ComponentEditor::scopeComponents(const std::string& key, const std::string& addKey, IComponentKeyedArraySource& source, std::function<void(IComponent& component)> scopeMember, const Options& hint) {
+    source.forEachComponent([&scopeMember](const std::string&, IComponent& component) {
+      scopeMember(component);
+    });
+    if (hint.getOption(IComponentDefiner::HINT_KEY_NO_ADD) != "true" && !addKey.empty()) {
+      propertyAdd(addKey, "Add...", [&source, &scopeMember]() {
+        scopeMember(source.defineNewMember("", nullptr));
+      }, hint);
+    }
+  }
+
   void ComponentEditor::array(const std::string& key, const std::string& addKey, IArraySource& source, const Options& hint) {
     source.forEachMember([](const std::function<void()>& define) {
       define();

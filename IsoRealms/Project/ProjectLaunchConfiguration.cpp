@@ -31,6 +31,14 @@ namespace IsoRealms {
     return cDefName;
   }
 
+  ProjectFile* ProjectLaunchConfiguration::getOwnerProjectFile() const {
+    return cDefOwner.getProjectFile();
+  }
+
+  bool ProjectLaunchConfiguration::needsSaving(const ProjectFile* savingProject) const {
+    return savingProject != nullptr && savingProject == cDefOwner.getProjectFile();
+  }
+
   void ProjectLaunchConfiguration::define(IComponentDefiner& definer, Project& project) {
     definer.propertyString("launchConfigurationName", [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, cDefName, [this, &project](const std::string& value) {return !project.isLaunchConfigurationNameUsed(value, this);});
     definer.keyedArray("options", "launchConfigurationOptionAdd", cDefOptions, [](const std::unique_ptr<Option>& option) -> Option& {return *option;}, [this, &definer](Option& option) {
@@ -64,7 +72,7 @@ namespace IsoRealms {
   }
 
   bool ProjectLaunchConfiguration::isOwnedBy(const ProjectFile& project) const {
-    return &project == cDefOwner.getProjectFile();
+    return needsSaving(&project);
   }
 
   void ProjectLaunchConfiguration::getOptions(Options& options) const {

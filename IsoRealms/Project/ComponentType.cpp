@@ -95,6 +95,10 @@ namespace IsoRealms {
     return cComponentType->needsSaving(savingProject);
   }
 
+  std::string const ComponentType::getName() const {
+    return cParent.getName(this);
+  }
+
   std::string const ComponentType::getPlural() const {
     return cPlural == "" ? "TODO: " + cParent.getName(this) + "'s" : cPlural;
   }

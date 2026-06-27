@@ -111,6 +111,7 @@ namespace IsoRealms {
     std::vector<std::string> getWritableProjectFileNames() const;
     ProjectFile* getProjectFile();
     ProjectFile* getProjectFile(const std::string& id);
+    ProjectFile* getProjectFileByPath(const std::string& path);
     
     // Function used by modules.
     Application& getApplication();

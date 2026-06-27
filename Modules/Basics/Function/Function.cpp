@@ -220,6 +220,13 @@ namespace IsoRealms::Basics {
 
   void Function::Call::defineResource(IComponentDefiner& definer) {
     definer.fixedArray("bindings", cDefArguments, [](const std::unique_ptr<IsoRealms::Binding>& binding) -> IsoRealms::Binding& {return *binding;}, [this, &definer](IsoRealms::Binding& binding, unsigned int index) {
+      definer.propertyString("argument", [this, index]() {
+        return cParent.cDefArgumentDefinitions[index]->getName();
+      }, [this, index](const std::string& value) {
+        if (!value.empty() && value != cParent.cDefArgumentDefinitions[index]->getName()) {
+          throw ArgumentException("ERROR: Function::Call::defineResource: Argument binding name \"" + value + "\" does not match \"" + cParent.cDefArgumentDefinitions[index]->getName() + "\" at index " + Utils::toString(index) + ".");
+        }
+      });
       Options mHint;
       mHint.addOption("name", cParent.cDefArgumentDefinitions[index]->getName());
       mHint.addOption("description", "An argument to the function.");

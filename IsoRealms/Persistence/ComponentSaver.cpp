@@ -21,31 +21,39 @@
 #include "IsoRealms/Condition/Condition.h"
 #include "IsoRealms/Editing/Property/ITreeSelectorObject.h"
 #include "IsoRealms/IComponentData.h"
+#include "IsoRealms/IComponent.h"
 #include "IsoRealms/Persistence/JSONDocument.h"
 #include "IsoRealms/Project/Module.h"
 #include "IsoRealms/Project/ComponentType.h"
+#include "IsoRealms/Project/Project.h"
 #include "IsoRealms/Resources/Type/IEditable.h"
 
 namespace IsoRealms {
-  ComponentSaver::ComponentSaver(IComponentData& resourceData, const std::string& file) :
+  ComponentSaver::ComponentSaver(IComponentData& resourceData, ProjectFile& persistingProjectFile) :
             cComponentData(resourceData) {
-    pushDocument(file);
+    pushDocument(persistingProjectFile.cFile.getRelativePath(), &persistingProjectFile);
   }
 
-  void ComponentSaver::pushDocument(const std::string& file) {
+  void ComponentSaver::pushDocument(const std::string& file, ProjectFile* persistingProjectFile) {
     cDocuments.push_back(std::make_unique<JSONDocument>());
     cFilenames.push_back(file);
+    cPersistingProjectFiles.push_back(persistingProjectFile);
     cObjects.push_back(cDocuments.back()->addObject("project"));
   }
 
   void ComponentSaver::popDocument() {
     cDocuments.pop_back();
     cFilenames.pop_back();
+    cPersistingProjectFiles.pop_back();
     cObjects.pop_back();
   }
 
   void ComponentSaver::finish() {
     cDocuments.back()->save(cFilenames.back());
+  }
+
+  ProjectFile* ComponentSaver::getPersistingProjectFile() {
+    return cPersistingProjectFiles.empty() ? nullptr : cPersistingProjectFiles.back();
   }
 
   JSONObject& ComponentSaver::currentObject() {
@@ -86,8 +94,9 @@ namespace IsoRealms {
     if (!key.empty()) {
       pushObject(currentObject().addObject(key));
       cSaveKeyedArrayKeys.push_back(key);
+      return true;
     }
-    return true;
+    return false;
   }
 
   void ComponentSaver::beginSaveKeyedMember(const std::string& memberKey) {
@@ -151,9 +160,6 @@ namespace IsoRealms {
   }
 
   void ComponentSaver::propertyInteger(const std::string& key, std::function<int()> getter, std::function<void(int)> setter, int defaultValue, std::function<bool(int)> validityChecker, std::function<void()> removeFunction, const Options& hint) {
-    if (hint.getOption(IComponentDefiner::HINT_KEY_HIDDEN) == "true") {
-      return;
-    }
     currentObject().addInteger(key, getter(), defaultValue);
   }
 
@@ -200,8 +206,14 @@ namespace IsoRealms {
 
   void ComponentSaver::scopeModule(Module& module, std::function<void()> removeFunction) {
     std::vector<ComponentType*> mComponentTypes = module.getComponentTypes();
-    for (ComponentType* mComponentType : mComponentTypes) {
-      mComponentType->define(*this);
+    if (module.needsSaving(getPersistingProjectFile())) {
+      for (ComponentType* mComponentType : mComponentTypes) {
+        if (mComponentType->needsSaving(getPersistingProjectFile())) {
+          scope(mComponentType->getName(), "", [this, mComponentType]() {
+            mComponentType->define(*this);
+          }, nullptr, IComponentDefiner::HINT_NESTED);
+        }
+      }
     }
   }
 
@@ -219,7 +231,11 @@ namespace IsoRealms {
       if (!mWritable) {
         return;
       }
-      pushDocument(mFilePath);
+      ProjectFile* mPersistingProjectFile = nullptr;
+      if (!mFilePath.empty()) {
+        mPersistingProjectFile = static_cast<Project&>(cComponentData).getProjectFileByPath(mFilePath);
+      }
+      pushDocument(mFilePath, mPersistingProjectFile);
       subProperties();
       popDocument();
       return;
@@ -241,15 +257,97 @@ namespace IsoRealms {
     if (source.isEmpty()) {
       return;
     }
-    if (!beginSaveKeyedArray(key)) {
-      return;
-    }
+    const bool mOpenedKeyedArray = beginSaveKeyedArray(key);
     source.forEachMember([this](const std::string& name, const std::function<void()>& define) {
       beginSaveKeyedMember(name);
       define();
       endSaveKeyedMember();
     });
-    endSaveKeyedArray();
+    if (mOpenedKeyedArray) {
+      endSaveKeyedArray();
+    }
+  }
+
+  void ComponentSaver::scopeOwnedResource(ProjectFile* ownerProjectFile, ProjectFile* loadingProjectFile, std::function<void()> scopeMember) {
+    const ProjectFile* mPersistingProjectFile = cPersistingProjectFiles.back();
+    if (mPersistingProjectFile != nullptr && ownerProjectFile == mPersistingProjectFile) {
+      scopeMember();
+    }
+  }
+
+  void ComponentSaver::scopeOwnedKeyedArray(const std::string& key, const std::string& addKey, IOwnedKeyedArraySource& source, std::function<void(IOwnedKeyedMember& member)> scopeMember, const Options& hint) {
+    if (source.isEmpty()) {
+      return;
+    }
+    const ProjectFile* mPersistingProjectFile = cPersistingProjectFiles.back();
+    std::vector<std::pair<std::string, IOwnedKeyedMember*>> mMembers;
+    source.forEachMember([&mMembers, mPersistingProjectFile](const std::string& name, IOwnedKeyedMember& member) {
+      if (mPersistingProjectFile != nullptr && member.needsSaving(mPersistingProjectFile)) {
+        mMembers.emplace_back(name, &member);
+      }
+    });
+    if (mMembers.empty()) {
+      return;
+    }
+    const bool mOpenedKeyedArray = beginSaveKeyedArray(key);
+    for (const std::pair<std::string, IOwnedKeyedMember*>& mMember : mMembers) {
+      beginSaveKeyedMember(mMember.first);
+      scopeMember(*mMember.second);
+      endSaveKeyedMember();
+    }
+    if (mOpenedKeyedArray) {
+      endSaveKeyedArray();
+    }
+  }
+
+  void ComponentSaver::scopeModules(const std::string& key, const std::string& addKey, IModuleKeyedArraySource& source, std::function<void(Module& module)> scopeMember, const Options& hint) {
+    if (source.isEmpty()) {
+      return;
+    }
+    const ProjectFile* mPersistingProjectFile = cPersistingProjectFiles.back();
+    std::vector<std::pair<std::string, Module*>> mMembers;
+    source.forEachModule([&mMembers, mPersistingProjectFile](const std::string& name, Module& module) {
+      if (mPersistingProjectFile != nullptr && module.needsSaving(mPersistingProjectFile)) {
+        mMembers.emplace_back(name, &module);
+      }
+    });
+    if (mMembers.empty()) {
+      return;
+    }
+    const bool mOpenedKeyedArray = beginSaveKeyedArray(key);
+    for (const std::pair<std::string, Module*>& mMember : mMembers) {
+      beginSaveKeyedMember(mMember.first);
+      scopeMember(*mMember.second);
+      endSaveKeyedMember();
+    }
+    if (mOpenedKeyedArray) {
+      endSaveKeyedArray();
+    }
+  }
+
+  void ComponentSaver::scopeComponents(const std::string& key, const std::string& addKey, IComponentKeyedArraySource& source, std::function<void(IComponent& component)> scopeMember, const Options& hint) {
+    if (source.isEmpty()) {
+      return;
+    }
+    const ProjectFile* mPersistingProjectFile = cPersistingProjectFiles.back();
+    std::vector<std::pair<std::string, IComponent*>> mMembers;
+    source.forEachComponent([&mMembers, mPersistingProjectFile](const std::string& name, IComponent& component) {
+      if (mPersistingProjectFile != nullptr && component.needsSaving(mPersistingProjectFile)) {
+        mMembers.emplace_back(name, &component);
+      }
+    });
+    if (mMembers.empty()) {
+      return;
+    }
+    const bool mOpenedKeyedArray = beginSaveKeyedArray(key);
+    for (const std::pair<std::string, IComponent*>& mMember : mMembers) {
+      beginSaveKeyedMember(mMember.first);
+      scopeMember(*mMember.second);
+      endSaveKeyedMember();
+    }
+    if (mOpenedKeyedArray) {
+      endSaveKeyedArray();
+    }
   }
 
   void ComponentSaver::array(const std::string& key, const std::string& addKey, IArraySource& source, const Options& hint) {

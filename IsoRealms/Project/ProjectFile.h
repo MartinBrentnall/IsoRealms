@@ -36,6 +36,7 @@ namespace IsoRealms {
     std::vector<std::string> getNames() const;
     void getNames(std::vector<std::string>& names) const;
     ProjectFile* getFile(const std::string& id);
+    ProjectFile* getFileByPath(const std::string& path);
     void define(IComponentDefiner& definer, Project& project, bool topFile, bool editing);
     void rename(const std::string name, bool user);
     bool isModifiable() const;

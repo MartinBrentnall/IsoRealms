@@ -26,6 +26,8 @@
 #include "IsoRealms/Persistence/JSONDocument.h"
 #include "IsoRealms/Persistence/JSONObject.h"
 #include "IsoRealms/Project/Options.h"
+#include "IsoRealms/Project/Project.h"
+#include "IsoRealms/Project/ProjectFile.h"
 
 namespace IsoRealms {
   class Condition;
@@ -43,7 +45,7 @@ namespace IsoRealms {
    */
   class ComponentSaver : public IComponentDefiner {
     public:
-    ComponentSaver(IComponentData& resourceData, const std::string& file);
+    ComponentSaver(IComponentData& resourceData, ProjectFile& persistingProjectFile);
 
     void finish() override;
 
@@ -70,6 +72,10 @@ namespace IsoRealms {
     void spacer(float height) override;
 
     void keyedArray(const std::string& key, const std::string& addKey, IKeyedArraySource& source, const Options& hint = Options::EMPTY) override;
+    void scopeComponents(const std::string& key, const std::string& addKey, IComponentKeyedArraySource& source, std::function<void(IComponent& component)> scopeMember, const Options& hint = Options::EMPTY) override;
+    void scopeModules(const std::string& key, const std::string& addKey, IModuleKeyedArraySource& source, std::function<void(Module& module)> scopeMember, const Options& hint = Options::EMPTY) override;
+    void scopeOwnedKeyedArray(const std::string& key, const std::string& addKey, IOwnedKeyedArraySource& source, std::function<void(IOwnedKeyedMember& member)> scopeMember, const Options& hint = Options::EMPTY) override;
+    void scopeOwnedResource(ProjectFile* ownerProjectFile, ProjectFile* loadingProjectFile, std::function<void()> scopeMember) override;
     void array(const std::string& key, const std::string& addKey, IArraySource& source, const Options& hint = Options::EMPTY) override;
     void fixedArray(const std::string& key, IFixedArraySource& source, const Options& hint = Options::EMPTY) override;
 
@@ -85,12 +91,13 @@ namespace IsoRealms {
     void endSaveKeyedMember();
     void endSaveKeyedArray();
 
-    void pushDocument(const std::string& file);
+    void pushDocument(const std::string& file, ProjectFile* persistingProjectFile);
     void popDocument();
 
     IComponentData& cComponentData;
     std::vector<std::unique_ptr<JSONDocument>> cDocuments;
     std::vector<std::string> cFilenames;
+    std::vector<ProjectFile*> cPersistingProjectFiles;
     std::vector<JSONObject> cObjects;
     std::vector<std::string> cSaveArrayKeys;
     std::vector<std::string> cSaveKeyedArrayKeys;
@@ -100,5 +107,7 @@ namespace IsoRealms {
     void pushObject(JSONObject object);
     void popObject();
     void saveTreeSelectorResourceProperties(ITreeSelectorObject& item, const Options& hint);
+
+    ProjectFile* getPersistingProjectFile();
   };
 }

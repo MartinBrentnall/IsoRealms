@@ -90,13 +90,14 @@ namespace IsoRealms::Equilibria {
                          [this]() {return getBehaviourString();},
                          [this](const std::string& value) {
                            cDefFlags = (cDefFlags & ~FLAG_BEHAVIOUR_MASK) | getBehaviourFlags(value);
-                         });
+                         },
+                         BEHAVIOUR_NORMAL);
     definer.propertyInteger("x",                [this]() {return cDefStartX - cZone.getStartX();},            [this](int value) {cDefStartX = value + cZone.getStartX();});
     definer.propertyInteger("y",                [this]() {return cDefStartY - cZone.getStartY();},            [this](int value) {cDefStartY = value + cZone.getStartY();});
     definer.propertyInteger("z",                [this]() {return (cDefStartZ + 1) - cZone.getStartZ();},      [this](int value) {cDefStartZ = value + cZone.getStartZ() - 1;});
-    definer.propertyInteger("width",            [this]() {return (cDefEndX + 1) - cDefStartX;},               [this](int value) {cDefEndX = cDefStartX + value - 1;});
-    definer.propertyInteger("length",           [this]() {return (cDefEndY + 1) - cDefStartY;},               [this](int value) {cDefEndY = cDefStartY + value - 1;});
-    definer.propertyInteger("height",           [this]() {return cDefEndZ - cDefStartZ;},                     [this](int value) {cDefEndZ = cDefStartZ + value;});
+    definer.propertyInteger("width",            [this]() {return (cDefEndX + 1) - cDefStartX;},               [this](int value) {cDefEndX = cDefStartX + value - 1;}, 1);
+    definer.propertyInteger("length",           [this]() {return (cDefEndY + 1) - cDefStartY;},               [this](int value) {cDefEndY = cDefStartY + value - 1;}, 1);
+    definer.propertyInteger("height",           [this]() {return cDefEndZ - cDefStartZ;},                     [this](int value) {cDefEndZ = cDefStartZ + value;},     1);
     definer.propertyInteger("northWestCorner",  [this]() {return cDefCornerHeight[0][1];},                    [this](int value) {cDefCornerHeight[0][1] = value;});
     definer.propertyInteger("northEastCorner",  [this]() {return cDefCornerHeight[1][1];},                    [this](int value) {cDefCornerHeight[1][1] = value;});
     definer.propertyInteger("southEastCorner",  [this]() {return cDefCornerHeight[1][0];},                    [this](int value) {cDefCornerHeight[1][0] = value;});

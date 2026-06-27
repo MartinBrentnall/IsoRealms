@@ -111,9 +111,10 @@ namespace IsoRealms {
         mStructureFile.define(definer, *this, false, loadOwner == nullptr);
       });
       definer.scope("launchConfigurations", "Edit...", [this, &definer, &mStructureFile]() {
-        definer.keyedArray("launchConfigurations", "launchConfigurationAdd", cDefTestLaunchConfigurations, [](const std::unique_ptr<ProjectLaunchConfiguration>& launchConfiguration) -> ProjectLaunchConfiguration& {
+        definer.scopeOwnedKeyedArray("launchConfigurations", "launchConfigurationAdd", cDefTestLaunchConfigurations, [](const std::unique_ptr<ProjectLaunchConfiguration>& launchConfiguration) -> ProjectLaunchConfiguration& {
           return *launchConfiguration;
-        }, [this, &definer](ProjectLaunchConfiguration& launchConfiguration) {
+        }, [this, &definer](IOwnedKeyedMember& member) {
+          ProjectLaunchConfiguration& launchConfiguration = static_cast<ProjectLaunchConfiguration&>(member);
           definer.scope("launchConfiguration", launchConfiguration.getName(), [&launchConfiguration, &definer, this]() {
             launchConfiguration.define(definer, *this);
           }, [this, &launchConfiguration]() {
@@ -132,7 +133,9 @@ namespace IsoRealms {
 
     // Modules.
     definer.spacer(0.5f);
-    definer.keyedArray("modules", "", cDefModules, [](const std::unique_ptr<Module>& module) -> Module& {
+    definer.scopeModules("modules", "", cDefModules, [](const std::unique_ptr<Module>& module) {
+      return module->getName();
+    }, [](const std::unique_ptr<Module>& module) -> Module& {
       return *module;
     }, [&definer, this](Module& module) {
       definer.scopeModule(module, [this, &module]() {
@@ -254,7 +257,7 @@ namespace IsoRealms {
 
   void Project::save(ProjectFile& file) {
     if (file.cFile.isSet() && file.isModifiable()) {
-      std::unique_ptr<IComponentDefiner> mSaver = cApplication.createComponentSaver(*this, file.cFile.getRelativePath());
+      std::unique_ptr<IComponentDefiner> mSaver = cApplication.createComponentSaver(*this, file);
       define(*mSaver, &file);
     }
   }
@@ -350,6 +353,10 @@ namespace IsoRealms {
   
   ProjectFile* Project::getProjectFile(const std::string& id) {
     return cDefProjectFileStructure.getFile(id);
+  }
+
+  ProjectFile* Project::getProjectFileByPath(const std::string& path) {
+    return cDefProjectFileStructure.getFileByPath(path);
   }
 
   Application& Project::getApplication() {

@@ -1,7 +1,6 @@
 {
   "project": {
     "description": "Options Menus",
-    "include": [],
     "modules": {
       "Basics": {
         "AnalogueControl": {
@@ -225,68 +224,68 @@
           "Options Configure Input": {
             "bindings": [
               {
-                "variable": "screen",
                 "to": {
                   "key": "UI/Layout/Main/Menu"
-                }
+                },
+                "variable": "screen"
               },
               {
-                "variable": "input",
                 "to": {
                   "key": "Basics/InputSwitch/Options Screen"
-                }
+                },
+                "variable": "input"
               },
               {
-                "variable": "menu",
                 "to": {
                   "key": "UI/Menu/Options Configure Input"
-                }
+                },
+                "variable": "menu"
               },
               {
-                "variable": "menuScreen",
                 "to": {
                   "key": ":Screen",
                   "resource": {
                     "key": "UI/Menu/Options Configure Input"
                   }
-                }
+                },
+                "variable": "menuScreen"
               },
               {
-                "variable": "menuInput",
                 "to": {
                   "key": ":InputHandler",
                   "resource": {
                     "key": "UI/Menu/Options Configure Input"
                   }
-                }
+                },
+                "variable": "menuInput"
               },
               {
-                "variable": "inputName",
                 "to": {
                   "key": "Basics/String/Name of Input Being Configured"
-                }
+                },
+                "variable": "inputName"
               },
               {
-                "variable": "inputList",
                 "to": {
                   "key": "UI/Menu/Options Configure Input/DigitalInput/Spindizzy"
-                }
+                },
+                "variable": "inputList"
               }
             ],
             "arguments": [
               {
                 "name": "name",
-                "luaName": "name",
                 "type": {
                   "key": "Any"
-                }
+                },
+                "luaName": "name"
               },
               {
                 "name": "digitalInput",
-                "luaName": "digitalInput",
                 "type": {
                   "key": "Any"
-                }
+                },
+                "luaName": "digitalInput"
               }
             ],
             "code": "table.insert(gMenuScreenStack, menuScreen)\ntable.insert(gMenuInputStack, menuInput)\nmenu:reset()\ninput:setInputHandler(menuInput)\nscreen:setScreen(menuScreen)\ninputName:setValue(name:getValue())\ncurrentInputList = inputList\ncurrentDigitalInput = digitalInput\ninputList:clear()\nfor i = 0, digitalInput:getMappingCount() - 1 do\n  inputList:addMapping(digitalInput:getMapping(i))\nend"
@@ -294,39 +293,39 @@
           "Options Enter Screen": {
             "bindings": [
               {
-                "variable": "screen",
                 "to": {
                   "key": "UI/Layout/Main/Menu"
-                }
+                },
+                "variable": "screen"
               },
               {
-                "variable": "input",
                 "to": {
                   "key": "Basics/InputSwitch/Options Screen"
-                }
+                },
+                "variable": "input"
               }
             ],
             "arguments": [
               {
                 "name": "menuScreen",
-                "luaName": "menuScreen",
                 "type": {
                   "key": "Any"
-                }
+                },
+                "luaName": "menuScreen"
               },
               {
                 "name": "menu",
-                "luaName": "menu",
                 "type": {
                   "key": "Any"
-                }
+                },
+                "luaName": "menu"
               },
               {
                 "name": "menuInput",
-                "luaName": "menuInput",
                 "type": {
                   "key": "Any"
-                }
+                },
+                "luaName": "menuInput"
               }
             ],
             "code": "table.insert(gMenuScreenStack, menuScreen)\ntable.insert(gMenuInputStack, menuInput)\nmenu:reset()\ninput:setInputHandler(menuInput)\nscreen:setScreen(menuScreen)"
@@ -334,265 +333,262 @@
           "Options Leave Screen": {
             "bindings": [
               {
-                "variable": "screen",
                 "to": {
                   "key": "UI/Layout/Main/Menu"
-                }
+                },
+                "variable": "screen"
               },
               {
-                "variable": "input",
                 "to": {
                   "key": "Basics/InputSwitch/Options Screen"
-                }
+                },
+                "variable": "input"
               },
               {
-                "variable": "inputName",
                 "to": {
                   "key": "Basics/String/Name of Input Being Configured"
-                }
+                },
+                "variable": "inputName"
               }
             ],
-            "arguments": [],
             "code": "table.remove(gMenuScreenStack)\ntable.remove(gMenuInputStack)\ninput:setInputHandler(gMenuInputStack[#gMenuInputStack])\nscreen:setScreen(gMenuScreenStack[#gMenuScreenStack])\ninputName:setValue(\"\")"
           },
           "Options Reload Configuration": {
             "bindings": [
               {
-                "variable": "basics",
                 "to": {
                   "key": "Basics"
-                }
+                },
+                "variable": "basics"
               },
               {
-                "variable": "application",
                 "to": {
                   "key": "Application"
-                }
+                },
+                "variable": "application"
               },
               {
-                "variable": "optionFullScreen",
                 "to": {
                   "key": "UI/Menu/Visual/Boolean/FullScreen"
-                }
+                },
+                "variable": "optionFullScreen"
               },
               {
-                "variable": "soundVolumeSlider",
                 "to": {
                   "key": "UI/Menu/Audio/Slider/SoundVolume"
-                }
+                },
+                "variable": "soundVolumeSlider"
               },
               {
-                "variable": "optionLeft",
                 "to": {
                   "key": "UI/Menu/Control/Action/Left"
-                }
+                },
+                "variable": "optionLeft"
               },
               {
-                "variable": "optionRight",
                 "to": {
                   "key": "UI/Menu/Control/Action/Right"
-                }
+                },
+                "variable": "optionRight"
               },
               {
-                "variable": "optionUp",
                 "to": {
                   "key": "UI/Menu/Control/Action/Up"
-                }
+                },
+                "variable": "optionUp"
               },
               {
-                "variable": "optionDown",
                 "to": {
                   "key": "UI/Menu/Control/Action/Down"
-                }
+                },
+                "variable": "optionDown"
               },
               {
-                "variable": "optionThrust",
                 "to": {
                   "key": "UI/Menu/Control/Action/GERALD Thrust"
-                }
+                },
+                "variable": "optionThrust"
               },
               {
-                "variable": "optionBrake",
                 "to": {
                   "key": "UI/Menu/Control/Action/GERALD Brake"
-                }
+                },
+                "variable": "optionBrake"
               },
               {
-                "variable": "optionRotateViewLeft",
                 "to": {
                   "key": "UI/Menu/Control/Action/Camera Rotate Left"
-                }
+                },
+                "variable": "optionRotateViewLeft"
               },
               {
-                "variable": "optionRotateViewRight",
                 "to": {
                   "key": "UI/Menu/Control/Action/Camera Rotate Right"
-                }
+                },
+                "variable": "optionRotateViewRight"
               },
               {
-                "variable": "optionReverseView",
                 "to": {
                   "key": "UI/Menu/Control/Action/Camera Reverse"
-                }
+                },
+                "variable": "optionReverseView"
               },
               {
-                "variable": "optionResetView",
                 "to": {
                   "key": "UI/Menu/Control/Action/Camera Reset"
-                }
+                },
+                "variable": "optionResetView"
               },
               {
-                "variable": "optionToggleMap",
                 "to": {
                   "key": "UI/Menu/Control/Action/Toggle Map"
-                }
+                },
+                "variable": "optionToggleMap"
               },
               {
-                "variable": "optionToggleCraft",
                 "to": {
                   "key": "UI/Menu/Control/Action/GERALD Transform"
-                }
+                },
+                "variable": "optionToggleCraft"
               },
               {
-                "variable": "optionTogglePause",
                 "to": {
                   "key": "UI/Menu/Control/Action/Toggle Pause"
-                }
+                },
+                "variable": "optionTogglePause"
               },
               {
-                "variable": "optionDestruct",
                 "to": {
                   "key": "UI/Menu/Control/Action/GERALD Destruct"
-                }
+                },
+                "variable": "optionDestruct"
               },
               {
-                "variable": "inputLeft",
                 "to": {
                   "key": "Basics/AnalogueControl/GERALD Movement X/Left"
-                }
+                },
+                "variable": "inputLeft"
               },
               {
-                "variable": "inputRight",
                 "to": {
                   "key": "Basics/AnalogueControl/GERALD Movement X/Right"
-                }
+                },
+                "variable": "inputRight"
               },
               {
-                "variable": "inputUp",
                 "to": {
                   "key": "Basics/AnalogueControl/GERALD Movement Y/Up"
-                }
+                },
+                "variable": "inputUp"
               },
               {
-                "variable": "inputDown",
                 "to": {
                   "key": "Basics/AnalogueControl/GERALD Movement Y/Down"
-                }
+                },
+                "variable": "inputDown"
               },
               {
-                "variable": "inputThrust",
                 "to": {
                   "key": "Basics/DigitalControl/GERALD Thrust"
-                }
+                },
+                "variable": "inputThrust"
               },
               {
-                "variable": "inputBrake",
                 "to": {
                   "key": "Basics/DigitalControl/GERALD Brake"
-                }
+                },
+                "variable": "inputBrake"
               },
               {
-                "variable": "inputRotateViewLeft",
                 "to": {
                   "key": "Basics/DigitalControl/Camera Rotate Left"
-                }
+                },
+                "variable": "inputRotateViewLeft"
               },
               {
-                "variable": "inputRotateViewRight",
                 "to": {
                   "key": "Basics/DigitalControl/Camera Rotate Right"
-                }
+                },
+                "variable": "inputRotateViewRight"
               },
               {
-                "variable": "inputReverseView",
                 "to": {
                   "key": "Basics/DigitalControl/Camera Reverse"
-                }
+                },
+                "variable": "inputReverseView"
               },
               {
-                "variable": "inputResetView",
                 "to": {
                   "key": "Basics/DigitalControl/Camera Reset"
-                }
+                },
+                "variable": "inputResetView"
               },
               {
-                "variable": "inputToggleMap",
                 "to": {
                   "key": "Basics/DigitalControl/Toggle Map"
-                }
+                },
+                "variable": "inputToggleMap"
               },
               {
-                "variable": "inputToggleCraft",
                 "to": {
                   "key": "Basics/DigitalControl/GERALD Transform"
-                }
+                },
+                "variable": "inputToggleCraft"
               },
               {
-                "variable": "inputTogglePause",
                 "to": {
                   "key": "Basics/DigitalControl/Toggle Pause"
-                }
+                },
+                "variable": "inputTogglePause"
               },
               {
-                "variable": "inputDestruct",
                 "to": {
                   "key": "Basics/DigitalControl/GERALD Destruct"
-                }
+                },
+                "variable": "inputDestruct"
               }
             ],
-            "arguments": [],
             "code": "fullScreen = application:isFullScreen()\nsoundVolume = basics:getSoundVolume()\n-- musicVolume = basics:getMusicVolume()\noptionFullScreen:setValue(fullScreen)\nsoundVolumeSlider:setValue(soundVolume)\n-- musicVolumeSlider:setValue(musicVolume)\n\noptionLeft:setValue(inputLeft:getInputsString())\noptionRight:setValue(inputRight:getInputsString())\noptionUp:setValue(inputUp:getInputsString())\noptionDown:setValue(inputDown:getInputsString())\noptionThrust:setValue(inputThrust:getInputsString())\noptionBrake:setValue(inputBrake:getInputsString())\noptionRotateViewLeft:setValue(inputRotateViewLeft:getInputsString())\noptionRotateViewRight:setValue(inputRotateViewRight:getInputsString())\noptionReverseView:setValue(inputReverseView:getInputsString())\noptionResetView:setValue(inputResetView:getInputsString())\noptionToggleMap:setValue(inputToggleMap:getInputsString())\noptionToggleCraft:setValue(inputToggleCraft:getInputsString())\noptionTogglePause:setValue(inputTogglePause:getInputsString())\noptionDestruct:setValue(inputDestruct:getInputsString())"
           },
           "Options Restore Previous Video Mode": {
             "bindings": [
               {
-                "variable": "application",
                 "to": {
                   "key": "Application"
-                }
+                },
+                "variable": "application"
               },
               {
-                "variable": "optionResolution",
                 "to": {
                   "key": "UI/Menu/Visual/DisplayResolution/Resolution"
-                }
+                },
+                "variable": "optionResolution"
               },
               {
-                "variable": "optionFullScreen",
                 "to": {
                   "key": "UI/Menu/Visual/Boolean/FullScreen"
-                }
+                },
+                "variable": "optionFullScreen"
               },
               {
-                "variable": "screenTestTimer",
                 "to": {
                   "key": "Basics/Sequence/Timer (Video Mode Test Timeout)/Instance"
-                }
+                },
+                "variable": "screenTestTimer"
               },
               {
-                "variable": "screen",
                 "to": {
                   "key": "UI/Layout/Main/Menu"
-                }
+                },
+                "variable": "screen"
               },
               {
-                "variable": "input",
                 "to": {
                   "key": "Basics/InputSwitch/Options Screen"
-                }
+                },
+                "variable": "input"
               }
             ],
-            "arguments": [],
             "code": "application:setDisplayResolution(previousMode, previousFullScreen)\noptionResolution:setValue(previousMode)\noptionFullScreen:setValue(previousFullScreen)\ntable.remove(gMenuScreenStack)\ntable.remove(gMenuInputStack)\ninput:setInputHandler(gMenuInputStack[#gMenuInputStack])\nscreen:setScreen(gMenuScreenStack[#gMenuScreenStack])\nscreenTestTimer:pause()"
           }
         },
@@ -611,11 +607,15 @@
               "key": "Literal",
               "value": 1.0
             },
+            "instances": [
+              {
+                "name": "Instance"
+              }
+            ],
             "tracks": [
               {
                 "track": {
                   "key": "Colour",
-                  "name": "Colour",
                   "start": {
                     "key": "Literal",
                     "red": 1.0,
@@ -623,6 +623,7 @@
                     "blue": 0.5000000596046448,
                     "alpha": 1.0
                   },
+                  "name": "Colour",
                   "events": [
                     {
                       "duration": 200,
@@ -683,11 +684,6 @@
                   ]
                 }
               }
-            ],
-            "instances": [
-              {
-                "name": "Instance"
-              }
             ]
           },
           "Timer (Video Mode Test Timeout)": {
@@ -695,6 +691,11 @@
               "key": "Literal",
               "value": 1.0
             },
+            "instances": [
+              {
+                "name": "Instance"
+              }
+            ],
             "tracks": [
               {
                 "track": {
@@ -709,11 +710,6 @@
                     }
                   ]
                 }
-              }
-            ],
-            "instances": [
-              {
-                "name": "Instance"
               }
             ]
           }
@@ -730,19 +726,35 @@
                 "id": "TextInput",
                 "screen": {
                   "key": "UI/Text",
-                  "alignment": "Center",
                   "value": {
                     "key": "Basics/String/Name of Input Being Configured"
                   },
                   "font": {
                     "key": "Basics/Font/Application Main Font"
                   },
+                  "alignment": "Center",
                   "colour": {
                     "key": "Literal",
                     "red": 1.0,
                     "green": 1.0,
                     "blue": 1.0,
                     "alpha": 1.0
+                  }
+                },
+                "left": {
+                  "location": {
+                    "key": "Absolute"
+                  },
+                  "offset": {
+                    "key": "Absolute"
+                  }
+                },
+                "right": {
+                  "location": {
+                    "key": "Absolute"
+                  },
+                  "offset": {
+                    "key": "Absolute"
                   }
                 },
                 "top": {
@@ -758,22 +770,6 @@
                   "location": {
                     "key": "Absolute",
                     "value": 0.20000000298023225
-                  },
-                  "offset": {
-                    "key": "Absolute"
-                  }
-                },
-                "left": {
-                  "location": {
-                    "key": "Absolute"
-                  },
-                  "offset": {
-                    "key": "Absolute"
-                  }
-                },
-                "right": {
-                  "location": {
-                    "key": "Absolute"
                   },
                   "offset": {
                     "key": "Absolute"
@@ -805,16 +801,16 @@
                     "key": "Basics/Script",
                     "bindings": [
                       {
-                        "variable": "basics",
                         "to": {
                           "key": "Basics"
-                        }
+                        },
+                        "variable": "basics"
                       },
                       {
-                        "variable": "soundVolumeSlider",
                         "to": {
                           "key": "UI/Menu/Audio/Slider/SoundVolume"
-                        }
+                        },
+                        "variable": "soundVolumeSlider"
                       }
                     ],
                     "code": "soundVolume = soundVolumeSlider:getValue()\nbasics:setSoundVolume(soundVolume)\nbasics:persistGlobalConfiguration()"
@@ -1394,30 +1390,30 @@
               "key": "Basics/Script",
               "bindings": [
                 {
-                  "variable": "screenPopper",
                   "to": {
                     "key": ":Action",
                     "resource": {
                       "key": "Basics/Function/Options Leave Screen",
                       "bindings": []
                     }
-                  }
+                  },
+                  "variable": "screenPopper"
                 },
                 {
-                  "variable": "optionsLoader",
                   "to": {
                     "key": ":Action",
                     "resource": {
                       "key": "Basics/Function/Options Reload Configuration",
                       "bindings": []
                     }
-                  }
+                  },
+                  "variable": "optionsLoader"
                 },
                 {
-                  "variable": "basics",
                   "to": {
                     "key": "Basics"
-                  }
+                  },
+                  "variable": "basics"
                 }
               ],
               "code": "currentDigitalInput:clearCustomInputs()\nfor i = 0, currentInputList:getMappingCount() - 1 do\n  currentDigitalInput:addCustomInput(currentInputList:getMapping(i))\nend\nbasics:persistGlobalConfiguration()\noptionsLoader:execute()\nscreenPopper:execute()"
@@ -1442,34 +1438,34 @@
               "key": "Basics/Script",
               "bindings": [
                 {
-                  "variable": "screen",
                   "to": {
                     "key": "UI/Layout/Main/Menu"
-                  }
+                  },
+                  "variable": "screen"
                 },
                 {
-                  "variable": "input",
                   "to": {
                     "key": "Basics/InputSwitch/Options Screen"
-                  }
+                  },
+                  "variable": "input"
                 },
                 {
-                  "variable": "application",
                   "to": {
                     "key": "Application"
-                  }
+                  },
+                  "variable": "application"
                 },
                 {
-                  "variable": "optionResolution",
                   "to": {
                     "key": "UI/Menu/Visual/DisplayResolution/Resolution"
-                  }
+                  },
+                  "variable": "optionResolution"
                 },
                 {
-                  "variable": "optionFullScreen",
                   "to": {
                     "key": "UI/Menu/Visual/Boolean/FullScreen"
-                  }
+                  },
+                  "variable": "optionFullScreen"
                 }
               ],
               "code": "displayResolution = application:getDisplayResolution()\nfullScreen = application:isFullScreen()\noptionResolution:setValue(displayResolution)\noptionFullScreen:setValue(fullScreen)\ntable.remove(gMenuScreenStack)\ntable.remove(gMenuInputStack)\ninput:setInputHandler(gMenuInputStack[#gMenuInputStack])\nscreen:setScreen(gMenuScreenStack[#gMenuScreenStack])"
@@ -1499,64 +1495,64 @@
                     "key": "Basics/Script",
                     "bindings": [
                       {
-                        "variable": "screen",
                         "to": {
                           "key": "UI/Layout/Main/Menu"
-                        }
+                        },
+                        "variable": "screen"
                       },
                       {
-                        "variable": "input",
                         "to": {
                           "key": "Basics/InputSwitch/Options Screen"
-                        }
+                        },
+                        "variable": "input"
                       },
                       {
-                        "variable": "optionResolution",
                         "to": {
                           "key": "UI/Menu/Visual/DisplayResolution/Resolution"
-                        }
+                        },
+                        "variable": "optionResolution"
                       },
                       {
-                        "variable": "optionFullScreen",
                         "to": {
                           "key": "UI/Menu/Visual/Boolean/FullScreen"
-                        }
+                        },
+                        "variable": "optionFullScreen"
                       },
                       {
-                        "variable": "application",
                         "to": {
                           "key": "Application"
-                        }
+                        },
+                        "variable": "application"
                       },
                       {
-                        "variable": "promptScreen",
                         "to": {
                           "key": ":Screen",
                           "resource": {
                             "key": "UI/Prompt/Confirm Video Mode"
                           }
-                        }
+                        },
+                        "variable": "promptScreen"
                       },
                       {
-                        "variable": "promptInput",
                         "to": {
                           "key": ":InputHandler",
                           "resource": {
                             "key": "UI/Prompt/Confirm Video Mode"
                           }
-                        }
+                        },
+                        "variable": "promptInput"
                       },
                       {
-                        "variable": "prompt",
                         "to": {
                           "key": "UI/Prompt/Confirm Video Mode"
-                        }
+                        },
+                        "variable": "prompt"
                       },
                       {
-                        "variable": "screenTestTimer",
                         "to": {
                           "key": "Basics/Sequence/Timer (Video Mode Test Timeout)/Instance"
-                        }
+                        },
+                        "variable": "screenTestTimer"
                       }
                     ],
                     "code": "previousMode = application:getDisplayResolution()\npreviousFullScreen = application:isFullScreen()\nmode = optionResolution:getValue()\nfullScreen = optionFullScreen:getValue()\napplication:setDisplayResolution(mode, fullScreen)\nscreen:setScreen(promptScreen)\ninput:setInputHandler(promptInput)\nscreenTestTimer:setTime(0)\nscreenTestTimer:play()\nprompt:reset()"
@@ -1568,173 +1564,173 @@
         },
         "Prompt": {
           "Confirm Video Mode": {
+            "font": {
+              "key": "Basics/Font/Application Main Font"
+            },
+            "selectionColour": {
+              "key": "Basics/Sequence/Colour Cycle (Menu Selection Highlight)/Instance/Colour"
+            },
             "message": "Are the screen settings OK?",
             "cancelLabel": "No",
             "confirmLabel": "Yes",
-            "selectionColour": {
-              "key": "Basics/Sequence/Colour Cycle (Menu Selection Highlight)/Instance/Colour"
-            },
-            "font": {
-              "key": "Basics/Font/Application Main Font"
-            },
-            "onConfirm": {
-              "key": "Basics/Script",
-              "bindings": [
-                {
-                  "variable": "screenTestTimer",
-                  "to": {
-                    "key": "Basics/Sequence/Timer (Video Mode Test Timeout)/Instance"
-                  }
-                },
-                {
-                  "variable": "screen",
-                  "to": {
-                    "key": "UI/Layout/Main/Menu"
-                  }
-                },
-                {
-                  "variable": "input",
-                  "to": {
-                    "key": "Basics/InputSwitch/Options Screen"
-                  }
-                }
-              ],
-              "code": "screenTestTimer:pause()\ntable.remove(gMenuScreenStack)\ntable.remove(gMenuInputStack)\ninput:setInputHandler(gMenuInputStack[#gMenuInputStack])\nscreen:setScreen(gMenuScreenStack[#gMenuScreenStack])"
-            },
             "onCancel": {
               "key": "Basics/Function/Options Restore Previous Video Mode",
               "bindings": []
-            }
-          },
-          "Reset Input Configuration": {
-            "message": "Reset controls to defaults?",
-            "cancelLabel": "No",
-            "confirmLabel": "Yes",
-            "selectionColour": {
-              "key": "Basics/Sequence/Colour Cycle (Menu Selection Highlight)/Instance/Colour"
-            },
-            "font": {
-              "key": "Basics/Font/Application Main Font"
             },
             "onConfirm": {
               "key": "Basics/Script",
               "bindings": [
                 {
-                  "variable": "inputLeft",
+                  "to": {
+                    "key": "Basics/Sequence/Timer (Video Mode Test Timeout)/Instance"
+                  },
+                  "variable": "screenTestTimer"
+                },
+                {
+                  "to": {
+                    "key": "UI/Layout/Main/Menu"
+                  },
+                  "variable": "screen"
+                },
+                {
+                  "to": {
+                    "key": "Basics/InputSwitch/Options Screen"
+                  },
+                  "variable": "input"
+                }
+              ],
+              "code": "screenTestTimer:pause()\ntable.remove(gMenuScreenStack)\ntable.remove(gMenuInputStack)\ninput:setInputHandler(gMenuInputStack[#gMenuInputStack])\nscreen:setScreen(gMenuScreenStack[#gMenuScreenStack])"
+            }
+          },
+          "Reset Input Configuration": {
+            "font": {
+              "key": "Basics/Font/Application Main Font"
+            },
+            "selectionColour": {
+              "key": "Basics/Sequence/Colour Cycle (Menu Selection Highlight)/Instance/Colour"
+            },
+            "message": "Reset controls to defaults?",
+            "cancelLabel": "No",
+            "confirmLabel": "Yes",
+            "onCancel": {
+              "key": "Basics/Function/Options Leave Screen",
+              "bindings": []
+            },
+            "onConfirm": {
+              "key": "Basics/Script",
+              "bindings": [
+                {
                   "to": {
                     "key": "Basics/AnalogueControl/GERALD Movement X/Left"
-                  }
+                  },
+                  "variable": "inputLeft"
                 },
                 {
-                  "variable": "inputRight",
                   "to": {
                     "key": "Basics/AnalogueControl/GERALD Movement X/Right"
-                  }
+                  },
+                  "variable": "inputRight"
                 },
                 {
-                  "variable": "inputUp",
                   "to": {
                     "key": "Basics/AnalogueControl/GERALD Movement Y/Up"
-                  }
+                  },
+                  "variable": "inputUp"
                 },
                 {
-                  "variable": "inputDown",
                   "to": {
                     "key": "Basics/AnalogueControl/GERALD Movement Y/Down"
-                  }
+                  },
+                  "variable": "inputDown"
                 },
                 {
-                  "variable": "inputThrust",
                   "to": {
                     "key": "Basics/DigitalControl/GERALD Thrust"
-                  }
+                  },
+                  "variable": "inputThrust"
                 },
                 {
-                  "variable": "inputBrake",
                   "to": {
                     "key": "Basics/DigitalControl/GERALD Brake"
-                  }
+                  },
+                  "variable": "inputBrake"
                 },
                 {
-                  "variable": "inputRotateViewLeft",
                   "to": {
                     "key": "Basics/DigitalControl/Camera Rotate Left"
-                  }
+                  },
+                  "variable": "inputRotateViewLeft"
                 },
                 {
-                  "variable": "inputRotateViewRight",
                   "to": {
                     "key": "Basics/DigitalControl/Camera Rotate Right"
-                  }
+                  },
+                  "variable": "inputRotateViewRight"
                 },
                 {
-                  "variable": "inputReverseView",
                   "to": {
                     "key": "Basics/DigitalControl/Camera Reverse"
-                  }
+                  },
+                  "variable": "inputReverseView"
                 },
                 {
-                  "variable": "inputResetView",
                   "to": {
                     "key": "Basics/DigitalControl/Camera Reset"
-                  }
+                  },
+                  "variable": "inputResetView"
                 },
                 {
-                  "variable": "inputToggleMap",
                   "to": {
                     "key": "Basics/DigitalControl/Toggle Map"
-                  }
+                  },
+                  "variable": "inputToggleMap"
                 },
                 {
-                  "variable": "inputToggleCraft",
                   "to": {
                     "key": "Basics/DigitalControl/GERALD Transform"
-                  }
+                  },
+                  "variable": "inputToggleCraft"
                 },
                 {
-                  "variable": "inputTogglePause",
                   "to": {
                     "key": "Basics/DigitalControl/Toggle Pause"
-                  }
+                  },
+                  "variable": "inputTogglePause"
                 },
                 {
-                  "variable": "inputDestruct",
                   "to": {
                     "key": "Basics/DigitalControl/GERALD Destruct"
-                  }
+                  },
+                  "variable": "inputDestruct"
                 },
                 {
-                  "variable": "optionsLoader",
                   "to": {
                     "key": ":Action",
                     "resource": {
                       "key": "Basics/Function/Options Reload Configuration",
                       "bindings": []
                     }
-                  }
+                  },
+                  "variable": "optionsLoader"
                 },
                 {
-                  "variable": "screenPopper",
                   "to": {
                     "key": ":Action",
                     "resource": {
                       "key": "Basics/Function/Options Leave Screen",
                       "bindings": []
                     }
-                  }
+                  },
+                  "variable": "screenPopper"
                 },
                 {
-                  "variable": "basics",
                   "to": {
                     "key": "Basics"
-                  }
+                  },
+                  "variable": "basics"
                 }
               ],
               "code": "-- Reset controls to defaults\ninputLeft:clearCustomInputs()\ninputRight:clearCustomInputs()\ninputUp:clearCustomInputs()\ninputDown:clearCustomInputs()\ninputThrust:clearCustomInputs()\ninputBrake:clearCustomInputs()\ninputRotateViewLeft:clearCustomInputs()\ninputRotateViewRight:clearCustomInputs()\ninputReverseView:clearCustomInputs()\ninputResetView:clearCustomInputs()\ninputToggleMap:clearCustomInputs()\ninputToggleCraft:clearCustomInputs()\ninputTogglePause:clearCustomInputs()\ninputDestruct:clearCustomInputs()\nbasics:persistGlobalConfiguration()\noptionsLoader:execute()\nscreenPopper:execute()"
-            },
-            "onCancel": {
-              "key": "Basics/Function/Options Leave Screen",
-              "bindings": []
             }
           }
         }
