@@ -105,7 +105,7 @@ namespace IsoRealms {
         } else {
           confirm();
         }
-      });
+      }, IComponentDefiner::HINT_TRANSIENT);
       cOwnerProject.define(definer, "ComponentOwner");
       definer.spacer(0.5f);
       cComponentHandle.define(definer);

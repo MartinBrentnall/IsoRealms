@@ -105,7 +105,7 @@ namespace IsoRealms {
       return {{HINT_KEY_METADATA_MODULE, moduleName}, {HINT_KEY_METADATA_RESOURCE_TYPE, resourceType}};
     }
 
-    virtual void onInitialised(std::function<void()> callback) {
+    virtual void onInitialised(std::function<void()> callback, const Options& hint = Options::EMPTY) {
       // Only invoked after persisted values have been applied during loading.
     }
 

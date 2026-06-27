@@ -132,9 +132,12 @@ namespace IsoRealms {
       definer.keyedArray("", "Add...", cComponents, [](const std::pair<const std::string, std::unique_ptr<ComponentInfo>>& entry) -> IComponent& {
         return *entry.second->getComponent();
       }, [&definer, this](IComponent& component) {
-        Options mNamelessHint = Options{{"name", ""}} + IComponentDefiner::HINT_TRANSIENT;
+        Options mNamelessHint = Options{{"name", ""}};
         definer.scope(component.getName(), component.getName(), [&component, &definer]() {
           component.define(definer);
+          definer.onInitialised([&component]() {
+            component.publish();
+          }, IComponentDefiner::HINT_IMMEDIATE);
         }, [this, &component]() {
           deleteComponent(&component);
         }, mNamelessHint, [&component]() {
@@ -161,10 +164,7 @@ namespace IsoRealms {
     }
     
     IComponent* loadComponent(ComponentType& parent, const std::string& name, IComponentDefiner& definer, ProjectFile* ownerProject) override {
-      Component<MODULE, TYPE>* mComponent = cComponents.emplace(name, std::make_unique<ComponentInfo>(parent, cModule, ownerProject)).first->second->getComponent();
-      mComponent->getComponent()->define(definer);
-      mComponent->publish();
-      return mComponent;
+      return cComponents.emplace(name, std::make_unique<ComponentInfo>(parent, cModule, ownerProject)).first->second->getComponent();
     }
 
     bool needsSaving(const ProjectFile* savingProject) const override {

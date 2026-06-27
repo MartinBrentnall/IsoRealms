@@ -105,12 +105,6 @@ namespace IsoRealms {
     }
   }
 
-  void ComponentSaver::saveTreeSelectorResourceProperties(ITreeSelectorObject& item, const Options& hint) {
-    if (item.hasConfiguration()) {
-      item.defineTreeItem(*this);
-    }
-  }
-
   void ComponentSaver::propertyAdd(const std::string& key, const std::string& value, std::function<void()> addPropertyFunction, const Options& hint) {
     // Nothing to do.
   }
@@ -181,11 +175,14 @@ namespace IsoRealms {
   }
 
   void ComponentSaver::propertyResource(const std::string& key, ITreeSelectorObject& item, const Options& hint, std::function<void()> removeFunction) {
+    if (hint.getOption(IComponentDefiner::HINT_KEY_TRANSIENT) == "true") {
+      return;
+    }
     if (hint.getOption(IComponentDefiner::HINT_KEY_INLINE) == "true") {
-      saveTreeSelectorResourceProperties(item, hint);
+      item.defineTreeItem(*this);
     } else {
       pushObject(currentObject().addObject(key));
-      saveTreeSelectorResourceProperties(item, hint);
+      item.defineTreeItem(*this);
       popObject();
     }
   }
@@ -209,6 +206,9 @@ namespace IsoRealms {
   }
 
   void ComponentSaver::scope(const std::string& key, const std::string& value, std::function<void()> subProperties, std::function<void()> removeFunction, const Options& hint, std::function<bool()> icon) {
+    if (hint.getOption(IComponentDefiner::HINT_KEY_TRANSIENT) == "true") {
+      return;
+    }
     if (hint.getOption(IComponentDefiner::HINT_KEY_HIDDEN) == "true") {
       subProperties();
       return;

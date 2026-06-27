@@ -335,7 +335,11 @@ namespace IsoRealms {
     });
   }
 
-  void ComponentLoader::onInitialised(std::function<void()> callback) {
-    deferDuringLoad(cComponentData, std::move(callback));
+  void ComponentLoader::onInitialised(std::function<void()> callback, const Options& hint) {
+    if (hint.getOption(IComponentDefiner::HINT_KEY_IMMEDIATE) == "true") {
+      callback();
+    } else {
+      deferDuringLoad(cComponentData, std::move(callback));
+    }
   }
 }
