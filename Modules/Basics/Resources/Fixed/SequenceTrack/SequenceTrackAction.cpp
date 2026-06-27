@@ -49,4 +49,12 @@ namespace IsoRealms::Basics {
   void SequenceTrackAction::defineResource(IComponentDefiner& definer) {
     getBaseProperties(definer);
   }
+
+  std::string SequenceTrackAction::getResourceModuleName() const {
+    return "Basics";
+  }
+
+  std::string SequenceTrackAction::getResourceTypeName() const {
+    return "SequenceTrackAction";
+  }
 }

@@ -66,7 +66,9 @@ namespace IsoRealms::UI {
     IBinding* getBinding(const std::string& id) override;
     void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
     void releaseBinding(const IBinding* resource) override;
-
+    std::string getResourceModuleName() const override;
+    std::string getResourceTypeName() const override;
+    
     private:
 
     // Constants.

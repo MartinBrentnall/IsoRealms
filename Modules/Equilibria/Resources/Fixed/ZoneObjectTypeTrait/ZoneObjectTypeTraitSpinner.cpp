@@ -46,4 +46,12 @@ namespace IsoRealms::Equilibria {
   std::unique_ptr<IZoneObjectTrait> ZoneObjectTypeTraitSpinner::createTrait(ZoneObject& object) {
     return std::make_unique<Spinner>(object, *this);
   }
+
+  std::string ZoneObjectTypeTraitSpinner::getResourceModuleName() const {
+    return "Equilibria";
+  }
+
+  std::string ZoneObjectTypeTraitSpinner::getResourceTypeName() const {
+    return "ZoneObjectTypeTraitSpinner";
+  }
 }

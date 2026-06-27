@@ -51,4 +51,12 @@ namespace IsoRealms::UI {
   bool LayoutLocationRelative::isDefaultConfiguration() const {
     return false; // TODO: Implement this.
   }
+
+  std::string LayoutLocationRelative::getResourceModuleName() const {
+    return "UI";
+  }
+
+  std::string LayoutLocationRelative::getResourceTypeName() const {
+    return "LayoutLocationRelative";
+  }
 }

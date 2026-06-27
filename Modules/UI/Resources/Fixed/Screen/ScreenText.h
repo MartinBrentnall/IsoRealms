@@ -40,6 +40,9 @@ namespace IsoRealms::UI {
     /*********************************\
      * Implements IResource via IScreen *
     \*********************************/
+    std::string getResourceModuleName() const override;
+    std::string getResourceTypeName() const override;
+    
     private:
 
     inline static const std::string ALIGNMENT_CENTER = "Center";

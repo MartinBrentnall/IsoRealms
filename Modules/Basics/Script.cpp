@@ -114,4 +114,12 @@ namespace IsoRealms::Basics {
   void Script::ScriptAction::defineResource(IComponentDefiner& definer) {
     cDefFunction.defineScript(definer);
   }
+
+  std::string Script::ScriptAction::getResourceModuleName() const {
+    return "Basics";
+  }
+
+  std::string Script::ScriptAction::getResourceTypeName() const {
+    return "Script";
+  }
 }

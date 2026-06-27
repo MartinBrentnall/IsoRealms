@@ -42,4 +42,12 @@ namespace IsoRealms::Equilibria {
   std::unique_ptr<IZoneObjectTrait> ZoneObjectTypeTraitChaser::createTrait(ZoneObject& object) {
     return std::make_unique<Chaser>(object, *this);
   }
+
+  std::string ZoneObjectTypeTraitChaser::getResourceModuleName() const {
+    return "Equilibria";
+  }
+
+  std::string ZoneObjectTypeTraitChaser::getResourceTypeName() const {
+    return "ZoneObjectTypeTraitChaser";
+  }
 }

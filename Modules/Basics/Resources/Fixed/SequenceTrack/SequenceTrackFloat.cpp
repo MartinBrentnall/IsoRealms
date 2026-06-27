@@ -94,4 +94,12 @@ namespace IsoRealms::Basics {
       mInstance->stateChanged(value);
     }
   }
+
+  std::string SequenceTrackFloat::getResourceModuleName() const {
+    return "Basics";
+  }
+
+  std::string SequenceTrackFloat::getResourceTypeName() const {
+    return "SequenceTrackFloat";
+  }
 }

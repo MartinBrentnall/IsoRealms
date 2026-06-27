@@ -80,4 +80,12 @@ namespace IsoRealms::Basics {
       mInstance->positionChanged();
     }
   }
+
+  std::string SequenceTrackScreen::getResourceModuleName() const {
+    return "Basics";
+  }
+
+  std::string SequenceTrackScreen::getResourceTypeName() const {
+    return "SequenceTrackScreen";
+  }
 }

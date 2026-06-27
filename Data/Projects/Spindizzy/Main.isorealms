@@ -54,7 +54,7 @@
           "variable": "currentMissionUserBool",
           "to": {
             "key": ":Boolean",
-            "asset": {
+            "resource": {
               "key": "Basics/Boolean/UserMission"
             }
           }
@@ -81,7 +81,7 @@
           "variable": "interruptHandler",
           "to": {
             "key": ":InputHandler",
-            "asset": {
+            "resource": {
               "key": "Basics/InterruptHandler/AttractInterrupt"
             }
           }
@@ -90,7 +90,7 @@
           "variable": "optionsLoader",
           "to": {
             "key": ":Action",
-            "asset": {
+            "resource": {
               "key": "Basics/Function/ReloadConfiguration",
               "bindings": []
             }
@@ -121,7 +121,7 @@
           "variable": "quit",
           "to": {
             "key": ":Action",
-            "asset": {
+            "resource": {
               "key": "Quit"
             }
           }
@@ -175,7 +175,7 @@
                   "variable": "demoScreen",
                   "to": {
                     "key": ":Screen",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Project/Demo"
                     }
                   }
@@ -184,7 +184,7 @@
                   "variable": "menuScreen",
                   "to": {
                     "key": ":Screen",
-                    "asset": {
+                    "resource": {
                       "key": "UI/Menu/Main"
                     }
                   }
@@ -193,7 +193,7 @@
                   "variable": "menuInput",
                   "to": {
                     "key": ":InputHandler",
-                    "asset": {
+                    "resource": {
                       "key": "UI/Menu/Main"
                     }
                   }
@@ -214,7 +214,7 @@
                   "variable": "title",
                   "to": {
                     "key": ":Screen",
-                    "asset": {
+                    "resource": {
                       "key": "UI/Layout/Title"
                     }
                   }
@@ -223,7 +223,7 @@
                   "variable": "optionsLoader",
                   "to": {
                     "key": ":Action",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Function/ReloadConfiguration",
                       "bindings": []
                     }
@@ -233,7 +233,7 @@
                   "variable": "quit",
                   "to": {
                     "key": ":Action",
-                    "asset": {
+                    "resource": {
                       "key": "Quit"
                     }
                   }
@@ -248,7 +248,7 @@
                   "variable": "menuInterrupt",
                   "to": {
                     "key": ":InputHandler",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/InterruptHandler/MenuTimeOutHandler"
                     }
                   }
@@ -306,7 +306,7 @@
                   "variable": "projectName",
                   "to": {
                     "key": ":String",
-                    "asset": {
+                    "resource": {
                       "key": "Literal",
                       "value": "Projects/Spindizzy/High Score.isorealms"
                     }
@@ -316,7 +316,7 @@
                   "variable": "projectUser",
                   "to": {
                     "key": ":Boolean",
-                    "asset": {
+                    "resource": {
                       "key": "Literal"
                     }
                   }
@@ -337,7 +337,7 @@
                   "variable": "currentMissionUserBool",
                   "to": {
                     "key": ":Boolean",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Boolean/UserMission"
                     }
                   }
@@ -401,7 +401,7 @@
                   "variable": "title",
                   "to": {
                     "key": ":Screen",
-                    "asset": {
+                    "resource": {
                       "key": "UI/Layout/Title"
                     }
                   }
@@ -416,7 +416,7 @@
                   "variable": "demo",
                   "to": {
                     "key": ":Screen",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/Project/Demo"
                     }
                   }
@@ -455,7 +455,7 @@
                   "variable": "authorsMessage",
                   "to": {
                     "key": ":Screen",
-                    "asset": {
+                    "resource": {
                       "key": "UI/Layout/AuthorsMessage"
                     }
                   }
@@ -470,7 +470,7 @@
                   "variable": "authorsMessageHandler",
                   "to": {
                     "key": ":InputHandler",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/InterruptHandler/AuthorsMessageInterrupt"
                     }
                   }
@@ -503,7 +503,7 @@
                   "variable": "creditsMessage",
                   "to": {
                     "key": ":Screen",
-                    "asset": {
+                    "resource": {
                       "key": "UI/Layout/CreditsMessage"
                     }
                   }
@@ -518,7 +518,7 @@
                   "variable": "authorsMessageHandler",
                   "to": {
                     "key": ":InputHandler",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/InterruptHandler/AuthorsMessageInterrupt"
                     }
                   }
@@ -551,7 +551,7 @@
                   "variable": "highScores",
                   "to": {
                     "key": ":Screen",
-                    "asset": {
+                    "resource": {
                       "key": "None"
                     }
                   }
@@ -566,7 +566,7 @@
                   "variable": "interruptHandler",
                   "to": {
                     "key": ":InputHandler",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/InterruptHandler/AttractInterrupt"
                     }
                   }
@@ -599,7 +599,7 @@
                   "variable": "message",
                   "to": {
                     "key": ":Screen",
-                    "asset": {
+                    "resource": {
                       "key": "UI/Layout/Message"
                     }
                   }
@@ -614,7 +614,7 @@
                   "variable": "interruptHandler",
                   "to": {
                     "key": ":InputHandler",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/InterruptHandler/AttractInterrupt"
                     }
                   }
@@ -677,7 +677,7 @@
                   "variable": "loading",
                   "to": {
                     "key": ":Screen",
-                    "asset": {
+                    "resource": {
                       "key": "UI/Throbber/LoadingScreen"
                     }
                   }
@@ -759,7 +759,7 @@
                   "variable": "loading",
                   "to": {
                     "key": ":Screen",
-                    "asset": {
+                    "resource": {
                       "key": "UI/Throbber/LoadingScreen"
                     }
                   }
@@ -817,7 +817,7 @@
                   "variable": "currentMission",
                   "to": {
                     "key": ":String",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/String/Mission"
                     }
                   }
@@ -826,7 +826,7 @@
                   "variable": "currentMissionUser",
                   "to": {
                     "key": ":String",
-                    "asset": {
+                    "resource": {
                       "key": "Basics/String/UserMission"
                     }
                   }
@@ -883,7 +883,7 @@
                     "variable": "title",
                     "to": {
                       "key": ":Screen",
-                      "asset": {
+                      "resource": {
                         "key": "UI/Layout/Title"
                       }
                     }
@@ -904,7 +904,7 @@
                     "variable": "menuScreen",
                     "to": {
                       "key": ":Screen",
-                      "asset": {
+                      "resource": {
                         "key": "UI/Menu/Main"
                       }
                     }
@@ -919,7 +919,7 @@
                     "variable": "menuInput",
                     "to": {
                       "key": ":InputHandler",
-                      "asset": {
+                      "resource": {
                         "key": "UI/Menu/Main"
                       }
                     }
@@ -960,7 +960,7 @@
                     "variable": "popScreenFunc",
                     "to": {
                       "key": ":Action",
-                      "asset": {
+                      "resource": {
                         "key": "Basics/Function/PopScreen",
                         "bindings": []
                       }
@@ -976,7 +976,7 @@
                     "variable": "title",
                     "to": {
                       "key": ":Screen",
-                      "asset": {
+                      "resource": {
                         "key": "UI/Layout/Title"
                       }
                     }
@@ -1140,7 +1140,7 @@
                               "variable": "interruptHandler",
                               "to": {
                                 "key": ":InputHandler",
-                                "asset": {
+                                "resource": {
                                   "key": "Basics/InterruptHandler/AttractInterrupt"
                                 }
                               }
@@ -6250,7 +6250,7 @@
                           "argument": "menuScreen",
                           "to": {
                             "key": ":Screen",
-                            "asset": {
+                            "resource": {
                               "key": "UI/Menu/PlayMode"
                             }
                           }
@@ -6265,7 +6265,7 @@
                           "argument": "menuInput",
                           "to": {
                             "key": ":InputHandler",
-                            "asset": {
+                            "resource": {
                               "key": "UI/Menu/PlayMode"
                             }
                           }
@@ -6285,7 +6285,7 @@
                           "argument": "menuScreen",
                           "to": {
                             "key": ":Screen",
-                            "asset": {
+                            "resource": {
                               "key": "UI/Menu/MissionSelect"
                             }
                           }
@@ -6300,7 +6300,7 @@
                           "argument": "menuInput",
                           "to": {
                             "key": ":InputHandler",
-                            "asset": {
+                            "resource": {
                               "key": "UI/Menu/MissionSelect"
                             }
                           }
@@ -6326,7 +6326,7 @@
                           "argument": "missionInput",
                           "to": {
                             "key": ":InputHandler",
-                            "asset": {
+                            "resource": {
                               "key": "Basics/Project/Editor"
                             }
                           }
@@ -6335,7 +6335,7 @@
                           "argument": "missionScreen",
                           "to": {
                             "key": ":Screen",
-                            "asset": {
+                            "resource": {
                               "key": "Basics/Project/Editor"
                             }
                           }
@@ -6355,7 +6355,7 @@
                           "argument": "menuScreen",
                           "to": {
                             "key": ":Screen",
-                            "asset": {
+                            "resource": {
                               "key": "UI/Menu/Options"
                             }
                           }
@@ -6370,7 +6370,7 @@
                           "argument": "menuInput",
                           "to": {
                             "key": ":InputHandler",
-                            "asset": {
+                            "resource": {
                               "key": "UI/Menu/Options"
                             }
                           }
@@ -6399,14 +6399,14 @@
                           "variable": "pushLinksMenuFunc",
                           "to": {
                             "key": ":Action",
-                            "asset": {
+                            "resource": {
                               "key": "Basics/Function/PushScreen",
                               "bindings": [
                                 {
                                   "argument": "menuScreen",
                                   "to": {
                                     "key": ":Screen",
-                                    "asset": {
+                                    "resource": {
                                       "key": "UI/Menu/Links"
                                     }
                                   }
@@ -6421,7 +6421,7 @@
                                   "argument": "menuInput",
                                   "to": {
                                     "key": ":InputHandler",
-                                    "asset": {
+                                    "resource": {
                                       "key": "UI/Menu/Links"
                                     }
                                   }
@@ -6434,7 +6434,7 @@
                           "variable": "startAuthorMessageFunc",
                           "to": {
                             "key": ":Action",
-                            "asset": {
+                            "resource": {
                               "key": "Basics/Function/StartAuthorsMessage",
                               "bindings": []
                             }
@@ -6456,14 +6456,14 @@
                           "variable": "pushLinksMenuFunc",
                           "to": {
                             "key": ":Action",
-                            "asset": {
+                            "resource": {
                               "key": "Basics/Function/PushScreen",
                               "bindings": [
                                 {
                                   "argument": "menuScreen",
                                   "to": {
                                     "key": ":Screen",
-                                    "asset": {
+                                    "resource": {
                                       "key": "UI/Menu/Links"
                                     }
                                   }
@@ -6478,7 +6478,7 @@
                                   "argument": "menuInput",
                                   "to": {
                                     "key": ":InputHandler",
-                                    "asset": {
+                                    "resource": {
                                       "key": "UI/Menu/Links"
                                     }
                                   }
@@ -6491,7 +6491,7 @@
                           "variable": "startCreditsFunc",
                           "to": {
                             "key": ":Action",
-                            "asset": {
+                            "resource": {
                               "key": "Basics/Function/StartCreditsMessage",
                               "bindings": []
                             }
@@ -6513,7 +6513,7 @@
                           "argument": "menuScreen",
                           "to": {
                             "key": ":Screen",
-                            "asset": {
+                            "resource": {
                               "key": "UI/Prompt/ConfirmQuit"
                             }
                           }
@@ -6528,7 +6528,7 @@
                           "argument": "menuInput",
                           "to": {
                             "key": ":InputHandler",
-                            "asset": {
+                            "resource": {
                               "key": "UI/Prompt/ConfirmQuit"
                             }
                           }
@@ -6562,7 +6562,7 @@
                           "argument": "mission",
                           "to": {
                             "key": ":String",
-                            "asset": {
+                            "resource": {
                               "key": "Literal",
                               "value": "Spindizzy/Worlds/Hangworld.isorealms"
                             }
@@ -6572,7 +6572,7 @@
                           "argument": "missionUser",
                           "to": {
                             "key": ":String",
-                            "asset": {
+                            "resource": {
                               "key": "Literal",
                               "value": "program"
                             }
@@ -6593,7 +6593,7 @@
                           "argument": "menuScreen",
                           "to": {
                             "key": ":Screen",
-                            "asset": {
+                            "resource": {
                               "key": "UI/Menu/MyMissions"
                             }
                           }
@@ -6608,7 +6608,7 @@
                           "argument": "menuInput",
                           "to": {
                             "key": ":InputHandler",
-                            "asset": {
+                            "resource": {
                               "key": "UI/Menu/MyMissions"
                             }
                           }
@@ -6644,7 +6644,7 @@
                           "argument": "mission",
                           "to": {
                             "key": ":String",
-                            "asset": {
+                            "resource": {
                               "key": "UI/Menu/MyMissions/List"
                             }
                           }
@@ -6653,7 +6653,7 @@
                           "argument": "missionUser",
                           "to": {
                             "key": ":String",
-                            "asset": {
+                            "resource": {
                               "key": "Literal",
                               "value": "user"
                             }
@@ -6694,7 +6694,7 @@
                           "argument": "missionInput",
                           "to": {
                             "key": ":InputHandler",
-                            "asset": {
+                            "resource": {
                               "key": "Basics/Project/Mission"
                             }
                           }
@@ -6703,7 +6703,7 @@
                           "argument": "missionScreen",
                           "to": {
                             "key": ":Screen",
-                            "asset": {
+                            "resource": {
                               "key": "Basics/Project/Mission"
                             }
                           }
@@ -6712,7 +6712,7 @@
                           "argument": "mode",
                           "to": {
                             "key": ":String",
-                            "asset": {
+                            "resource": {
                               "key": "Literal",
                               "value": "Arcade"
                             }
@@ -6739,7 +6739,7 @@
                           "argument": "missionInput",
                           "to": {
                             "key": ":InputHandler",
-                            "asset": {
+                            "resource": {
                               "key": "Basics/Project/Mission"
                             }
                           }
@@ -6748,7 +6748,7 @@
                           "argument": "missionScreen",
                           "to": {
                             "key": ":Screen",
-                            "asset": {
+                            "resource": {
                               "key": "Basics/Project/Mission"
                             }
                           }
@@ -6757,7 +6757,7 @@
                           "argument": "mode",
                           "to": {
                             "key": ":String",
-                            "asset": {
+                            "resource": {
                               "key": "Literal",
                               "value": "Explorer"
                             }
@@ -6800,7 +6800,7 @@
                           "argument": "missionInput",
                           "to": {
                             "key": ":InputHandler",
-                            "asset": {
+                            "resource": {
                               "key": "Basics/Project/Replay"
                             }
                           }
@@ -6809,7 +6809,7 @@
                           "argument": "missionScreen",
                           "to": {
                             "key": ":Screen",
-                            "asset": {
+                            "resource": {
                               "key": "Basics/Project/Replay"
                             }
                           }

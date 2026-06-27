@@ -63,4 +63,12 @@ namespace IsoRealms::UI {
   bool ScreenGradient::isDefaultConfiguration() const {
     return cDefColourA.isDefaultConfigured() && cDefColourB.isDefaultConfigured(); // TODO: This doesn't factor in the custom colours????'
   }
+
+  std::string ScreenGradient::getResourceModuleName() const {
+    return "UI";
+  }
+
+  std::string ScreenGradient::getResourceTypeName() const {
+    return "ScreenGradient";
+  }
 }

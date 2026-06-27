@@ -53,4 +53,12 @@ namespace IsoRealms::UI {
   bool LayoutOffsetLinked::isDefaultConfiguration() const {
     return false; // TODO: Implement this.
   }
+
+  std::string LayoutOffsetLinked::getResourceModuleName() const {
+    return "UI";
+  }
+
+  std::string LayoutOffsetLinked::getResourceTypeName() const {
+    return "LayoutOffsetLinked";
+  }
 }

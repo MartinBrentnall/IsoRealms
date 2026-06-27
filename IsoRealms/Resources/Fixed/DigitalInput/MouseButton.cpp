@@ -93,4 +93,12 @@ namespace IsoRealms {
     // Handle buttons that aren't in the name map.
     return UNMAPPED_BUTTON_PREFIX + Utils::toString(button);
   }
+
+  std::string MouseButton::getResourceModuleName() const {
+    return "";
+  }
+
+  std::string MouseButton::getResourceTypeName() const {
+    return "MouseButton";
+  }
 }

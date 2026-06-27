@@ -90,4 +90,12 @@ namespace IsoRealms::Equilibria {
   double ZoneObjectTypeTraitCellLocation::getSnapInterval() const {
     return 1.0;
   }
+
+  std::string ZoneObjectTypeTraitCellLocation::getResourceModuleName() const {
+    return "Equilibria";
+  }
+
+  std::string ZoneObjectTypeTraitCellLocation::getResourceTypeName() const {
+    return "ZoneObjectTypeTraitCellLocation";
+  }
 }

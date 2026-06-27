@@ -47,4 +47,12 @@ namespace IsoRealms::UI {
   bool ScreenModel::isDefaultConfiguration() const {
     return cDefModel.isDefaultConfigured();
   }
+
+  std::string ScreenModel::getResourceModuleName() const {
+    return "UI";
+  }
+
+  std::string ScreenModel::getResourceTypeName() const {
+    return "ScreenModel";
+  }
 }

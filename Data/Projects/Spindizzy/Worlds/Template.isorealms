@@ -1,1 +1,274 @@
-{"project":{"include":[{"filename":{"path":"Projects/Spindizzy/Spindizzy.isorealms"}}],"modules":[{"name":"Spindizzy","resources":[{"type":"World","instances":[{"id":"Hangworld","slopeForce":0.000026499999876250514,"gravity":-0.00019999999494757503,"bounceControl":10,"debrisGenerators":[{"id":"Top","appearance":{"scaleX":0.30000001192092898,"scaleY":0.30000001192092898,"scaleZ":0.30000001192092898,"key":"Spindizzy/DebrisChunk/Top"}},{"id":"Ball","appearance":{"scaleX":0.30000001192092898,"scaleY":0.30000001192092898,"scaleZ":0.30000001192092898,"key":"Spindizzy/DebrisChunk/Ball"}},{"id":"Gyroscope","appearance":{"scaleX":0.20000000298023225,"scaleY":0.20000000298023225,"scaleZ":0.20000000298023225,"key":"Spindizzy/DebrisChunk/Gyroscope"}}],"players":[{"type":"Player","x":-4.5,"y":3.5}],"zones":[]}]}]}]}}
+{
+  "project": {
+    "description": "World Content",
+    "include": [
+      {
+        "filename": {
+          "path": "Projects/Spindizzy/Spindizzy.isorealms"
+        }
+      }
+    ],
+    "modules": {
+      "Equilibria": {
+        "World": {
+          "Game World": {
+            "slopeForce": 0.000026499999876250514,
+            "gravity": -0.00019999999494757503,
+            "debrisGenerators": [
+              {
+                "id": "Top",
+                "appearance": {
+                  "scaleX": 0.30000001192092898,
+                  "scaleY": 0.30000001192092898,
+                  "scaleZ": 0.30000001192092898,
+                  "key": "Spindizzy/DebrisChunk/Top"
+                }
+              },
+              {
+                "id": "Ball",
+                "appearance": {
+                  "scaleX": 0.30000001192092898,
+                  "scaleY": 0.30000001192092898,
+                  "scaleZ": 0.30000001192092898,
+                  "key": "Spindizzy/DebrisChunk/Ball"
+                }
+              },
+              {
+                "id": "Gyroscope",
+                "appearance": {
+                  "scaleX": 0.20000000298023225,
+                  "scaleY": 0.20000000298023225,
+                  "scaleZ": 0.20000000298023225,
+                  "key": "Spindizzy/DebrisChunk/Gyroscope"
+                }
+              }
+            ],
+            "players": [
+              {
+                "type": "Player",
+                "x": -4.5,
+                "y": 3.5
+              }
+            ],
+            "automaticZoneManagement": {
+              "key": "Zone"
+            },
+            "defaultThemeSet": {
+              "key": "C64"
+            },
+            "defaultWorldEditorTool": {
+              "key": "PropertiesTool"
+            },
+            "editorTools": [
+              {
+                "editorTool": {
+                  "key": "PropertiesTool"
+                }
+              },
+              {
+                "editorTool": {
+                  "key": "DeleteTool"
+                }
+              },
+              {
+                "editorTool": {
+                  "key": "ZoneCopyTool"
+                }
+              },
+              {
+                "editorTool": {
+                  "key": "ZoneMoveTool"
+                }
+              },
+              {
+                "editorTool": {
+                  "key": "ZoneDeleteTool"
+                }
+              },
+              {
+                "editorTool": {
+                  "key": "Player/Player"
+                }
+              },
+              {
+                "editorTool": {
+                  "key": "Alien/Enemy Type 1"
+                }
+              },
+              {
+                "editorTool": {
+                  "key": "Alien/Enemy Type 2"
+                }
+              },
+              {
+                "editorTool": {
+                  "key": "PickUp/Jewel"
+                }
+              },
+              {
+                "editorTool": {
+                  "key": "Terrain/Plain"
+                }
+              },
+              {
+                "editorTool": {
+                  "key": "Terrain/Ice"
+                }
+              },
+              {
+                "editorTool": {
+                  "key": "Terrain/Trampoline"
+                }
+              },
+              {
+                "editorTool": {
+                  "key": "Terrain/Water"
+                }
+              },
+              {
+                "editorTool": {
+                  "key": "Terrain/Arrow North"
+                }
+              },
+              {
+                "editorTool": {
+                  "key": "Terrain/Arrow South"
+                }
+              },
+              {
+                "editorTool": {
+                  "key": "Terrain/Arrow East"
+                }
+              },
+              {
+                "editorTool": {
+                  "key": "Terrain/Arrow West"
+                }
+              },
+              {
+                "editorTool": {
+                  "key": "Terrain/Deactivate All States"
+                }
+              },
+              {
+                "editorTool": {
+                  "key": "Terrain/Activate State 1"
+                }
+              },
+              {
+                "editorTool": {
+                  "key": "Terrain/Activate State 2"
+                }
+              },
+              {
+                "editorTool": {
+                  "key": "Terrain/Activate State 3"
+                }
+              },
+              {
+                "editorTool": {
+                  "key": "Terrain/Activate State 4"
+                }
+              },
+              {
+                "editorTool": {
+                  "key": "Terrain/Activate State 5"
+                }
+              },
+              {
+                "editorTool": {
+                  "key": "Terrain/Activate State 6"
+                }
+              },
+              {
+                "editorTool": {
+                  "key": "Terrain/Activate State 7"
+                }
+              },
+              {
+                "editorTool": {
+                  "key": "Terrain/Activate State 8 (retain last state)"
+                }
+              },
+              {
+                "editorTool": {
+                  "key": "Terrain/Activate State 9 (retain last state)"
+                }
+              },
+              {
+                "editorTool": {
+                  "key": "Terrain/Activate State 10 (retain last state)"
+                }
+              },
+              {
+                "editorTool": {
+                  "key": "Terrain/Activate State 11 (retain last state)"
+                }
+              },
+              {
+                "editorTool": {
+                  "key": "Lift/Always On"
+                }
+              },
+              {
+                "editorTool": {
+                  "key": "Lift/State 2"
+                }
+              },
+              {
+                "editorTool": {
+                  "key": "Lift/State 3"
+                }
+              },
+              {
+                "editorTool": {
+                  "key": "Lift/State 1"
+                }
+              },
+              {
+                "editorTool": {
+                  "key": "Lift/State 4"
+                }
+              },
+              {
+                "editorTool": {
+                  "key": "Lift/State 5"
+                }
+              },
+              {
+                "editorTool": {
+                  "key": "Lift/State 6"
+                }
+              },
+              {
+                "editorTool": {
+                  "key": "Lift/State 7"
+                }
+              },
+              {
+                "editorTool": {
+                  "key": "Lift/State 8"
+                }
+              },
+              {
+                "editorTool": {
+                  "key": "Lift/State 9"
+                }
+              },
+              {
+                "editorTool": {
+                  "key": "Lift/State 10"
+                }
+              },
+              {
+                "editorTool": {
+                  "key": "Lift/State 11"
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

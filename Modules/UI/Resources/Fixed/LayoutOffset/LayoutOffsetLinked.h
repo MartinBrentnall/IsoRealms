@@ -41,7 +41,9 @@ namespace IsoRealms::UI {
     float getOffset(float aspectRatio) const override;
     void setAbsolute(float aspectRatio, float value) override;
     void renderRelation(float aspectRatio) const override;
-
+    std::string getResourceModuleName() const override;
+    std::string getResourceTypeName() const override;
+    
     private:
 
     inline static const std::string VALUE_HEIGHT = "Height";

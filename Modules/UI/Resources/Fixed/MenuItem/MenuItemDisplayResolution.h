@@ -46,6 +46,7 @@ namespace IsoRealms::UI {
     /************************\
      * Implements IMenuItem *
     \************************/
+
     void defineResource(IComponentDefiner& definer) override;
     bool isDefaultConfiguration() const override;
     void publish(ResourcePublisher& publisher) override;
@@ -57,7 +58,9 @@ namespace IsoRealms::UI {
     float getHeight(const Menu& menu) const override;
     float getSelectedY(const Menu& menu) const override;
     std::string getTreeItemLabel() const override;
-
+    std::string getResourceModuleName() const override;
+    std::string getResourceTypeName() const override;
+    
     private:
 
     // External interfaces.

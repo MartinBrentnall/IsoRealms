@@ -83,6 +83,7 @@ namespace IsoRealms {
     void promoteComponentToProject() override;
 
     void pushComponentTypeMetadata(const Metadata& metadata);
+    const Metadata& resolveResourceMetadata(const std::string& moduleName, const std::string& resourceType) const;
 
     private:
     Application& cApplication;
@@ -92,6 +93,7 @@ namespace IsoRealms {
     std::map<std::string, std::unique_ptr<ModuleMetadata>> cModuleMetadata;
 
     static PropertyData mergePropertyMetadata(const PropertyData& metadata, const Options& hint);
+    void applyResourceMetadataFromHint(const Options& hint);
 
     IComponentData& getParent() const;
     IPropertyManager& getProperties() const;

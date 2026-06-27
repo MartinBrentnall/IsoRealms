@@ -90,4 +90,12 @@ namespace IsoRealms::Equilibria {
   float CameraOverview::getValue() const {
     return 0.0f;
   }
+
+  std::string CameraOverview::getResourceModuleName() const {
+    return "Equilibria";
+  }
+
+  std::string CameraOverview::getResourceTypeName() const {
+    return "CameraOverview";
+  }
 }

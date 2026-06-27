@@ -118,4 +118,12 @@ namespace IsoRealms::UI {
 
   std::unique_ptr<LiteralTexture> ScreenPanel::cGlobalCornerTexture = nullptr;
   unsigned int ScreenPanel::cGlobalInstanceCount = 0;
+
+  std::string ScreenPanel::getResourceModuleName() const {
+    return "UI";
+  }
+
+  std::string ScreenPanel::getResourceTypeName() const {
+    return "ScreenPanel";
+  }
 }

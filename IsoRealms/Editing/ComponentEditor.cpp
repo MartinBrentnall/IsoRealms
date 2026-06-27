@@ -32,6 +32,7 @@
 #include "Property/IPropertyManager.h"
 #include "Metadata.h"
 #include "PropertyData.h"
+#include "ResourceTypeMetadata.h"
 
 namespace IsoRealms {
   ComponentEditor::ComponentEditor(Application& application, IDialogManager& dialogManager) :
@@ -205,6 +206,7 @@ namespace IsoRealms {
     if (hint.getOption(IComponentDefiner::HINT_KEY_HIDDEN) == "true") {
       return;
     }
+    applyResourceMetadataFromHint(hint);
     if (hint.getOption(IComponentDefiner::HINT_KEY_INLINE) == "true") {
       subProperties();
       return;
@@ -257,6 +259,28 @@ namespace IsoRealms {
   
   void ComponentEditor::pushComponentTypeMetadata(const Metadata& metadata) {
     getProperties().setMetadata(metadata);
+  }
+
+  const Metadata& ComponentEditor::resolveResourceMetadata(const std::string& moduleName, const std::string& resourceType) const {
+    if (!moduleName.empty()) {
+      std::map<std::string, std::unique_ptr<ModuleMetadata>>::const_iterator mModuleMetadata = cModuleMetadata.find(moduleName);
+      if (mModuleMetadata != cModuleMetadata.end()) {
+        const ResourceTypeMetadata* mResourceTypeMetadata = mModuleMetadata->second->getResourceType(resourceType);
+        if (mResourceTypeMetadata != nullptr) {
+          return mResourceTypeMetadata->getProperties();
+        }
+      }
+    } else if (cApplicationMetadata.contains(resourceType)) {
+      return *cApplicationMetadata.at(resourceType);
+    }
+    return getApplicationMetadata("Application");
+  }
+
+  void ComponentEditor::applyResourceMetadataFromHint(const Options& hint) {
+    std::string mResourceType = hint.getOption(IComponentDefiner::HINT_KEY_METADATA_RESOURCE_TYPE);
+    if (!mResourceType.empty()) {
+      getProperties().setMetadata(resolveResourceMetadata(hint.getOption(IComponentDefiner::HINT_KEY_METADATA_MODULE), mResourceType));
+    }
   }
 
   PropertyData ComponentEditor::mergePropertyMetadata(const PropertyData& metadata, const Options& hint) {

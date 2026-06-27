@@ -184,4 +184,12 @@ namespace IsoRealms::Equilibria {
   float CameraTransitional::Transition::getValue() const {
     return cParent.cRuntimeAnimation / static_cast<float>(cParent.cDefDuration);
   }
+
+  std::string CameraTransitional::getResourceModuleName() const {
+    return "Equilibria";
+  }
+
+  std::string CameraTransitional::getResourceTypeName() const {
+    return "CameraTransitional";
+  }
 }

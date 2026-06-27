@@ -37,6 +37,8 @@ namespace IsoRealms::UI {
      * Implements IScreen *
     \**********************/
     bool renderResourceIcon() const override;
+    std::string getResourceModuleName() const override;
+    std::string getResourceTypeName() const override;
     void defineResource(IComponentDefiner& definer) override;
     bool isDefaultConfiguration() const override;
     void renderScreen(float scale, float aspectRatio) const override;

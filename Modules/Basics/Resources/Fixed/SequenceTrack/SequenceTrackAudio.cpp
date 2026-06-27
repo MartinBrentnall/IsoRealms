@@ -72,4 +72,12 @@ namespace IsoRealms::Basics {
     definer.propertyResource("volume", cDefVolume);
     getBaseProperties(definer);
   }
+
+  std::string SequenceTrackAudio::getResourceModuleName() const {
+    return "Basics";
+  }
+
+  std::string SequenceTrackAudio::getResourceTypeName() const {
+    return "SequenceTrackAudio";
+  }
 }

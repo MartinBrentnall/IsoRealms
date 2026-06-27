@@ -64,4 +64,12 @@ namespace IsoRealms::Equilibria {
   std::unique_ptr<IZoneObjectTrait> ZoneObjectTypeTraitPhysics::createTrait(ZoneObject& object) {
     return std::make_unique<Physics>(object, *this);
   }
+
+  std::string ZoneObjectTypeTraitPhysics::getResourceModuleName() const {
+    return "Equilibria";
+  }
+
+  std::string ZoneObjectTypeTraitPhysics::getResourceTypeName() const {
+    return "ZoneObjectTypeTraitPhysics";
+  }
 }

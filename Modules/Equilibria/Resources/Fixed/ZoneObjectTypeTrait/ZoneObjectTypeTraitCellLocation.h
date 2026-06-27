@@ -41,8 +41,10 @@ namespace IsoRealms::Equilibria {
     \*************************************/
     InputEditResult inputEdit(sf::Event& event, WorldEditor& editor) override;
     void processCursorMovement(LiteralVertex& cursor) override;
-    double getSnapInterval() const override;    
-    
+    double getSnapInterval() const override;
+    std::string getResourceModuleName() const override;
+    std::string getResourceTypeName() const override;
+
     private:
 
     //

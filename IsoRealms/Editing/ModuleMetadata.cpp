@@ -22,7 +22,8 @@
 #include "IsoRealms/Persistence/JSONThing.h"
 
 #include "ComponentEditor.h"
-#include "PropertyData.h"
+#include "Metadata.h"
+#include "ResourceTypeMetadata.h"
 
 namespace IsoRealms {
   ModuleMetadata::ModuleMetadata(Module& module, const Metadata& componentBaseMetadata) {
@@ -69,6 +70,20 @@ namespace IsoRealms {
       std::string mComponentName = mComponentThing.getName();
       cComponentTypes[mComponentName] = std::make_unique<ComponentTypeMetadata>(mComponentObject, componentBaseMetadata);
     }
+
+    if (mMetadataDocument.hasMember("resources")) {
+      JSONObject mResourcesObject = mMetadataDocument.getObject("resources");
+      for (JSONThing mResourceThing : mResourcesObject) {
+        JSONObject mResourceObject = mResourceThing.getValue();
+        std::string mResourceName = mResourceThing.getName();
+        cResourceTypes[mResourceName] = std::make_unique<ResourceTypeMetadata>(mResourceObject);
+      }
+    }
+  }
+
+  const ResourceTypeMetadata* ModuleMetadata::getResourceType(const std::string& resourceType) const {
+    std::map<std::string, std::unique_ptr<ResourceTypeMetadata>>::const_iterator mIterator = cResourceTypes.find(resourceType);
+    return mIterator != cResourceTypes.end() ? mIterator->second.get() : nullptr;
   }
 
   void ModuleMetadata::scopeCategories(ComponentEditor& definer, IPropertyManager& properties, Module& module, std::function<void()> removeFunction) {

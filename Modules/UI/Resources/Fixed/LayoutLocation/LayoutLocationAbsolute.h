@@ -42,6 +42,9 @@ namespace IsoRealms::UI {
     /********************************************\
      * Implements IResource via ILayoutLocation *
     \********************************************/
+    std::string getResourceModuleName() const override;
+    std::string getResourceTypeName() const override;
+    
     private:
 
     // External interface.

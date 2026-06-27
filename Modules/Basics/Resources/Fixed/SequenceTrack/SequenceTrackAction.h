@@ -42,5 +42,7 @@ namespace IsoRealms::Basics {
     void defineResource(IComponentDefiner& definer) override;
     void renderIcon() const override;
     void render(float left, float bottom, float right, float top, double startTime, double endTime) const override;
+    std::string getResourceModuleName() const override;
+    std::string getResourceTypeName() const override;
   };
 }

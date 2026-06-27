@@ -157,4 +157,12 @@ namespace IsoRealms::UI {
   bool StringTime::isConfigurable() const {
     return false;
   }
+
+  std::string StringTime::getResourceModuleName() const {
+    return "UI";
+  }
+
+  std::string StringTime::getResourceTypeName() const {
+    return "StringTime";
+  }
 }

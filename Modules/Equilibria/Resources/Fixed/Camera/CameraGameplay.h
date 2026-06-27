@@ -72,6 +72,9 @@ namespace IsoRealms::Equilibria {
     /*******************************************\
      * Implements IResource via ICamera/IFloat *
     \*******************************************/
+    std::string getResourceModuleName() const override;
+    std::string getResourceTypeName() const override;
+    
     private:
     
     inline static const std::string DIRECTION_NORTH_EAST = "NorthEast";

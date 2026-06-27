@@ -242,9 +242,9 @@ namespace IsoRealms {
 
         void defineBinding(IComponentDefiner& definer) override {
           definer.propertyResource("resource", cDefValue, IComponentDefiner::HINT_HIDDEN);
-          definer.scope("", "", [this, &definer]() {
+          definer.scope("resource", "", [this, &definer]() {
             cDefValue.defineTreeItem(definer);
-          }, nullptr, IComponentDefiner::HINT_TRANSIENT + IComponentDefiner::HINT_INLINE);
+          }, nullptr, IComponentDefiner::HINT_TRANSIENT);
         }
 
         bool renderResourceIcon() const override {

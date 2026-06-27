@@ -4,7 +4,7 @@
   "categories": {
     "Hue": "Hue resources."
   },
-  "assets": {
+  "resources": {
   },
   "components": {
     "HueManager": {

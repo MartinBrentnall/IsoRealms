@@ -57,4 +57,12 @@ namespace IsoRealms::UI {
                     : alignment == ALIGNMENT_RIGHT ? IFont::Alignment::RIGHT
                     :                                IFont::Alignment::CENTER;
   }
+
+  std::string ScreenText::getResourceModuleName() const {
+    return "UI";
+  }
+
+  std::string ScreenText::getResourceTypeName() const {
+    return "ScreenText";
+  }
 }

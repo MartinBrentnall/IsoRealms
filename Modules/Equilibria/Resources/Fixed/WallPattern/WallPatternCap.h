@@ -35,6 +35,8 @@ namespace IsoRealms::Equilibria {
      * Implements IWallPattern *
     \***************************/
     bool renderResourceIcon() const override;
+    std::string getResourceModuleName() const override;
+    std::string getResourceTypeName() const override;
     void defineResource(IComponentDefiner& definer) override;
     bool isDefaultConfiguration() const override;
     bool contains(ITexture*) override;

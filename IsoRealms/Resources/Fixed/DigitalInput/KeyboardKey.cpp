@@ -93,4 +93,12 @@ namespace IsoRealms {
     }
     return i->second;
   }
+
+  std::string KeyboardKey::getResourceModuleName() const {
+    return "";
+  }
+
+  std::string KeyboardKey::getResourceTypeName() const {
+    return "KeyboardKey";
+  }
 }

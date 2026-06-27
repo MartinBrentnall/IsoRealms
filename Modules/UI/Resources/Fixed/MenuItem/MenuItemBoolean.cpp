@@ -107,4 +107,12 @@ namespace IsoRealms::UI {
   bool MenuItemBoolean::isDefaultConfiguration() const {
     return false; // TODO: Implement this.
   }
+
+  std::string MenuItemBoolean::getResourceModuleName() const {
+    return "UI";
+  }
+
+  std::string MenuItemBoolean::getResourceTypeName() const {
+    return "MenuItemBoolean";
+  }
 }

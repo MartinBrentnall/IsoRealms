@@ -144,4 +144,12 @@ namespace IsoRealms::UI {
       cDefValueChangedAction.execute();
     }
   }
+
+  std::string MenuItemSlider::getResourceModuleName() const {
+    return "UI";
+  }
+
+  std::string MenuItemSlider::getResourceTypeName() const {
+    return "MenuItemSlider";
+  }
 }

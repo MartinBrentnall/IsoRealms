@@ -83,6 +83,8 @@ namespace IsoRealms {
         \************************************/
         void defineResource(IComponentDefiner& definer) override;
         bool isDefaultConfiguration() const override;
+        std::string getResourceModuleName() const override;
+        std::string getResourceTypeName() const override;
 
         private:
         float cValue; /// The value of this Float.

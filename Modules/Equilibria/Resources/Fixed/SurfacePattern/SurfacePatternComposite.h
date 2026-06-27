@@ -16,42 +16,44 @@
  * You should have received a copy of the GNU General Public License
  * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
- #pragma once
+#pragma once
 
- #include <GL/glew.h>
+#include <GL/glew.h>
  
- #include "IsoRealms.h"
- 
- #include "Modules/Equilibria/Resources/Client/SurfacePattern.h"
- #include "Modules/Equilibria/Resources/Type/ISurfacePattern.h"
- 
- namespace IsoRealms::Equilibria {
-   class SplitSurface;
-   class Surface;
-   class TerrainType;
- 
-   class SurfacePatternComposite : public ISurfacePattern {
-     public:
-     SurfacePatternComposite(TerrainType& owner);
- 
-     /******************************\
-      * Implements ISurfacePattern *
-     \******************************/
-     void defineResource(IComponentDefiner& definer) override;
-     bool contains(ITexture*) override;
-     std::vector<std::unique_ptr<IVisualElement>> getStaticVisuals(Surface* surface) override;
-     std::vector<std::unique_ptr<IVisualElement>> getStaticVisuals(SplitSurface* surface) override;
-     void render(float startX, float endX, float startY, float endY, float z, float xSlope, float ySlope, ISurface::Direction facing) const override;
-     void render(float x, float y, float z, float heightSW, float heightSE, float heightNW, float heighNE, bool alternativeSplit) const override;
-     void hintInUse(bool inUse) override;
- 
-     private:
+#include "IsoRealms.h"
 
-     // External interfaces.
-     TerrainType& cOwner;
+#include "Modules/Equilibria/Resources/Client/SurfacePattern.h"
+#include "Modules/Equilibria/Resources/Type/ISurfacePattern.h"
+ 
+namespace IsoRealms::Equilibria {
+  class SplitSurface;
+  class Surface;
+  class TerrainType;
 
-     // Definition data.
-     std::vector<std::unique_ptr<SurfacePattern>> cDefSurfacePatterns;
-   };
- }
+  class SurfacePatternComposite : public ISurfacePattern {
+    public:
+    SurfacePatternComposite(TerrainType& owner);
+
+    /******************************\
+     * Implements ISurfacePattern *
+    \******************************/
+    void defineResource(IComponentDefiner& definer) override;
+    bool contains(ITexture*) override;
+    std::vector<std::unique_ptr<IVisualElement>> getStaticVisuals(Surface* surface) override;
+    std::vector<std::unique_ptr<IVisualElement>> getStaticVisuals(SplitSurface* surface) override;
+    void render(float startX, float endX, float startY, float endY, float z, float xSlope, float ySlope, ISurface::Direction facing) const override;
+    void render(float x, float y, float z, float heightSW, float heightSE, float heightNW, float heighNE, bool alternativeSplit) const override;
+    void hintInUse(bool inUse) override;
+    std::string getResourceModuleName() const override;
+    std::string getResourceTypeName() const override;
+
+    private:
+
+    // External interfaces.
+    TerrainType& cOwner;
+
+    // Definition data.
+    std::vector<std::unique_ptr<SurfacePattern>> cDefSurfacePatterns;
+  };
+}
   

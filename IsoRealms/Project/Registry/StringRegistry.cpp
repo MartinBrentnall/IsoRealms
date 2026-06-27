@@ -85,4 +85,12 @@ namespace IsoRealms {
   bool StringRegistry::Literal::Instance::isConfigurable() const {
     return false;
   }
+
+  std::string StringRegistry::Literal::Instance::getResourceModuleName() const {
+    return "";
+  }
+
+  std::string StringRegistry::Literal::Instance::getResourceTypeName() const {
+    return "LiteralString";
+  }
 }

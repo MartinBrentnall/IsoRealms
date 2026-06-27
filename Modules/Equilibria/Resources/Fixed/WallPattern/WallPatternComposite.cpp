@@ -62,4 +62,12 @@ namespace IsoRealms::Equilibria {
   bool WallPatternComposite::isDefaultConfiguration() const {
     return false; // TODO: Implement
   }
+
+  std::string WallPatternComposite::getResourceModuleName() const {
+    return "Equilibria";
+  }
+
+  std::string WallPatternComposite::getResourceTypeName() const {
+    return "WallPatternComposite";
+  }
 }

@@ -74,4 +74,12 @@ namespace IsoRealms::Equilibria {
       return *cDefSurfacePatterns.emplace_back(std::make_unique<SurfacePattern>(cOwner.getEquilibria(), cOwner, nullptr));
     });
   }
+
+  std::string SurfacePatternComposite::getResourceModuleName() const {
+    return "Equilibria";
+  }
+
+  std::string SurfacePatternComposite::getResourceTypeName() const {
+    return "SurfacePatternComposite";
+  }
 }

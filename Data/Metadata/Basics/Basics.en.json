@@ -7,7 +7,7 @@
     "Primitives": "Resources that are used to create the basic elements of the application.",
     "System": "Resources that are used to manage an application itself."
   },
-  "assets": {
+  "resources": {
     "DigitalToAnalogue": {
       "description": "A mapping that converts a digital input to an analogue value.",
       "properties": {

@@ -55,6 +55,9 @@ namespace IsoRealms::Equilibria {
     /************************************\
      * Implements IResource via ICamera *
     \************************************/
+    std::string getResourceModuleName() const override;
+    std::string getResourceTypeName() const override;
+    
     private:
     
     // External interfaces.

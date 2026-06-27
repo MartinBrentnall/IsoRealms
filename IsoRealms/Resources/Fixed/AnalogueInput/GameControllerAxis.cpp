@@ -93,4 +93,12 @@ namespace IsoRealms {
     // }
     // return mLabelTemplate + mIndex;
   }
+
+  std::string GameControllerAxis::getResourceModuleName() const {
+    return "";
+  }
+
+  std::string GameControllerAxis::getResourceTypeName() const {
+    return "GameControllerAxis";
+  }
 }

@@ -6,7 +6,7 @@
     "Graphics": "Resources for presenting the game world to the player.",
     "Logic": "Resources for controlling the behaviour of the game world."
   },
-  "assets": {
+  "resources": {
     "CameraGameplay": {
       "description": "A camera shows a single zone at a time, with ability to view the zone from different isometric angles.",
       "properties": {

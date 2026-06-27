@@ -42,4 +42,12 @@ namespace IsoRealms::UI {
   bool LayoutOffsetAbsolute::isDefaultConfiguration() const {
     return false; // TODO: Implement this.
   }
+
+  std::string LayoutOffsetAbsolute::getResourceModuleName() const {
+    return "UI";
+  }
+
+  std::string LayoutOffsetAbsolute::getResourceTypeName() const {
+    return "LayoutOffsetAbsolute";
+  }
 }

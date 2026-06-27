@@ -78,6 +78,12 @@ namespace IsoRealms {
     /** Defer scope sub-properties until after the current definition pass completes. */
     inline static const std::string HINT_KEY_DEFER = "defer";
 
+    /** Module that owns the resource metadata for this scope; empty for application resources. */
+    inline static const std::string HINT_KEY_METADATA_MODULE = "metadataModule";
+
+    /** Resource type name used to look up metadata for this scope. */
+    inline static const std::string HINT_KEY_METADATA_RESOURCE_TYPE = "metadataResourceType";
+
     inline static const Options HINT_IMMEDIATE    {{HINT_KEY_IMMEDIATE,    "true"}};
     inline static const Options HINT_INLINE       {{HINT_KEY_INLINE,       "true"}};
     inline static const Options HINT_DEFER        {{HINT_KEY_DEFER,        "true"}};
@@ -90,6 +96,10 @@ namespace IsoRealms {
 
     static Options externalScopeHint(const std::string& documentPath, bool userDocument) {
       return {{HINT_KEY_DOCUMENT, documentPath}, {HINT_KEY_USER_DOCUMENT, userDocument ? "true" : "false"}};
+    }
+
+    static Options resourceMetadataHint(const std::string& moduleName, const std::string& resourceType) {
+      return {{HINT_KEY_METADATA_MODULE, moduleName}, {HINT_KEY_METADATA_RESOURCE_TYPE, resourceType}};
     }
 
     virtual void onInitialised(std::function<void()> callback) {

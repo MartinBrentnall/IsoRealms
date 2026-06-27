@@ -37,6 +37,8 @@ namespace IsoRealms::Equilibria {
      * Implements ISurfacePattern *
     \******************************/
     bool renderResourceIcon() const override;
+    std::string getResourceModuleName() const override;
+    std::string getResourceTypeName() const override;
     void defineResource(IComponentDefiner& definer) override;
     bool isDefaultConfiguration() const override;
     bool contains(ITexture*) override;
@@ -46,9 +48,6 @@ namespace IsoRealms::Equilibria {
     void render(float x, float y, float z, float heightSW, float heightSE, float heightNW, float heighNE, bool alternativeSplit) const override;
     void hintInUse(bool inUse) override;
 
-    /*****************************************\
-     * Implements IResource via ISurfacePattern *
-    \*****************************************/
     private:
 
     // Definition data.

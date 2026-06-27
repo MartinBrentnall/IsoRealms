@@ -53,7 +53,9 @@ namespace IsoRealms::Basics {
     unsigned int getTime() const override;
     void setTime(unsigned int time) override;
     void getEventProperties(IComponentDefiner& definer) override;
-
+    std::string getResourceModuleName() const override;
+    std::string getResourceTypeName() const override;
+    
     private:
 
     // Definition data.

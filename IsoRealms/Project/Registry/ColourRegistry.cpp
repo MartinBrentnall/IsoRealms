@@ -99,4 +99,12 @@ namespace IsoRealms {
   bool ColourRegistry::Literal::Instance::isDefaultConfiguration() const {
     return cRed == 0.0f && cGreen == 0.0f && cBlue == 0.0f && cAlpha == 1.0f;
   }
+
+  std::string ColourRegistry::Literal::Instance::getResourceModuleName() const {
+    return "";
+  }
+
+  std::string ColourRegistry::Literal::Instance::getResourceTypeName() const {
+    return "LiteralColour";
+  }
 }

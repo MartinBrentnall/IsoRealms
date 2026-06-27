@@ -38,4 +38,12 @@ namespace IsoRealms::Equilibria {
   std::unique_ptr<IZoneObjectTrait> ZoneObjectTypeTraitMovable::createTrait(ZoneObject& object) {
     return std::make_unique<Movable>(object, *this);
   }
+
+  std::string ZoneObjectTypeTraitMovable::getResourceModuleName() const {
+    return "Equilibria";
+  }
+
+  std::string ZoneObjectTypeTraitMovable::getResourceTypeName() const {
+    return "ZoneObjectTypeTraitMovable";
+  }
 }

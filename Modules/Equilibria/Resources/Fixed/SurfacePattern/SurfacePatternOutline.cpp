@@ -163,4 +163,12 @@ namespace IsoRealms::Equilibria {
     }
     glEnd();
   }
+
+  std::string SurfacePatternOutline::getResourceModuleName() const {
+    return "Equilibria";
+  }
+
+  std::string SurfacePatternOutline::getResourceTypeName() const {
+    return "SurfacePatternOutline";
+  }
 }

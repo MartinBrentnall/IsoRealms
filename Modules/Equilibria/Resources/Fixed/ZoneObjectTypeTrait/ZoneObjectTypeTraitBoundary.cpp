@@ -65,4 +65,12 @@ namespace IsoRealms::Equilibria {
   void ZoneObjectTypeTraitBoundary::forEachAvailableBoundaryTypeTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
     // TODO: Implement this.
   }
+
+  std::string ZoneObjectTypeTraitBoundary::getResourceModuleName() const {
+    return "Equilibria";
+  }
+
+  std::string ZoneObjectTypeTraitBoundary::getResourceTypeName() const {
+    return "ZoneObjectTypeTraitBoundary";
+  }
 }

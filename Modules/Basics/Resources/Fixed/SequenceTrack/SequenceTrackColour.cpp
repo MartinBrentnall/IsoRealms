@@ -101,4 +101,12 @@ namespace IsoRealms::Basics {
       mInstance->stateChanged(colour);
     }
   }
+
+  std::string SequenceTrackColour::getResourceModuleName() const {
+    return "Basics";
+  }
+
+  std::string SequenceTrackColour::getResourceTypeName() const {
+    return "SequenceTrackColour";
+  }
 }

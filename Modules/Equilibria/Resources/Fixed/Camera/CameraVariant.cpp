@@ -103,4 +103,12 @@ namespace IsoRealms::Equilibria {
   bool CameraVariant::isDefaultConfiguration() const {
     return false; // TODO: Implement
   }
+
+  std::string CameraVariant::getResourceModuleName() const {
+    return "Equilibria";
+  }
+
+  std::string CameraVariant::getResourceTypeName() const {
+    return "CameraVariant";
+  }
 }

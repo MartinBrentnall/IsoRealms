@@ -41,6 +41,8 @@ namespace IsoRealms::Equilibria {
     \***********************************/   
     std::unique_ptr<IZoneObjectTrait> createTrait(ZoneObject& object) override;
     void publish(EquilibriaResourceRegistry& registry, const std::string& parentID) override;
+    std::string getResourceModuleName() const override;
+    std::string getResourceTypeName() const override;
 
     private:
 

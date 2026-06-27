@@ -79,11 +79,13 @@ namespace IsoRealms {
     }
     
     void defineTreeItem(IComponentDefiner& definer) override {
-      definer.propertyString("key", [this]() {return getRawID();}, [this](const std::string& value) {
-        setID(value);
-      }, "", nullptr, nullptr, nullptr, IComponentDefiner::HINT_HIDDEN);
-      defineWrapper(definer);
-      cResource->defineResource(definer);
+      definer.scope("", "", [this, &definer]() {
+        definer.propertyString("key", [this]() {return getRawID();}, [this](const std::string& value) {
+          setID(value);
+        }, "", nullptr, nullptr, nullptr, IComponentDefiner::HINT_HIDDEN);
+        defineWrapper(definer);
+        cResource->defineResource(definer);
+      }, nullptr, IComponentDefiner::resourceMetadataHint(cResource->getResourceModuleName(), cResource->getResourceTypeName()) + IComponentDefiner::HINT_INLINE);
     }
 
     bool renderTreeItemIcon() const override {

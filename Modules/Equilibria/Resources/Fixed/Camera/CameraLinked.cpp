@@ -87,4 +87,12 @@ namespace IsoRealms::Equilibria {
   bool CameraLinked::isDefaultConfiguration() const {
     return false; // TODO: Implement
   }
+
+  std::string CameraLinked::getResourceModuleName() const {
+    return "Equilibria";
+  }
+
+  std::string CameraLinked::getResourceTypeName() const {
+    return "CameraLinked";
+  }
 }

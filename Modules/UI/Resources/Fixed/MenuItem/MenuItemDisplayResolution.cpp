@@ -135,4 +135,12 @@ namespace IsoRealms::UI {
     }
     return false;
   }
+
+  std::string MenuItemDisplayResolution::getResourceModuleName() const {
+    return "UI";
+  }
+
+  std::string MenuItemDisplayResolution::getResourceTypeName() const {
+    return "MenuItemDisplayResolution";
+  }
 }

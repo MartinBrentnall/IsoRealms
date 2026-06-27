@@ -1,7 +1,7 @@
 {
   "longName": "User Interface",
   "description": "Functionality for supporting user-interfaces and presentation.",
-  "assets": {
+  "resources": {
     "LayoutLocationAbsolute": {
       "description": "Positions a component edge on the screen at a location from -1.0 to +1.0.",
       "properties": {

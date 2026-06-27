@@ -78,4 +78,12 @@ namespace IsoRealms {
     // }
     // return mLabelTemplate + mIndex;
   }
+
+  std::string GameControllerButton::getResourceModuleName() const {
+    return "";
+  }
+
+  std::string GameControllerButton::getResourceTypeName() const {
+    return "GameControllerButton";
+  }
 }

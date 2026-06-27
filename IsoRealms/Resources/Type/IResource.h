@@ -19,6 +19,7 @@
 #pragma once
 
 #include <memory>
+#include <string>
 #include <vector>
 
 namespace IsoRealms {
@@ -39,6 +40,14 @@ namespace IsoRealms {
 
     virtual void defineResource(IComponentDefiner& definer) {
       // Nothing to do.
+    }
+
+    virtual std::string getResourceModuleName() const {
+      return "";
+    }
+
+    virtual std::string getResourceTypeName() const {
+      return "";
     }
     
     virtual bool isDefaultConfiguration() const {

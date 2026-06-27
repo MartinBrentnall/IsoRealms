@@ -56,7 +56,9 @@ namespace IsoRealms {
     std::string getShortName() const override;
     std::string getLongName() const override;
     std::string getLocalizedName() const override;
-
+    std::string getResourceModuleName() const override;
+    std::string getResourceTypeName() const override;
+    
     private:
     class ButtonChooser : public IOptionalObject {
       public:

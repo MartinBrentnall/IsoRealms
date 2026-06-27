@@ -71,4 +71,12 @@ namespace IsoRealms::Equilibria {
   void SurfacePatternSplitVariant::render(float x, float y, float z, float heightSW, float heightSE, float heightNW, float heightNE, bool alternativeSplit) const {
     (alternativeSplit ? cDefSplitBPattern : cDefSplitAPattern)->render(x, y, z, heightSW, heightSE, heightNW, heightNE, alternativeSplit);
   }
+
+  std::string SurfacePatternSplitVariant::getResourceModuleName() const {
+    return "Equilibria";
+  }
+
+  std::string SurfacePatternSplitVariant::getResourceTypeName() const {
+    return "SurfacePatternSplitVariant";
+  }
 }

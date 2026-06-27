@@ -48,7 +48,9 @@ namespace IsoRealms::Basics {
     std::string getLongName() const override;
     std::string getLocalizedName() const override;
     void publish(ResourcePublisher& publisher) override;
-
+    std::string getResourceModuleName() const override;
+    std::string getResourceTypeName() const override;
+    
     private:
 
     // Definition data.

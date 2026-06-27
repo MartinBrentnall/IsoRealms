@@ -33,11 +33,11 @@ add_library(IsoRealms
   Editing/Choice.cpp
   Editing/ComponentEditor.cpp
   Editing/ComponentTypeMetadata.cpp
-  Editing/PropertiesMenu.cpp
   Editing/MenuItemProperty.cpp
   Editing/MenuItemSpacer.cpp
   Editing/Metadata.cpp
   Editing/ModuleMetadata.cpp
+  Editing/PropertiesMenu.cpp
   Editing/Property/Property.cpp
   Editing/Property/PropertyAdd.cpp
   Editing/Property/PropertyCode.cpp
@@ -61,6 +61,7 @@ add_library(IsoRealms
   Editing/Property/PropertyStruct.cpp
   Editing/Property/PropertyTreeSelector.cpp
   Editing/PropertyData.cpp
+  Editing/ResourceTypeMetadata.cpp
   Editing/UIManager.cpp
   Exception/ActionException.cpp
   Exception/ApplicationException.cpp

@@ -135,4 +135,12 @@ namespace IsoRealms::Equilibria {
   bool WallPatternOutline::isDefaultConfiguration() const {
     return false; // TODO: Implement
   }
+
+  std::string WallPatternOutline::getResourceModuleName() const {
+    return "Equilibria";
+  }
+
+  std::string WallPatternOutline::getResourceTypeName() const {
+    return "WallPatternOutline";
+  }
 }

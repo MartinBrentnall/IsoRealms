@@ -73,4 +73,12 @@ namespace IsoRealms::Basics {
     definer.propertyFloat("toValue", [this]() {return cDefOutputValue;}, [this](float toValue)           {cDefOutputValue = toValue;});
     cDefControl.define(definer);
   }
+
+  std::string DigitalToAnalogueMapping::getResourceModuleName() const {
+    return "Basics";
+  }
+
+  std::string DigitalToAnalogueMapping::getResourceTypeName() const {
+    return "DigitalToAnalogue";
+  }
 }

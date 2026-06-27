@@ -25,22 +25,25 @@
 #include "IsoRealms/Project/Module.h"
 
 #include "ComponentTypeMetadata.h"
+#include "ResourceTypeMetadata.h"
 
 namespace IsoRealms {
   class ComponentEditor;
   class JSONObject;
-  class PropertyData;
+  class Metadata;
 
   class ModuleMetadata {
     public:
     ModuleMetadata(Module& module, const Metadata& componentBaseMetadata);
     void scopeCategories(ComponentEditor& definer, IPropertyManager& properties, Module& module, std::function<void()> removeFunction);
+    const ResourceTypeMetadata* getResourceType(const std::string& resourceType) const;
     
     private:
     std::string cDescription;
     std::string cLongName;
     std::map<std::string, std::string> cCategoryDescriptions;
     std::map<std::string, std::unique_ptr<ComponentTypeMetadata>> cComponentTypes;
+    std::map<std::string, std::unique_ptr<ResourceTypeMetadata>> cResourceTypes;
   };
 }
  

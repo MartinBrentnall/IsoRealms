@@ -43,16 +43,18 @@ namespace IsoRealms::Basics {
     /*****************************\
      * Implements ISequenceTrack *
     \*****************************/
-
     void defineResource(IComponentDefiner& definer) override;
     void renderIcon() const override;
     void render(float left, float bottom, float right, float top, double startTime, double endTime) const override;
+    
     /**********************************\
       * Implements ISequenceTrackEvent *
     \**********************************/
     unsigned int getTime() const override;
     void setTime(unsigned int time) override;
     void getEventProperties(IComponentDefiner& definer) override;
+    std::string getResourceModuleName() const override;
+    std::string getResourceTypeName() const override;
 
     private:
 

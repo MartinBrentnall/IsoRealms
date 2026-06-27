@@ -179,4 +179,12 @@ namespace IsoRealms::UI {
     cRuntimeAddingMapping = true;
     return true;
   }
+
+  std::string MenuItemDigitalInput::getResourceModuleName() const {
+    return "UI";
+  }
+
+  std::string MenuItemDigitalInput::getResourceTypeName() const {
+    return "MenuItemDigitalInput";
+  }
 }

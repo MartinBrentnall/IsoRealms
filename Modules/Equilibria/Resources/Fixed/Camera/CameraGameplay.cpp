@@ -202,4 +202,12 @@ namespace IsoRealms::Equilibria {
          : value == DIRECTION_SOUTH_WEST ? VALUE_SOUTH_WEST
          :                                 VALUE_INVALID;
   }
+
+  std::string CameraGameplay::getResourceModuleName() const {
+    return "Equilibria";
+  }
+
+  std::string CameraGameplay::getResourceTypeName() const {
+    return "CameraGameplay";
+  }
 }

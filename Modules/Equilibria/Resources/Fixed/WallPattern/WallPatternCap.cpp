@@ -252,4 +252,12 @@ namespace IsoRealms::Equilibria {
   void WallPatternCap::SectionTop::prepareVisual() {
     // Nothing to do
   }
+
+  std::string WallPatternCap::getResourceModuleName() const {
+    return "Equilibria";
+  }
+
+  std::string WallPatternCap::getResourceTypeName() const {
+    return "WallPatternCap";
+  }
 }

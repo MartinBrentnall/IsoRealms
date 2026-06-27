@@ -55,7 +55,9 @@ namespace IsoRealms {
 
     static sf::Mouse::Button getButton(const std::string& name);
     static std::string getName(const sf::Mouse::Button button);
-
+    std::string getResourceModuleName() const override;
+    std::string getResourceTypeName() const override;
+    
     private:
     class ButtonChooser : public IOptionalObject {
       public:

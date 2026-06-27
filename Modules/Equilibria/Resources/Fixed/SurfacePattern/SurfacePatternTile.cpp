@@ -169,4 +169,12 @@ namespace IsoRealms::Equilibria {
     }
     glEnd();
   }
+
+  std::string SurfacePatternTile::getResourceModuleName() const {
+    return "Equilibria";
+  }
+
+  std::string SurfacePatternTile::getResourceTypeName() const {
+    return "SurfacePatternTile";
+  }
 }

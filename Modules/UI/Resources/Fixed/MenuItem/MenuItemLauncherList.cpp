@@ -170,4 +170,12 @@ namespace IsoRealms::UI {
     }
     return false;
   }
+
+  std::string MenuItemLauncherList::getResourceModuleName() const {
+    return "UI";
+  }
+
+  std::string MenuItemLauncherList::getResourceTypeName() const {
+    return "MenuItemLauncherList";
+  }
 }

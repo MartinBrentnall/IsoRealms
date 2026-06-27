@@ -99,6 +99,8 @@ namespace IsoRealms {
         bool isDefaultConfiguration() const override;
         std::string getConversionPath() const override;
         bool isConfigurable() const override;
+        std::string getResourceModuleName() const override;
+        std::string getResourceTypeName() const override;
         
         private:
         std::string cValue; /// The value of this String.

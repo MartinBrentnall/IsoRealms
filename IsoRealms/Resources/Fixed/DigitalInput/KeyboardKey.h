@@ -65,7 +65,9 @@ namespace IsoRealms {
       * @return Name of the specified key.
       */
     static std::string getName(const sf::Keyboard::Key& key);
-     
+    std::string getResourceModuleName() const override;
+    std::string getResourceTypeName() const override;
+    
     private:
     class KeyChooser : public IOptionalObject {
       public:

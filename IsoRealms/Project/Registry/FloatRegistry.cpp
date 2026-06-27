@@ -41,4 +41,12 @@ namespace IsoRealms {
   bool FloatRegistry::Literal::Instance::isDefaultConfiguration() const {
     return cValue == 0.0f;
   }
+
+  std::string FloatRegistry::Literal::Instance::getResourceModuleName() const {
+    return "";
+  }
+
+  std::string FloatRegistry::Literal::Instance::getResourceTypeName() const {
+    return "LiteralFloat";
+  }
 }

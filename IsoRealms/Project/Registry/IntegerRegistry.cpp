@@ -42,4 +42,12 @@ namespace IsoRealms {
   bool IntegerRegistry::Literal::Instance::isDefaultConfiguration() const {
     return cValue == 0;
   }
+
+  std::string IntegerRegistry::Literal::Instance::getResourceModuleName() const {
+    return "";
+  }
+
+  std::string IntegerRegistry::Literal::Instance::getResourceTypeName() const {
+    return "LiteralInteger";
+  }
 }

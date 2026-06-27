@@ -54,4 +54,12 @@ namespace IsoRealms::Equilibria {
   std::unique_ptr<IZoneView> ZoneViewTypeOverview::createZoneView(Zone* zone) {
     return std::make_unique<ZoneViewOverview>(cWorldView, *this, zone);
   }
+
+  std::string ZoneViewTypeOverview::getResourceModuleName() const {
+    return "Equilibria";
+  }
+
+  std::string ZoneViewTypeOverview::getResourceTypeName() const {
+    return "ZoneViewTypeOverview";
+  }
 }

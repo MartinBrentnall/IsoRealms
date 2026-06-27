@@ -45,7 +45,9 @@ namespace IsoRealms::UI {
     \*********************************/
     std::string getConversionPath() const override;
     bool isConfigurable() const override;
-
+    std::string getResourceModuleName() const override;
+    std::string getResourceTypeName() const override;
+    
     private:
     class FormatElement {
       

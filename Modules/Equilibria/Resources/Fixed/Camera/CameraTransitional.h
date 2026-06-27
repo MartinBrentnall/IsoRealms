@@ -67,8 +67,9 @@ namespace IsoRealms::Equilibria {
     \******************************/
     void yawChanged(ICamera* camera) override;
     void pitchChanged(ICamera* camera) override;
-
-
+    std::string getResourceModuleName() const override;
+    std::string getResourceTypeName() const override;
+    
     private:
     
     inline static const unsigned int DEFAULT_DURATION = 500U;

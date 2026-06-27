@@ -109,4 +109,12 @@ namespace IsoRealms {
       getTreeItemInfoFunction(TreeItemInfo{i->first, i->first});
     }
   }
+
+  std::string GameControllerHat::getResourceModuleName() const {
+    return "";
+  }
+
+  std::string GameControllerHat::getResourceTypeName() const {
+    return "GameControllerHat";
+  }
 }
