@@ -145,10 +145,7 @@ namespace IsoRealms::Basics {
   }
 
   void AnalogueControl::InputMapping::define(IComponentDefiner& definer, std::function<void()> removeFunction) {
-    Options mHint;
-    mHint.addOption(Options::PROPERTY_INLINE, "true");
-    mHint.addOption(Options::PROPERTY_IMMEDIATE, "true");
-    definer.propertyResource("DefaultMapping", *cPhysicalInput, mHint, removeFunction);
+    definer.propertyResource("DefaultMapping", *cPhysicalInput, IComponentDefiner::HINT_INLINE_IMMEDIATE, removeFunction);
   }
 
   void AnalogueControl::InputMapping::reset() {

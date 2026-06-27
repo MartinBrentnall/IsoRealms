@@ -158,9 +158,6 @@ namespace IsoRealms::Basics {
   }
 
   void DigitalControl::InputMapping::define(IComponentDefiner& definer, std::function<void()> removeFunction) {
-    Options mHint;
-    mHint.addOption(Options::PROPERTY_INLINE, "true");
-    mHint.addOption(Options::PROPERTY_IMMEDIATE, "true");
-    definer.propertyResource("DefaultMapping", *cInput, mHint, removeFunction);
+    definer.propertyResource("DefaultMapping", *cInput, IComponentDefiner::HINT_INLINE_IMMEDIATE, removeFunction);
   }
 }

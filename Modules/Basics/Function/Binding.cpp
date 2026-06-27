@@ -86,11 +86,7 @@ namespace IsoRealms::Basics {
   }
   
   void Binding::getProperties(IComponentDefiner& definer, bool init) {
-    Options mHint;
-    if (!init) {
-      mHint.addOption(Options::PROPERTY_IMMEDIATE, "true");
-    }
-    definer.propertyResource("to", cDefValue, mHint);
+    definer.propertyResource("to", cDefValue, init ? Options::EMPTY : IComponentDefiner::HINT_IMMEDIATE);
     definer.propertyString("variable", [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, "", [this](const std::string& value) {return cParent.isBindingNameAllowed(*this, value);});
   }
 }

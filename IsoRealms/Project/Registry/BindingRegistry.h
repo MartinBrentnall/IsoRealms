@@ -241,9 +241,7 @@ namespace IsoRealms {
         }
 
         void defineBinding(IComponentDefiner& definer) override {
-          Options mHint;
-          mHint.addOption(Options::PROPERTY_NO_EDIT, "true");
-          definer.propertyResource("asset", cDefValue, mHint); // TODO: Rename to "resource".
+          definer.propertyResource("asset", cDefValue, IComponentDefiner::HINT_HIDDEN); // TODO: Rename to "resource".
           if (!definer.loadsPersistedValues()) {
             cDefValue.defineTreeItem(definer);
           }

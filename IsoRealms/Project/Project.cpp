@@ -132,8 +132,6 @@ namespace IsoRealms {
 
     // Modules.
     definer.spacer(0.5f);
-    Options mModulesHint;
-    mModulesHint.addOption(Options::PROPERTY_NO_ADD, "true");
     definer.keyedArray("modules", "", cDefModules, [](const std::unique_ptr<Module>& module) -> Module& {
       return *module;
     }, [&definer, this](Module& module) {
@@ -143,7 +141,7 @@ namespace IsoRealms {
       definer.spacer(0.5f);
     }, [this](const std::string& moduleName) -> Module& {
       return *getModule(moduleName);
-    }, mModulesHint);
+    }, IComponentDefiner::HINT_NO_ADD);
 
     // Module chooser for loading new modules.
     if (!definer.loadsPersistedValues() && !definer.savesPersistedValues()) {

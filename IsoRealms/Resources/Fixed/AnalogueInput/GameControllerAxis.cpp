@@ -60,18 +60,14 @@ namespace IsoRealms {
   }
 
   void GameControllerAxis::defineResource(IComponentDefiner& definer) {
-    Options mNoEdit;
-    mNoEdit.addOption(Options::PROPERTY_NO_EDIT, "true");
-    Options mNoPersist;
-    mNoPersist.addOption(Options::PROPERTY_NO_PERSIST, "true");
-    definer.propertyInteger("axis", [this]() {return cDefAxis;}, [this](int axis) {cDefAxis = axis;}, 0, [](int) {return true;}, nullptr, mNoEdit);
+    definer.propertyInteger("axis", [this]() {return cDefAxis;}, [this](int axis) {cDefAxis = axis;}, 0, [](int) {return true;}, nullptr, IComponentDefiner::HINT_HIDDEN);
     definer.propertyOptional("axis", cAxisChooser, "", []() {
       return true;
     }, [this](const std::string& axis) {
       cDefAxis = static_cast<unsigned int>(std::stoul(axis.substr(1)));
     }, [this]() {
       return getLocalizedName();
-    }, mNoPersist);
+    }, IComponentDefiner::HINT_NO_PERSIST);
     definer.propertyFloat("deadZone", [this]() {return cDefDeadZone;}, [this](float deadZone) {cDefDeadZone = deadZone;});
   }
 

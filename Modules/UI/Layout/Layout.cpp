@@ -31,13 +31,9 @@ namespace IsoRealms::UI {
   void Layout::define(IComponentDefiner& definer) {
     definer.propertyEditor("Content", this);
     definer.array("components", cComponentsByOrder, [](LayoutComponent* mComponent) -> LayoutComponent& {return *mComponent;}, [this, &definer](LayoutComponent& component) {
-      Options mComponentsHint;
-      mComponentsHint.addOption(Options::PROPERTY_NO_EDIT, "true");
       definer.scope("Component", getName(&component), [this, &component, &definer]() {
-        if (definer.loadsPersistedValues() || definer.savesPersistedValues()) {
-          component.define(definer);
-        }
-      }, nullptr, mComponentsHint);
+        component.define(definer);
+      }, nullptr, IComponentDefiner::HINT_HIDDEN);
     }, [this]() -> LayoutComponent& {
       return *createComponent(0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
     });

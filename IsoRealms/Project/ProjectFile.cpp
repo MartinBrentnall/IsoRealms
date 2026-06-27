@@ -76,9 +76,7 @@ namespace IsoRealms {
 
   void ProjectFile::define(IComponentDefiner& definer, Project& project, bool inclusion) {
     if (inclusion || !definer.loadsPersistedValues()) {
-      Options mHintImmediate;
-      mHintImmediate.addOption(Options::PROPERTY_IMMEDIATE, "true");
-      definer.propertyResource("filename", cFile, mHintImmediate);
+      definer.propertyResource("filename", cFile, IComponentDefiner::HINT_IMMEDIATE);
     }
     definer.propertyString("description", [this]() {return cDefID;}, [this](const std::string& value) {cDefID = value;});
     if (inclusion && cFile.isUser()) {
@@ -101,8 +99,8 @@ namespace IsoRealms {
         inclusion.define(definer, project, true);
         if (inclusion.cFile.isSet()) {
           Options mFileHint;
-          mFileHint.addOption(Options::PROPERTY_FILE, inclusion.cFile.getRelativePath());
-          mFileHint.addOption(Options::PROPERTY_USER, inclusion.cFile.isUser() ? "true" : "false");
+          mFileHint.addOption(IComponentDefiner::PROPERTY_FILE, inclusion.cFile.getRelativePath());
+          mFileHint.addOption(IComponentDefiner::PROPERTY_USER, inclusion.cFile.isUser() ? "true" : "false");
           definer.scope("include", inclusion.cFile.getRelativePath(), [&project, &inclusion, &definer]() {
             project.define(definer, &inclusion);
           }, nullptr, mFileHint);

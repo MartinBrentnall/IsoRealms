@@ -82,8 +82,6 @@ World::World(Equilibria& equilibria, IComponentData& data) :
     });
 
     // None editable definition follows.
-    Options mWorldObjectsHint;
-    mWorldObjectsHint.addOption(Options::PROPERTY_NO_EDIT, "true");
     definer.scope("worldObjects", "", [this, &definer]() {
       definer.array("debrisGenerators", cDefDebrisGenerators, [](const std::unique_ptr<DebrisGenerator>& mDebrisGenerator) -> DebrisGenerator& {return *mDebrisGenerator;}, [&definer](DebrisGenerator& debrisGenerator) {
         debrisGenerator.define(definer);
@@ -104,7 +102,7 @@ World::World(Equilibria& equilibria, IComponentData& data) :
         cEquilibria.added(mZone);
         return *mZone;
       });
-    }, nullptr, mWorldObjectsHint);
+    }, nullptr, IComponentDefiner::HINT_HIDDEN);
 
     definer.onInitialised([this]() {
       // Try to open terrain cache

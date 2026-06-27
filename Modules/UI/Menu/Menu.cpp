@@ -38,9 +38,7 @@ namespace IsoRealms::UI {
     definer.propertyFloat(   "shadowOffset", [this]() {return cDefShadowOffset;}, [this](float value) {cDefShadowOffset = value;}, DEFAULT_SHADOW_OFFSET);
     definer.propertyResource("onExit",       cDefExitAction);
     definer.array(           "options",      cDefItems, [](const std::unique_ptr<MenuItem>& mItem) -> MenuItem& {return *mItem;}, [this, &definer](MenuItem& item) {
-      Options mHint;
-      mHint.addOption(Options::PROPERTY_IMMEDIATE, "true");
-      definer.propertyResource("item", item, mHint, [this, &item]() {
+      definer.propertyResource("item", item, IComponentDefiner::HINT_IMMEDIATE, [this, &item]() {
         Utils::removeElementUnique(cDefItems, &item);
       });
     }, [this]() -> MenuItem& {

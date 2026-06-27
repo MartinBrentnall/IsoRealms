@@ -81,13 +81,6 @@ namespace IsoRealms {
   }
 
   void Condition::define(IComponentDefiner& definer, const std::vector<ConditionElement*>& availableElements) {
-
-    // If we're loading persisted values, clear any existing criteria and conditions.
-    if (definer.loadsPersistedValues()) {
-      cDefCriteria.clear();
-      cDefConditions.clear();
-    }
-
     definer.propertyBoolean("negated", [this]() {return cDefNegated;}, [this](bool value) {cDefNegated = value;});
 
     // Operator is only applicable if there are multiple criteria or conditions.
@@ -128,13 +121,11 @@ namespace IsoRealms {
     definer.array("inputs", mInputs, [](const InputDefinition& input) -> InputDefinition& {return const_cast<InputDefinition&>(input);}, [&definer, &mElementsByName, this](InputDefinition& input) {
       definer.propertyString("input", [ &input]() {return input.name;}, [ &input](const std::string& value) {input.name = value;});
       definer.propertyBoolean("negated", [ &input]() {return input.negated;}, [ &input](bool value) {input.negated = value;});
-      if (definer.loadsPersistedValues()) {
-        std::map<std::string, ConditionElement*>::iterator mElement = mElementsByName.find(input.name);
-        if (mElement == mElementsByName.end()) {
-          throw ArgumentException("ERROR: Condition::define: Condition element \"" + input.name + "\" is not in the specified list of elements.");
-        }
-        cDefCriteria.insert(input.negated ? mElement->second->getNegativeClause() : mElement->second->getPositiveClause());
+      std::map<std::string, ConditionElement*>::iterator mElement = mElementsByName.find(input.name);
+      if (mElement == mElementsByName.end()) {
+        throw ArgumentException("ERROR: Condition::define: Condition element \"" + input.name + "\" is not in the specified list of elements.");
       }
+      cDefCriteria.insert(input.negated ? mElement->second->getNegativeClause() : mElement->second->getPositiveClause());
     }, [&mInputs]() -> InputDefinition& {
       return mInputs.emplace_back();
     });

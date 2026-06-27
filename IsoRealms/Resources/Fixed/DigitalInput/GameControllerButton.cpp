@@ -50,18 +50,14 @@ namespace IsoRealms {
   }
 
   void GameControllerButton::defineResource(IComponentDefiner& definer) {
-    Options mNoEdit;
-    mNoEdit.addOption(Options::PROPERTY_NO_EDIT, "true");
-    Options mNoPersist;
-    mNoPersist.addOption(Options::PROPERTY_NO_PERSIST, "true");
-    definer.propertyInteger("button", [this]() {return static_cast<int>(cButton);}, [this](int button) {cButton = static_cast<unsigned int>(button);}, 0, [](int) {return true;}, nullptr, mNoEdit);
+    definer.propertyInteger("button", [this]() {return static_cast<int>(cButton);}, [this](int button) {cButton = static_cast<unsigned int>(button);}, 0, [](int) {return true;}, nullptr, IComponentDefiner::HINT_HIDDEN);
     definer.propertyOptional("button", cButtonChooser, "", []() {
       return true;
     }, [this](const std::string& button) {
       cButton = static_cast<unsigned int>(std::stoul(button.substr(1)));
     }, [this]() {
       return getLocalizedName();
-    }, mNoPersist);
+    }, IComponentDefiner::HINT_NO_PERSIST);
   }
 
   void GameControllerButton::ButtonChooser::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {

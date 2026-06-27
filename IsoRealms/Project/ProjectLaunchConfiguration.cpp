@@ -33,11 +33,9 @@ namespace IsoRealms {
 
   void ProjectLaunchConfiguration::define(IComponentDefiner& definer, Project& project) {
     definer.propertyString("launchConfigurationName", [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, cDefName, [this, &project](const std::string& value) {return !project.isLaunchConfigurationNameUsed(value, this);});
-    Options mInlineHint;
-    mInlineHint.addOption(Options::PROPERTY_INLINE, "true");
-    definer.keyedArray("options", "launchConfigurationOptionAdd", cDefOptions, [](const std::unique_ptr<Option>& option) -> Option& {return *option;}, [this, &definer, &mInlineHint](Option& option) {
-      definer.scope("launchConfigurationOption", option.getName(), [&option, this, &definer, &mInlineHint]() {
-        option.getProperties(definer, *this, mInlineHint);
+    definer.keyedArray("options", "launchConfigurationOptionAdd", cDefOptions, [](const std::unique_ptr<Option>& option) -> Option& {return *option;}, [this, &definer](Option& option) {
+      definer.scope("launchConfigurationOption", option.getName(), [&option, this, &definer]() {
+        option.getProperties(definer, *this, IComponentDefiner::HINT_INLINE);
       }, [this, &option]() {
         Utils::removeElementUnique(cDefOptions, &option);
       });

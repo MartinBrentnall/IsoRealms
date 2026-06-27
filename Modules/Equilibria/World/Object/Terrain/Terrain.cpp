@@ -71,8 +71,6 @@ namespace IsoRealms::Equilibria {
 
   void Terrain::define(IComponentDefiner& definer) {
     Equilibria& mEquilibria = cZone.getWorld().getEquilibria();
-    Options mDeferHint;
-    mDeferHint.addOption(Options::PROPERTY_DEFER, "true");
     definer.scope("", "", [this, &mEquilibria, &definer]() {
       definer.propertyString("type", [this, &mEquilibria]() {return mEquilibria.getComponentID(cDefType);}, [this, &mEquilibria](const std::string& value) {
         cDefType = mEquilibria.get<TerrainType>(nullptr, value);
@@ -82,7 +80,7 @@ namespace IsoRealms::Equilibria {
       definer.propertyCondition("condition", mElements, [this]()->std::optional<Condition>& {return cDefCondition;}, [this](std::optional<Condition>& condition) {
         cDefCondition = condition;
       });
-    }, nullptr, mDeferHint);
+    }, nullptr, IComponentDefiner::HINT_DEFER);
     definer.propertyList("behaviour",
                          std::vector<std::string>{BEHAVIOUR_NORMAL,
                                                   BEHAVIOUR_INVISIBLE,

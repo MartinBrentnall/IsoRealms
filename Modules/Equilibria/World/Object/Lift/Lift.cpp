@@ -73,15 +73,13 @@ namespace IsoRealms::Equilibria {
   }
 
   void Lift::define(IComponentDefiner& definer) {
-    Options mDeferHint;
-    mDeferHint.addOption(Options::PROPERTY_DEFER, "true");
     definer.scope("", "", [this, &definer]() {
       definer.propertyString("type", [this]() {return cZone.getWorld().getEquilibria().getComponentID(cDefType);}, [this](const std::string& value) {
         cDefType = cZone.getWorld().getEquilibria().get<LiftType>(nullptr, value);
         cDefModel = cDefType->createModel();
         reset();
       });
-    }, nullptr, mDeferHint);
+    }, nullptr, IComponentDefiner::HINT_DEFER);
     definer.propertyInteger("x",           [this]() {return cDefX - cZone.getStartX();},       [this](int value) {cDefX = value + cZone.getStartX();});
     definer.propertyInteger("y",           [this]() {return cDefY - cZone.getStartY();},       [this](int value) {cDefY = value + cZone.getStartY();});
     definer.propertyInteger("z",           [this]() {return cDefZ - cZone.getStartZ();},       [this](int value) {cDefZ = value + cZone.getStartZ();});

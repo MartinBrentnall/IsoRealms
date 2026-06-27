@@ -27,6 +27,10 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
+  Options::Options(std::initializer_list<std::pair<const std::string, std::string>> options) :
+            cOptions(options.begin(), options.end()) {
+  }
+
   Options::Options(int argc, char** argv) {
     for (int i = 1; i < argc; i++) {
       if (strcmp(argv[i], "-t") == 0) {

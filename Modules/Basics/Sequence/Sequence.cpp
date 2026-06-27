@@ -52,9 +52,7 @@ namespace IsoRealms::Basics {
 
     // Tracks.
     definer.array("tracks", cDefTracks, [](const std::unique_ptr<SequenceTrack>& mTrack) -> SequenceTrack& {return *mTrack;}, [this, &definer](SequenceTrack& track) {
-      Options mHint;
-      mHint.addOption(Options::PROPERTY_IMMEDIATE, "true");
-      definer.propertyResource("track", track, mHint);
+      definer.propertyResource("track", track, IComponentDefiner::HINT_IMMEDIATE);
       track.stateChanged();
     }, [this]() -> SequenceTrack& {
       SequenceTrack* mTrack = cDefTracks.emplace_back(std::make_unique<SequenceTrack>(*this)).get();

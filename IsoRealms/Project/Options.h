@@ -19,9 +19,11 @@
 #pragma once
 
 #include <cstring>
+#include <initializer_list>
 #include <iostream>
 #include <map>
 #include <string>
+#include <utility>
 
 namespace IsoRealms {
   
@@ -31,35 +33,9 @@ namespace IsoRealms {
   class Options {
     public:
     static const Options EMPTY;
-
-    /** Hint option: value is persisted inline in the current load object (see ComponentLoader). */
-    inline static const std::string PROPERTY_INLINE = "inline";
-
-    /** Hint option: load reference and properties immediately instead of deferring to project init. */
-    inline static const std::string PROPERTY_IMMEDIATE = "immediate";
-
-    /** Hint option: property is not loaded or saved via the property system. */
-    inline static const std::string PROPERTY_NO_PERSIST = "noPersist";
-
-    /** Hint option: property is not shown or editable in the editor. */
-    inline static const std::string PROPERTY_NO_EDIT = "noEdit";
-
-    /** Hint option: suppress the default array add control; use a separate add property instead. */
-    inline static const std::string PROPERTY_NO_ADD = "noAdd";
-
-    /** Hint option: JSON member name under which nested struct properties are loaded and saved. */
-    inline static const std::string PROPERTY_SCOPED = "scoped";
-
-    /** Hint option: scope loads from a project file; value is the file path (see PROPERTY_USER). ComponentLoader only. */
-    inline static const std::string PROPERTY_FILE = "file";
-
-    /** Hint option: used with PROPERTY_FILE; "true" if the file is in user space. ComponentLoader only. */
-    inline static const std::string PROPERTY_USER = "user";
-
-    /** Hint option: scope properties are deferred until components are loaded, using a captured object stack. */
-    inline static const std::string PROPERTY_DEFER = "defer";
     
     Options();
+    Options(std::initializer_list<std::pair<const std::string, std::string>> options);
     Options(int argc, char** argv);
     Options(const Options&) = delete;
     Options(Options&&) = delete;
