@@ -84,7 +84,7 @@ namespace IsoRealms {
     definer.propertyBoolean("negated", [this]() {return cDefNegated;}, [this](bool value) {cDefNegated = value;});
 
     // Operator is only applicable if there are multiple criteria or conditions.
-    if (!definer.savesPersistedValues() || cDefCriteria.size() + cDefConditions.size() > 1) {
+    if (cDefCriteria.size() + cDefConditions.size() > 1) {
       definer.propertyList("operator",
                            {OPERATOR_AND, OPERATOR_OR},
                            [this]() {return cDefAnd ? OPERATOR_AND : OPERATOR_OR;},
@@ -107,10 +107,8 @@ namespace IsoRealms {
     };
     
     std::vector<InputDefinition> mInputs;
-    if (definer.savesPersistedValues()) {
-      for (ConditionElement::Clause* mCriteria : cDefCriteria) {
-        mInputs.push_back({mCriteria->getElement()->getName(), mCriteria->isNegated()});
-      }
+    for (ConditionElement::Clause* mCriteria : cDefCriteria) {
+      mInputs.push_back({mCriteria->getElement()->getName(), mCriteria->isNegated()});
     }
 
     std::map<std::string, ConditionElement*> mElementsByName;

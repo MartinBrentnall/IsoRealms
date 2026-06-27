@@ -106,7 +106,7 @@ namespace IsoRealms {
           confirm();
         }
       });
-      cOwnerProject.createProperty(definer, "ComponentOwner");
+      cOwnerProject.define(definer, "ComponentOwner");
       definer.spacer(0.5f);
       cComponentHandle.define(definer);
     }

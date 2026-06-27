@@ -37,17 +37,19 @@ namespace IsoRealms {
     Options();
     Options(std::initializer_list<std::pair<const std::string, std::string>> options);
     Options(int argc, char** argv);
-    Options(const Options&) = delete;
-    Options(Options&&) = delete;
-    Options& operator=(const Options&) = delete;
-    Options& operator=(Options&&) = delete;
+    Options(const Options& options) = delete;
+    Options(Options&& options) = default;
+    Options& operator=(const Options& options) = delete;
+    Options& operator=(Options&& options) = delete;
+
+    Options operator+(const Options& rhs) const;
+    bool operator==(const Options& options) const;
     void addOption(const std::string& key, const std::string& value);
     void assign(const Options& options);
     void clear();
-    bool operator==(const Options& options) const;
     bool hasOption(const std::string& option) const;
     std::string getOption(const std::string& key) const;
-    
+
     private:
     std::map<std::string, std::string> cOptions; /// Map of options
   };

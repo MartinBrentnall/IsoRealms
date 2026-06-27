@@ -102,15 +102,16 @@ namespace IsoRealms {
   }
   
   void Project::define(IComponentDefiner& definer, ProjectFile* loadOwner) {
+    ProjectFile& mStructureFile = loadOwner != nullptr ? *loadOwner : cDefProjectFileStructure;
     Options mNamelessHint;
     mNamelessHint.addOption("name", "");
 
     // Application configuration.
-    definer.scope("ApplicationConfiguration", "Edit...", [this, loadOwner, &definer]() {
-      definer.scope("FileStructure", "Edit...", [this, &definer]() {
-        cDefProjectFileStructure.define(definer, *this, false);
+    definer.scope("ApplicationConfiguration", "Edit...", [this, loadOwner, &definer, &mStructureFile]() {
+      definer.scope("FileStructure", "Edit...", [this, loadOwner, &definer, &mStructureFile]() {
+        mStructureFile.define(definer, *this, false, loadOwner == nullptr);
       });
-      definer.scope("launchConfigurations", "Edit...", [this, &definer]() {
+      definer.scope("launchConfigurations", "Edit...", [this, &definer, &mStructureFile]() {
         definer.keyedArray("launchConfigurations", "launchConfigurationAdd", cDefTestLaunchConfigurations, [](const std::unique_ptr<ProjectLaunchConfiguration>& launchConfiguration) -> ProjectLaunchConfiguration& {
           return *launchConfiguration;
         }, [this, &definer](ProjectLaunchConfiguration& launchConfiguration) {
@@ -119,8 +120,8 @@ namespace IsoRealms {
           }, [this, &launchConfiguration]() {
             Utils::removeElementUnique(cDefTestLaunchConfigurations, &launchConfiguration);
           });
-        }, [this](const std::string& key) -> ProjectLaunchConfiguration& {
-          return *cDefTestLaunchConfigurations.emplace_back(std::make_unique<ProjectLaunchConfiguration>(*this, cDefProjectFileStructure, key));
+        }, [this, &mStructureFile](const std::string& key) -> ProjectLaunchConfiguration& {
+          return *cDefTestLaunchConfigurations.emplace_back(std::make_unique<ProjectLaunchConfiguration>(*this, mStructureFile, key));
         });
       });
       cDefActionOnStart.define(       definer, "onStart",        loadOwner);
@@ -144,15 +145,14 @@ namespace IsoRealms {
     }, IComponentDefiner::HINT_NO_ADD);
 
     // Module chooser for loading new modules.
-    if (!definer.loadsPersistedValues() && !definer.savesPersistedValues()) {
-      if (!getUnusedModuleNames().empty()) {
-        definer.propertyOptional("Module", cDefModuleChooser, "Load Module...", []() {
-          Utils::renderIconAdd();
-          return true;
-        }, [this](const std::string& value) {
-          loadModule(value);
-        }, nullptr, mNamelessHint);
-      }
+    if (!getUnusedModuleNames().empty()) {
+      mNamelessHint.addOption(IComponentDefiner::HINT_KEY_TRANSIENT, "true");
+      definer.propertyOptional("Module", cDefModuleChooser, "Load Module...", []() {
+        Utils::renderIconAdd();
+        return true;
+      }, [this](const std::string& value) {
+        loadModule(value);
+      }, nullptr, mNamelessHint);
     }
   }
   

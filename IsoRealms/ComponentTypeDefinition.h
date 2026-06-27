@@ -132,11 +132,7 @@ namespace IsoRealms {
       definer.keyedArray("", "Add...", cComponents, [](const std::pair<const std::string, std::unique_ptr<ComponentInfo>>& entry) -> IComponent& {
         return *entry.second->getComponent();
       }, [&definer, this](IComponent& component) {
-        if (definer.loadsPersistedValues()) {
-          return;
-        }
-        Options mNamelessHint;
-        mNamelessHint.addOption("name", "");
+        Options mNamelessHint = Options{{"name", ""}} + IComponentDefiner::HINT_TRANSIENT;
         definer.scope(component.getName(), component.getName(), [&component, &definer]() {
           component.define(definer);
         }, [this, &component]() {

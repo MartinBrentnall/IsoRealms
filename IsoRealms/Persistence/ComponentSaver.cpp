@@ -141,7 +141,7 @@ namespace IsoRealms {
   }
 
   void ComponentSaver::propertyInteger(const std::string& key, std::function<int()> getter, std::function<void(int)> setter, int defaultValue, std::function<bool(int)> validityChecker, std::function<void()> removeFunction, const Options& hint) {
-    if (hint.getOption(IComponentDefiner::PROPERTY_HIDDEN) == "true") {
+    if (hint.getOption(IComponentDefiner::HINT_KEY_HIDDEN) == "true") {
       return;
     }
     currentObject().addInteger(key, getter(), defaultValue);
@@ -156,7 +156,7 @@ namespace IsoRealms {
   }
 
   void ComponentSaver::propertyOptional(const std::string& key, IOptionalObject& optionalSource, const std::string& noneLabel, std::function<bool()> noneIcon, std::function<void(const std::string&)> choiceCallback, std::function<std::string()> valueGetter, const Options& hint) {
-    if (hint.getOption(IComponentDefiner::PROPERTY_NO_PERSIST) == "true") {
+    if (hint.getOption(IComponentDefiner::HINT_KEY_TRANSIENT) == "true") {
       return;
     }
     if (valueGetter) {
@@ -165,7 +165,7 @@ namespace IsoRealms {
   }
 
   void ComponentSaver::propertyResource(const std::string& key, ITreeSelectorObject& item, const Options& hint, std::function<void()> removeFunction) {
-    if (hint.getOption(IComponentDefiner::PROPERTY_INLINE) == "true") {
+    if (hint.getOption(IComponentDefiner::HINT_KEY_INLINE) == "true") {
       saveTreeSelectorResourceProperties(item, currentObject(), hint);
     } else {
       if (item.hasConfiguration()) {
@@ -190,11 +190,11 @@ namespace IsoRealms {
   }
 
   void ComponentSaver::scope(const std::string& key, const std::string& value, std::function<void()> subProperties, std::function<void()> removeFunction, const Options& hint, std::function<bool()> icon) {
-    if (hint.getOption(IComponentDefiner::PROPERTY_HIDDEN) == "true") {
+    if (hint.getOption(IComponentDefiner::HINT_KEY_HIDDEN) == "true") {
       subProperties();
       return;
     }
-    if (hint.getOption(IComponentDefiner::PROPERTY_SCOPED) == "true") {
+    if (hint.getOption(IComponentDefiner::HINT_KEY_NESTED) == "true") {
       pushObject(currentObject().addObject(key));
       subProperties();
       popObject();

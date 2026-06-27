@@ -42,10 +42,6 @@ namespace IsoRealms {
     public:
     ComponentSaver(IComponentData& resourceData, JSONObject object);
 
-    bool savesPersistedValues() const override {
-      return true;
-    }
-
     void propertyAdd(             const std::string& key, const std::string& value, std::function<void()> addPropertyFunction, const Options& hint = Options::EMPTY) override;
     void propertyBoolean(         const std::string& key, std::function<bool()>         getter, std::function<void(bool)>               setter, bool               defaultValue,                                                          std::function<void()> removeFunction, PropertyBooleanConfirmCallback confirmCustom = nullptr) override;
     void propertyCode(            const std::string& key, std::function<std::string()>  getter, std::function<void(const std::string&)> setter,             std::function<void()> removeFunction = nullptr) override;

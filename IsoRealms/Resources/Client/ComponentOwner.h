@@ -37,7 +37,7 @@ namespace IsoRealms {
     ProjectFile* getProjectFile() const;
     void setProjectFile(ProjectFile* owner);
     bool isConfigurable() const;
-    void createProperty(IComponentDefiner& definer, const std::string& key);
+    void define(IComponentDefiner& definer, const std::string& key);
 
     /**********************************\
      * Implements ITreeSelectorObject *

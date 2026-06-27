@@ -42,9 +42,9 @@ namespace IsoRealms {
     return cProject.getWritableProjectFileNames().size() > 1;
   }
 
-  void ComponentOwner::createProperty(IComponentDefiner& definer, const std::string& key) {
+  void ComponentOwner::define(IComponentDefiner& definer, const std::string& key) {
     if (cProject.getWritableProjectFileNames().size() > 1) {
-      definer.propertyResource(key, *this);
+      definer.propertyResource(key, *this, IComponentDefiner::HINT_TRANSIENT);
     }
   }
 

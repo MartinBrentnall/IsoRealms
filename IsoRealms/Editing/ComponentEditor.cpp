@@ -158,7 +158,7 @@ namespace IsoRealms {
   }
 
   void ComponentEditor::propertyInteger(const std::string& key, std::function<int()> getter, std::function<void(int)> setter, int defaultValue, std::function<bool(int)> validityChecker, std::function<void()> removeFunction, const Options& hint) {
-    if (hint.getOption(IComponentDefiner::PROPERTY_HIDDEN) == "true") {
+    if (hint.getOption(IComponentDefiner::HINT_KEY_HIDDEN) == "true") {
       return;
     }
     getProperties().addProperty(std::make_unique<PropertyNativeInteger>(getCurrentMetadata().getPropertyData(key), *this, getter, setter, validityChecker, removeFunction));
@@ -174,7 +174,7 @@ namespace IsoRealms {
   }
 
   void ComponentEditor::propertyResource(const std::string& key, ITreeSelectorObject& item, const Options& hint, std::function<void()> removeFunction) {
-    if (hint.getOption(IComponentDefiner::PROPERTY_HIDDEN) == "true") {
+    if (hint.getOption(IComponentDefiner::HINT_KEY_HIDDEN) == "true") {
       return;
     }
     getProperties().addProperty(std::make_unique<PropertyTreeSelector>(*this, getParent(), mergePropertyMetadata(getCurrentMetadata().getPropertyData(key), hint), item, removeFunction));
@@ -199,7 +199,11 @@ namespace IsoRealms {
   }
 
   void ComponentEditor::scope(const std::string& key, const std::string& value, std::function<void()> subProperties, std::function<void()> removeFunction, const Options& hint, std::function<bool()> icon) {
-    if (hint.getOption(IComponentDefiner::PROPERTY_HIDDEN) == "true") {
+    if (hint.getOption(IComponentDefiner::HINT_KEY_HIDDEN) == "true") {
+      return;
+    }
+    if (hint.getOption(IComponentDefiner::HINT_KEY_INLINE) == "true") {
+      subProperties();
       return;
     }
     getProperties().addProperty(std::make_unique<PropertyStruct>(getParent(), mergePropertyMetadata(getCurrentMetadata().getPropertyData(key), hint), *this, value, subProperties, removeFunction, icon));
@@ -213,7 +217,7 @@ namespace IsoRealms {
     source.forEachMember([](const std::string&, const std::function<void()>& define) {
       define();
     });
-    if (hint.getOption(IComponentDefiner::PROPERTY_NO_ADD) != "true" && !addKey.empty()) {
+    if (hint.getOption(IComponentDefiner::HINT_KEY_NO_ADD) != "true" && !addKey.empty()) {
       propertyAdd(addKey, "Add...", [&source]() {
         source.defineNewMember("");
       }, hint);

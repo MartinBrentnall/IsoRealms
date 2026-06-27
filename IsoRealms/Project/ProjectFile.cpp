@@ -74,10 +74,8 @@ namespace IsoRealms {
     cFile.setPath(name, user);
   }
 
-  void ProjectFile::define(IComponentDefiner& definer, Project& project, bool inclusion) {
-    if (inclusion || !definer.loadsPersistedValues()) {
-      definer.propertyResource("filename", cFile, IComponentDefiner::HINT_IMMEDIATE);
-    }
+  void ProjectFile::define(IComponentDefiner& definer, Project& project, bool inclusion, bool editing) {
+    definer.propertyResource("filename", cFile, IComponentDefiner::HINT_TRANSIENT);
     definer.propertyString("description", [this]() {return cDefID;}, [this](const std::string& value) {cDefID = value;});
     if (inclusion && cFile.isUser()) {
       definer.propertyBoolean("allowModification", [this]() {return cAllowModifications;}, [this](bool value) {cAllowModifications = value;}, true, nullptr, [this, &project](bool value, std::function<void()> confirm, std::function<void()> cancel, IComponentAccessManager& access) {
@@ -93,24 +91,18 @@ namespace IsoRealms {
     }
     definer.array("include", cInclusions, [](const std::unique_ptr<ProjectFile>& inclusion) -> ProjectFile& {
       return *inclusion;
-    }, [this, &project, &definer](ProjectFile& inclusion) {
-      if (definer.loadsPersistedValues()) {
-        // Inclusion metadata is loaded from the parent file's include[] entry.
-        inclusion.define(definer, project, true);
-        if (inclusion.cFile.isSet()) {
-          Options mFileHint;
-          mFileHint.addOption(IComponentDefiner::PROPERTY_FILE, inclusion.cFile.getRelativePath());
-          mFileHint.addOption(IComponentDefiner::PROPERTY_USER, inclusion.cFile.isUser() ? "true" : "false");
-          definer.scope("include", inclusion.cFile.getRelativePath(), [&project, &inclusion, &definer]() {
-            project.define(definer, &inclusion);
-          }, nullptr, mFileHint);
-        }
-      } else {
-        definer.scope("include", inclusion.cFile.getRelativePath(), [this, &inclusion, &project, &definer]() {
-          inclusion.define(definer, project, true);
+    }, [this, &project, &definer, editing](ProjectFile& inclusion) {
+      if (editing) {
+        definer.scope("include", inclusion.cFile.getRelativePath(), [&project, &inclusion, &definer, editing]() {
+          inclusion.define(definer, project, true, editing);
         }, [this, &inclusion]() {
           Utils::removeElementUnique(cInclusions, &inclusion);
         });
+      } else {
+        definer.propertyResource("filename", inclusion.cFile, IComponentDefiner::HINT_IMMEDIATE);
+        definer.scope("", "", [&project, &inclusion, &definer]() {
+          project.define(definer, &inclusion);
+        }, nullptr, IComponentDefiner::externalScopeHint(inclusion.cFile.getRelativePath(), inclusion.cFile.isUser()));
       }
     }, [this, &project]() -> ProjectFile& {
       return *cInclusions.emplace_back(std::make_unique<ProjectFile>(project)).get();

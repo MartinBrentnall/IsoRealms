@@ -283,10 +283,10 @@ namespace IsoRealms::UI {
   void LayoutComponent::define(IComponentDefiner& definer) {
     definer.propertyString(  "id",     [this]() {return getName();}, [this](const std::string& value) {cLayout.setName(this, value);}, "", [this](const std::string& value) {return cLayout.isNameAllowed(this, value);});
     definer.propertyResource("screen", cDefScreen);
-    definer.scope(           "left",   "Edit...", [this, &definer]() {return cDefLeftEdge.define(  definer);}, nullptr, IComponentDefiner::HINT_SCOPED);
-    definer.scope(           "right",  "Edit...", [this, &definer]() {return cDefRightEdge.define( definer);}, nullptr, IComponentDefiner::HINT_SCOPED);
-    definer.scope(           "top",    "Edit...", [this, &definer]() {return cDefTopEdge.define(   definer);}, nullptr, IComponentDefiner::HINT_SCOPED);
-    definer.scope(           "bottom", "Edit...", [this, &definer]() {return cDefBottomEdge.define(definer);}, nullptr, IComponentDefiner::HINT_SCOPED);
+    definer.scope(           "left",   "Edit...", [this, &definer]() {return cDefLeftEdge.define(  definer);}, nullptr, IComponentDefiner::HINT_NESTED);
+    definer.scope(           "right",  "Edit...", [this, &definer]() {return cDefRightEdge.define( definer);}, nullptr, IComponentDefiner::HINT_NESTED);
+    definer.scope(           "top",    "Edit...", [this, &definer]() {return cDefTopEdge.define(   definer);}, nullptr, IComponentDefiner::HINT_NESTED);
+    definer.scope(           "bottom", "Edit...", [this, &definer]() {return cDefBottomEdge.define(definer);}, nullptr, IComponentDefiner::HINT_NESTED);
   }
   
   void LayoutComponent::setScreen(IScreen* screen) {

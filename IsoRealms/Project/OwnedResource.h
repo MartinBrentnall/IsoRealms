@@ -29,48 +29,33 @@ namespace IsoRealms {
     public:
     OwnedResource(Project& project, ProjectFile& ownerProject, OWNER& owner) :
               cResource(owner),
-              cOwner(project, &ownerProject),
-              cInit(false) {
-    }
-
-    void init(JSONObject object, const std::string& tag, ProjectFile& owner) {
-      if (object.hasMember(tag) && !cInit) {
-        cResource.init(object, tag);
-        cOwner.setProjectFile(&owner);
-        cInit = true;
-      }
+              cOwner(project, &ownerProject) {
     }
 
     TYPE* operator*() {
       return &cResource;
     }
 
-    void define(IComponentDefiner& definer, const std::string& name, ProjectFile* loadOwner = nullptr) {
-      if (definer.loadsPersistedValues()) {
-        if (loadOwner != nullptr && !cInit && definer.hasPersistedMember(name)) {
-          definer.propertyResource(name, cResource);
-          cOwner.setProjectFile(loadOwner);
-          cInit = true;
-        }
-        return;
-      }
-      if (definer.savesPersistedValues()) {
-        definer.propertyResource(name, cResource);
-        return;
-      }
+    void define(IComponentDefiner& definer, const std::string& name, ProjectFile* loadOwner) {
+
+      // Nest the resource inside a folder if it's configurable.
       if (cOwner.isConfigurable()) {
         definer.scope(name, cResource.getTreeItemLabel(), [this, name, &definer]() {
-          definer.propertyResource("Value", cResource);
-          cOwner.createProperty(definer, "Owner");
+          definer.propertyResource(name, cResource, IComponentDefiner::HINT_OPTIONAL);
+          cOwner.define(definer, "Owner");
         });
       } else {
-        definer.propertyResource(name, cResource);
+        definer.propertyResource(name, cResource, IComponentDefiner::HINT_OPTIONAL);
       }
+
+      // Set the owner project file when the resource is initialised.
+      definer.onInitialised([this, loadOwner]() {
+        cOwner.setProjectFile(loadOwner);
+      });
     }
 
     private:
     TYPE cResource;
     ComponentOwner cOwner;
-    bool cInit; // TODO: I think this should be part of the local loading process, not a field here.
   };
 }

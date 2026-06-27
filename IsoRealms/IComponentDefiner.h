@@ -45,48 +45,51 @@ namespace IsoRealms {
     public:
     virtual ~IComponentDefiner() = default;
 
-    /** Hint option: value is persisted inline in the current load object (see ComponentLoader). */
-    inline static const std::string PROPERTY_INLINE = "inline";
+    /** Hint keys and presets describe how a definer should treat a property or scope.
+     *  Individual definers interpret only the hints they support; unsupported hints are ignored. */
 
-    /** Hint option: load reference and properties immediately instead of deferring to project init. */
-    inline static const std::string PROPERTY_IMMEDIATE = "immediate";
+    /** Sub-properties are stored directly in the parent record instead of under a nested record. */
+    inline static const std::string HINT_KEY_INLINE = "inline";
 
-    /** Hint option: property is not loaded or saved via the property system. */
-    inline static const std::string PROPERTY_NO_PERSIST = "noPersist";
+    /** The property may be absent; definers should not require a value to be present. */
+    inline static const std::string HINT_KEY_OPTIONAL = "optional";
 
-    /** Hint option: property is not shown or editable in the editor. */
-    inline static const std::string PROPERTY_HIDDEN = "hidden";
+    /** Apply nested resource properties during the current definition pass. */
+    inline static const std::string HINT_KEY_IMMEDIATE = "immediate";
 
-    /** Hint option: suppress the default array add control; use a separate add property instead. */
-    inline static const std::string PROPERTY_NO_ADD = "noAdd";
+    /** Property participates in editing but is not written to external storage. */
+    inline static const std::string HINT_KEY_TRANSIENT = "transient";
 
-    /** Hint option: JSON member name under which nested struct properties are loaded and saved. */
-    inline static const std::string PROPERTY_SCOPED = "scoped";
+    /** Property is omitted from property menus. */
+    inline static const std::string HINT_KEY_HIDDEN = "hidden";
 
-    /** Hint option: scope loads from a project file; value is the file path (see PROPERTY_USER). ComponentLoader only. */
-    inline static const std::string PROPERTY_FILE = "file";
+    /** Suppress the default array add control; use propertyAdd separately. */
+    inline static const std::string HINT_KEY_NO_ADD = "noAdd";
 
-    /** Hint option: used with PROPERTY_FILE; "true" if the file is in user space. ComponentLoader only. */
-    inline static const std::string PROPERTY_USER = "user";
+    /** Sub-properties are grouped under a named nested record keyed by the property name. */
+    inline static const std::string HINT_KEY_NESTED = "nested";
 
-    /** Hint option: scope properties are deferred until components are loaded, using a captured object stack. */
-    inline static const std::string PROPERTY_DEFER = "defer";
+    /** Scope sub-properties are rooted in another document; value is the document path. */
+    inline static const std::string HINT_KEY_DOCUMENT = "document";
 
-    inline static const Options HINT_IMMEDIATE        {{PROPERTY_IMMEDIATE,  "true"}};
-    inline static const Options HINT_INLINE           {{PROPERTY_INLINE,     "true"}};
-    inline static const Options HINT_DEFER            {{PROPERTY_DEFER,      "true"}};
-    inline static const Options HINT_HIDDEN           {{PROPERTY_HIDDEN,     "true"}};
-    inline static const Options HINT_SCOPED           {{PROPERTY_SCOPED,     "true"}};
-    inline static const Options HINT_NO_ADD           {{PROPERTY_NO_ADD,     "true"}};
-    inline static const Options HINT_NO_PERSIST       {{PROPERTY_NO_PERSIST, "true"}};
-    inline static const Options HINT_INLINE_IMMEDIATE {{PROPERTY_INLINE,     "true"}, {PROPERTY_IMMEDIATE, "true"}};
+    /** Used with HINT_KEY_DOCUMENT; "true" if the document is in user space. */
+    inline static const std::string HINT_KEY_USER_DOCUMENT = "userDocument";
 
-    virtual bool loadsPersistedValues() const {
-      return false;
-    }
+    /** Defer scope sub-properties until after the current definition pass completes. */
+    inline static const std::string HINT_KEY_DEFER = "defer";
 
-    virtual bool savesPersistedValues() const {
-      return false;
+    inline static const Options HINT_IMMEDIATE    {{HINT_KEY_IMMEDIATE,    "true"}};
+    inline static const Options HINT_INLINE       {{HINT_KEY_INLINE,       "true"}};
+    inline static const Options HINT_DEFER        {{HINT_KEY_DEFER,        "true"}};
+    inline static const Options HINT_HIDDEN       {{HINT_KEY_HIDDEN,       "true"}};
+    inline static const Options HINT_NESTED       {{HINT_KEY_NESTED,       "true"}};
+    inline static const Options HINT_OPTIONAL     {{HINT_KEY_OPTIONAL,     "true"}};
+    inline static const Options HINT_NO_ADD       {{HINT_KEY_NO_ADD,       "true"}};
+    inline static const Options HINT_TRANSIENT    {{HINT_KEY_TRANSIENT,    "true"}};
+    inline static const Options HINT_INLINE_IMMEDIATE = HINT_INLINE + HINT_IMMEDIATE;
+
+    static Options externalScopeHint(const std::string& documentPath, bool userDocument) {
+      return {{HINT_KEY_DOCUMENT, documentPath}, {HINT_KEY_USER_DOCUMENT, userDocument ? "true" : "false"}};
     }
 
     virtual void onInitialised(std::function<void()> callback) {
@@ -95,11 +98,6 @@ namespace IsoRealms {
 
     virtual void onPersisted(std::function<void()> callback) {
       // Only invoked after persisted values have been written during saving.
-    }
-
-    // TODO: Replace this function with a hint.
-    virtual bool hasPersistedMember(const std::string& key) const {
-      return false;
     }
 
     virtual void propertyAdd(             const std::string& key, const std::string& value, std::function<void()> addPropertyFunction, const Options& hint = Options::EMPTY) = 0;

@@ -46,7 +46,7 @@ namespace IsoRealms::Equilibria {
         mTextureHint.addOption("description", "TODO: Theme Texture Description");
         definer.propertyResource(mName, mTexture.second, mTextureHint);
       }
-    }, nullptr, IComponentDefiner::HINT_SCOPED);
+    }, nullptr, IComponentDefiner::HINT_NESTED);
     definer.scope("colours", "Edit...", [this, &definer]() {
       for (std::pair<ThemeColour* const, Colour>& mColour : cColours) {
         std::string mName = cThemeSet.getElement(mColour.first);
@@ -55,7 +55,7 @@ namespace IsoRealms::Equilibria {
         mColourHint.addOption("description", "TODO: Theme Colour Description");
         definer.propertyResource(mName, mColour.second, mColourHint);
       }
-    }, nullptr, IComponentDefiner::HINT_SCOPED);
+    }, nullptr, IComponentDefiner::HINT_NESTED);
   }
 
   void Theme::themeTextureAdded(ThemeTexture* texture) {

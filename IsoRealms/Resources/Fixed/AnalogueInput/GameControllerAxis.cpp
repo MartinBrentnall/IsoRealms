@@ -67,7 +67,7 @@ namespace IsoRealms {
       cDefAxis = static_cast<unsigned int>(std::stoul(axis.substr(1)));
     }, [this]() {
       return getLocalizedName();
-    }, IComponentDefiner::HINT_NO_PERSIST);
+    }, IComponentDefiner::HINT_TRANSIENT);
     definer.propertyFloat("deadZone", [this]() {return cDefDeadZone;}, [this](float deadZone) {cDefDeadZone = deadZone;});
   }
 

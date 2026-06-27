@@ -79,10 +79,6 @@ namespace IsoRealms {
     return cObjects.back();
   }
 
-  bool ComponentLoader::hasPersistedMember(const std::string& key) const {
-    return currentObject().hasMember(key);
-  }
-
   void ComponentLoader::pushObject(JSONObject object) {
     cObjects.push_back(object);
   }
@@ -92,7 +88,7 @@ namespace IsoRealms {
   }
 
   void ComponentLoader::loadTreeSelectorResourceProperties(ITreeSelectorObject& item, JSONObject object, const Options& hint) {
-    if (hint.getOption(IComponentDefiner::PROPERTY_IMMEDIATE) == "true") {
+    if (hint.getOption(IComponentDefiner::HINT_KEY_IMMEDIATE) == "true") {
       pushObject(object);
       item.defineTreeItem(*this);
       popObject();
@@ -237,17 +233,22 @@ namespace IsoRealms {
   }
 
   void ComponentLoader::propertyOptional(const std::string& key, IOptionalObject& optionalSource, const std::string& noneLabel, std::function<bool()> noneIcon, std::function<void(const std::string&)> choiceCallback, std::function<std::string()> valueGetter, const Options& hint) {
-    if (hint.getOption(IComponentDefiner::PROPERTY_NO_PERSIST) == "true") {
+    if (hint.getOption(IComponentDefiner::HINT_KEY_TRANSIENT) == "true") {
       return;
     }
     choiceCallback(currentObject().getString(key));
   }
 
   void ComponentLoader::propertyResource(const std::string& key, ITreeSelectorObject& item, const Options& hint, std::function<void()> removeFunction) {
-    if (hint.getOption(IComponentDefiner::PROPERTY_INLINE) == "true") {
+    if (hint.getOption(IComponentDefiner::HINT_KEY_TRANSIENT) == "true") {
+      return;
+    }
+    if (hint.getOption(IComponentDefiner::HINT_KEY_INLINE) == "true") {
       loadTreeSelectorResourceProperties(item, currentObject(), hint);
     } else {
-      loadTreeSelectorResourceProperties(item, currentObject().getObject(key), hint);
+      if (hint.getOption(IComponentDefiner::HINT_KEY_OPTIONAL) != "true" || currentObject().hasMember(key)) {
+        loadTreeSelectorResourceProperties(item, currentObject().getObject(key), hint);
+      }
     }
   }
 
@@ -276,7 +277,10 @@ namespace IsoRealms {
   }
 
   void ComponentLoader::scope(const std::string& key, const std::string& value, std::function<void()> subProperties, std::function<void()> removeFunction, const Options& hint, std::function<bool()> icon) {
-    if (hint.getOption(IComponentDefiner::PROPERTY_DEFER) == "true") {
+    if (hint.getOption(IComponentDefiner::HINT_KEY_TRANSIENT) == "true") {
+      return;
+    }
+    if (hint.getOption(IComponentDefiner::HINT_KEY_DEFER) == "true") {
       JSONObject mObject = currentObject();
       deferDuringLoad(cComponentData, [this, mObject, mSubProperties = std::move(subProperties)]() {
         pushObject(mObject);
@@ -285,16 +289,16 @@ namespace IsoRealms {
       });
       return;
     }
-    const std::string mFilePath = hint.getOption(IComponentDefiner::PROPERTY_FILE);
+    const std::string mFilePath = hint.getOption(IComponentDefiner::HINT_KEY_DOCUMENT);
     if (!mFilePath.empty()) {
-      const bool mUser = hint.getOption(IComponentDefiner::PROPERTY_USER) == "true";
+      const bool mUser = hint.getOption(IComponentDefiner::HINT_KEY_USER_DOCUMENT) == "true";
       cDocuments.push_back(std::make_unique<JSONDocument>(mFilePath, mUser));
       pushObject(cDocuments.back()->getObject("project"));
       subProperties();
       popObject();
       return;
     }
-    if (hint.getOption(IComponentDefiner::PROPERTY_SCOPED) == "true") {
+    if (hint.getOption(IComponentDefiner::HINT_KEY_NESTED) == "true") {
       pushObject(currentObject().getObject(key));
       subProperties();
       popObject();

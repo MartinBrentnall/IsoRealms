@@ -67,6 +67,15 @@ namespace IsoRealms {
     cOptions.clear();
   }
 
+  Options Options::operator+(const Options& rhs) const {
+    Options mResult;
+    mResult.assign(*this);
+    for (const std::pair<const std::string, std::string>& mOption : rhs.cOptions) {
+      mResult.addOption(mOption.first, mOption.second);
+    }
+    return mResult;
+  }
+
   bool Options::operator==(const Options& options) const {
     if (options.cOptions.size() != cOptions.size()) {
       return false;

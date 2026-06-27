@@ -48,13 +48,6 @@ namespace IsoRealms {
     ComponentLoader(IComponentData& resourceData, JSONObject object);
     ComponentLoader(IComponentData& resourceData, const std::string& file, bool user);
 
-    // TODO: Replace this function with a hint or something more elegant.
-    bool loadsPersistedValues() const override {
-      return true;
-    }
-
-    bool hasPersistedMember(const std::string& key) const override;
-
     void propertyAdd(             const std::string& key, const std::string& value, std::function<void()> addPropertyFunction, const Options& hint = Options::EMPTY) override;
     void propertyBoolean(         const std::string& key, std::function<bool()>         getter, std::function<void(bool)>               setter, bool               defaultValue, std::function<void()> removeFunction, PropertyBooleanConfirmCallback confirmCustom = nullptr) override;
     void propertyCode(            const std::string& key, std::function<std::string()>  getter, std::function<void(const std::string&)> setter,             std::function<void()> removeFunction = nullptr) override;

@@ -57,7 +57,7 @@ namespace IsoRealms {
       cButton = static_cast<unsigned int>(std::stoul(button.substr(1)));
     }, [this]() {
       return getLocalizedName();
-    }, IComponentDefiner::HINT_NO_PERSIST);
+    }, IComponentDefiner::HINT_TRANSIENT);
   }
 
   void GameControllerButton::ButtonChooser::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {

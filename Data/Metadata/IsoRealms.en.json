@@ -8,7 +8,7 @@
     "editor": {"name": "Default Editor", "description": "The specified default editor will be loaded when editing this application.  Note that this property has no impact on the runtime of the application."},
     "filename": {"name": "File", "description": "A file in which to data is stored for this application."},
     "description": {"name": "Description", "description": "Here you can describe the purpose of this file."},
-    "allowModifications": {"name": "Allow Modifications", "description": "Specifies whether modifications are allowed to this file.  If modifications are not allowed, then resources owned by this file cannot be edited without being overridden (copied to the main application file)"},
+    "allowModification": {"name": "Allow Modifications", "description": "Specifies whether modifications are allowed to this file.  If modifications are not allowed, then resources owned by this file cannot be edited without being overridden (copied to the main application file)"},
     "include": {"name": "Inclusion", "description": "Another file that's included within this one."},
 
     "launchConfigurations": {"name": "Test Launch Configurations", "description": "Create and manage different launch configurations for testing this application."},
