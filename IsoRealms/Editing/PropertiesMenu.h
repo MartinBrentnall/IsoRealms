@@ -44,6 +44,7 @@ namespace IsoRealms {
     void updateOverlay(unsigned int milliseconds) override;
     float getSelectionHighlightLeft(IMenuItem& item, IUIStyle& style, float aspectRatio) const override;
     float getSelectionHighlightRight(IMenuItem& item, IUIStyle& style, float aspectRatio) const override;
+    bool input(sf::Event& event) override;
     bool input(IMenuItem& item, UISignalID id, float y) override;
     bool input(IMenuItem& item, sf::Event& event) override;
     void selectedItemChanged(IMenuItem& item) override;
@@ -96,5 +97,7 @@ namespace IsoRealms {
     void recalculateColumnWidths();
     float getNameValueSeparationWidth(IUIStyle& style) const;
     float getValueColumnX(IMenuItem& item, IUIStyle& style, float aspectRatio) const;
+    bool isMouseOverValueColumn(IMenuItem& item, IUIStyle& style, float x, float aspectRatio) const;
+    int findItemIndexAtValueColumn(float x, float y, float aspectRatio);
   };
 }

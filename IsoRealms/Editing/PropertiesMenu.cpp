@@ -18,6 +18,7 @@
  */
 #include "PropertiesMenu.h"
 
+#include "IsoRealms/Application.h"
 #include "IsoRealms/Project/Project.h"
 #include "IsoRealms/Project/ComponentType.h"
 #include "IsoRealms/Editing/ComponentEditor.h"
@@ -74,6 +75,22 @@ namespace IsoRealms {
 
   float PropertiesMenu::getValueColumnX(IMenuItem& item, IUIStyle& style, float aspectRatio) const {
     return -1.0f * aspectRatio + item.getIndentation(style) + cColumnWidthLabel.animation() + getNameValueSeparationWidth(style);
+  }
+
+  bool PropertiesMenu::isMouseOverValueColumn(IMenuItem& item, IUIStyle& style, float x, float aspectRatio) const {
+    float mLeft = getValueColumnX(item, style, aspectRatio);
+    return x >= mLeft && x <= mLeft + item.getValueWidth(style);
+  }
+
+  int PropertiesMenu::findItemIndexAtValueColumn(float x, float y, float aspectRatio) {
+    int mItemIndex = findItemIndexAtY(y);
+    if (mItemIndex >= 0) {
+      IUIStyle& mStyle = getStyle();
+      if (isMouseOverValueColumn(*getItems()[static_cast<unsigned int>(mItemIndex)], mStyle, x, aspectRatio)) {
+        return mItemIndex;
+      }
+    }
+    return -1;
   }
 
   float PropertiesMenu::getWidth(IMenuItem& item, IUIStyle& style) const {
@@ -241,6 +258,61 @@ namespace IsoRealms {
     return false;
   }
   
+  bool PropertiesMenu::input(sf::Event& event) {
+    if (getItems().empty()) {
+      return false;
+    }
+
+    IMenuItem& mSelectedItem = getCurrentItem();
+    if (cEditingProperty != nullptr || cClosingProperty != nullptr) {
+      return input(mSelectedItem, event);
+    }
+
+    if (event.type == sf::Event::MouseMoved) {
+      Application& mApplication = getUIManager().getProject().getApplication();
+      Point2D mLocation = mApplication.normalise(event.mouseMove.x, event.mouseMove.y);
+      float mAspectRatio = 1.0f / mApplication.getScreenAspectRatio();
+      float mFontSize = getStyle().getFontSize();
+      if (mLocation.getX() >= -mAspectRatio && mLocation.getX() <= getContentRight()
+          && mLocation.getY() >= -1.0f + mFontSize && mLocation.getY() <= 1.0f - mFontSize * 4.0f) {
+        int mItemIndex = findItemIndexAtValueColumn(mLocation.getX(), mLocation.getY(), mAspectRatio);
+        if (mItemIndex >= 0 && static_cast<unsigned int>(mItemIndex) != getSelectedItemIndex()) {
+          selectItem(static_cast<unsigned int>(mItemIndex), false);
+        }
+        return true;
+      }
+      return false;
+    }
+
+    if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+      Application& mApplication = getUIManager().getProject().getApplication();
+      Point2D mLocation = mApplication.normalise(event.mouseButton.x, event.mouseButton.y);
+      float mAspectRatio = 1.0f / mApplication.getScreenAspectRatio();
+      if (mLocation.getX() >= -mAspectRatio && mLocation.getX() <= getContentRight()) {
+        int mItemIndex = findItemIndexAtValueColumn(mLocation.getX(), mLocation.getY(), mAspectRatio);
+        if (mItemIndex >= 0) {
+          selectItem(static_cast<unsigned int>(mItemIndex), false);
+          IMenuItem& mItem = *getItems()[static_cast<unsigned int>(mItemIndex)];
+          return input(mItem, UISignalID::CONFIRM, getItemYPosition(static_cast<unsigned int>(mItemIndex)));
+        }
+      }
+    }
+
+    if (event.type == sf::Event::MouseWheelScrolled && event.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel) {
+      Application& mApplication = getUIManager().getProject().getApplication();
+      Point2D mLocation = mApplication.normalise(event.mouseWheelScroll.x, event.mouseWheelScroll.y);
+      float mAspectRatio = 1.0f / mApplication.getScreenAspectRatio();
+      float mFontSize = getStyle().getFontSize();
+      if (mLocation.getX() >= -mAspectRatio && mLocation.getX() <= getContentRight()
+          && mLocation.getY() >= -1.0f + mFontSize && mLocation.getY() <= 1.0f - mFontSize * 4.0f) {
+        scrollBy(-event.mouseWheelScroll.delta * mFontSize * 2.0f);
+        return true;
+      }
+    }
+
+    return input(mSelectedItem, event);
+  }
+
   bool PropertiesMenu::input(IMenuItem& item, sf::Event& event) {
     if (cEditingProperty != nullptr) {
       if (cEditingProperty->input(event, getStyle())) {
@@ -250,6 +322,7 @@ namespace IsoRealms {
           recalculateColumnWidths();
           // refreshProperties(); TODO: Doing this nulls out the closing property... need a less brute-force way of refreshing properties (names and values)
         });
+        return true;
       }
     }
     return false;

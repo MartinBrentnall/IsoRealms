@@ -272,6 +272,65 @@ namespace IsoRealms {
       cSelectedItem = cItems.size() - 1;
     }
 
+    unsigned int getSelectedItemIndex() const {
+      return cSelectedItem;
+    }
+
+    void selectItem(unsigned int index, bool scrollToSelection = true) {
+      if (index < cItems.size() && isSelectable(*cItems[index])) {
+        cSelectedItem = index;
+        selectedItemChanged(*cItems[cSelectedItem]);
+        if (scrollToSelection) {
+          updateScrollPosition();
+        }
+        updateRight();
+        cUIManager.setTooltip(getTooltip());
+      }
+    }
+
+    float getMenuContentHeight() const {
+      float mHeight = 0.0f;
+      for (const std::unique_ptr<MENU_ITEM_TYPE>& mItem : cItems) {
+        mHeight += getHeight(*mItem, cStyle);
+      }
+      return mHeight;
+    }
+
+    float getMenuViewportHeight() const {
+      float mFontSize = cStyle.getFontSize();
+      return (1.0f - mFontSize * 4.0f) - (-1.0f + mFontSize);
+    }
+
+    float getMaxScroll() const {
+      return std::max(0.0f, getMenuContentHeight() - getMenuViewportHeight());
+    }
+
+    void scrollBy(float amount) {
+      cScroll = std::max(0.0f, std::min(getMaxScroll(), cScroll.value() + amount));
+    }
+
+    int findItemIndexAtY(float y) const {
+      float mFontSize = cStyle.getFontSize();
+      float mYPosition = (1.0f - mFontSize * 4.0f) + cScroll.value();
+      for (unsigned int i = 0; i < cItems.size(); i++) {
+        float mHeight = getHeight(*cItems[i], cStyle);
+        mYPosition -= mHeight;
+        if (y >= mYPosition && y <= mYPosition + mHeight && isSelectable(*cItems[i])) {
+          return static_cast<int>(i);
+        }
+      }
+      return -1;
+    }
+
+    float getItemYPosition(unsigned int index) const {
+      float mFontSize = cStyle.getFontSize();
+      float mHeight = 0.0f;
+      for (unsigned int i = 0; i <= index; i++) {
+        mHeight += getHeight(*cItems[i], cStyle);
+      }
+      return (1.0f - (mFontSize * 4.0f + mHeight)) + cScroll.value();
+    }
+
     private:
     UIManager& cUIManager;
     IUIStyle& cStyle;
