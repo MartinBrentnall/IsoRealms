@@ -37,9 +37,9 @@ namespace IsoRealms::Basics {
   }
 
   void SequenceTrackFloatEvent::getEventProperties(IComponentDefiner& definer) {
-    definer.propertyInteger("duration", [this]() {return cDefTime;}, [this](unsigned int time) {cDefTime = time;});
-    definer.propertyResource("value", cDefValue);
-    definer.propertyBoolean("fade", [this]() {return cDefFade;}, [this](bool value) {cDefFade = value;}, true);
+    definer.propertyUnsignedInteger("duration", cDefTime);
+    definer.propertyResource(       "value",    cDefValue);
+    definer.propertyBoolean(        "fade",     cDefFade, true);
   }
 
   IFloat* SequenceTrackFloatEvent::getValue() const {

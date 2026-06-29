@@ -80,8 +80,8 @@ namespace IsoRealms {
   }
 
   void File::defineTreeItem(IComponentDefiner& definer) {
-    definer.propertyString("path", [this]() {return cPath;}, [this](const std::string& value) {cPath = value;});
-    definer.propertyBoolean("user", [this]() {return cUser;}, [this](bool value) {cUser = value;});
+    definer.propertyString("path", cPath);
+    definer.propertyBoolean("user", cUser);
 
     definer.onInitialised([this]() {
       if (cChangeCallback) {

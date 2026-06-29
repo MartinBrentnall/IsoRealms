@@ -24,8 +24,8 @@ namespace IsoRealms::Basics {
   }
 
   void InterruptHandler::define(IComponentDefiner& definer) {
-    definer.propertyResource( "onInput", cDefAction);
-    definer.propertyBoolean("consume", [this]() {return cDefConsume;}, [this](bool value) {cDefConsume = value;}, true);
+    definer.propertyResource("onInput", cDefAction);
+    definer.propertyBoolean( "consume", cDefConsume, true);
   }
 
   void InterruptHandler::publish(ResourcePublisher& publisher) {

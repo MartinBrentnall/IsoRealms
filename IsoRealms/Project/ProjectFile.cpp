@@ -89,9 +89,9 @@ namespace IsoRealms {
 
   void ProjectFile::define(IComponentDefiner& definer, Project& project, bool inclusion, bool editing) {
     definer.propertyResource("filename", cFile, IComponentDefiner::HINT_TRANSIENT);
-    definer.propertyString("description", [this]() {return cDefID;}, [this](const std::string& value) {cDefID = value;});
+    definer.propertyString("description", cDefID);
     if (inclusion && cFile.isUser()) {
-      definer.propertyBoolean("allowModification", [this]() {return cAllowModifications;}, [this](bool value) {cAllowModifications = value;}, true, nullptr, [this, &project](bool value, std::function<void()> confirm, std::function<void()> cancel, IComponentAccessManager& access) {
+      definer.propertyBoolean("allowModification", cAllowModifications, true, nullptr, [this, &project](bool value, std::function<void()> confirm, std::function<void()> cancel, IComponentAccessManager& access) {
         if (!value) {
           access.confirm("Setting this file to read-only will cause it to be saved as it is currently.  Are you sure you want to do this?", [this, &project, confirm]() {
             project.save(*this);

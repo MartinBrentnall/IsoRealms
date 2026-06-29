@@ -48,18 +48,18 @@ namespace IsoRealms::Equilibria {
   void PlayerType::define(IComponentDefiner& definer) {
 
     // Dimensions
-    definer.propertyFloat(   "radius",         [this]() {return cDefRadius;},       [this](float value) {cDefRadius       = value;}, DEFAULT_RADIUS);
-    definer.propertyFloat(   "height",         [this]() {return cDefHeight;},       [this](float value) {cDefHeight       = value;}, DEFAULT_HEIGHT);
+    definer.propertyFloat(   "radius",         cDefRadius,       DEFAULT_RADIUS);
+    definer.propertyFloat(   "height",         cDefHeight,       DEFAULT_HEIGHT);
 
     // Physics
-    definer.propertyFloat(   "acceleration",   [this]() {return cDefAcceleration;}, [this](float value) {cDefAcceleration = value;}, DEFAULT_ACCELERATION);
-    definer.propertyFloat(   "bounceFactor",   [this]() {return cDefBounceFactor;}, [this](float value) {cDefBounceFactor = value;}, DEFAULT_BOUNCE_FACTOR);
-    definer.propertyFloat(   "stepReach",      [this]() {return cDefStepReach;},    [this](float value) {cDefStepReach    = value;}, DEFAULT_STEP_REACH);
-    definer.propertyFloat(   "hugMomentum",    [this]() {return cDefHugMomentum;},  [this](float value) {cDefHugMomentum  = value;}, DEFAULT_HUG_MOMENTUM);
+    definer.propertyFloat(   "acceleration",   cDefAcceleration, DEFAULT_ACCELERATION);
+    definer.propertyFloat(   "bounceFactor",   cDefBounceFactor, DEFAULT_BOUNCE_FACTOR);
+    definer.propertyFloat(   "stepReach",      cDefStepReach,    DEFAULT_STEP_REACH);
+    definer.propertyFloat(   "hugMomentum",    cDefHugMomentum,  DEFAULT_HUG_MOMENTUM);
 
     // appearance
     definer.propertyResource("appearance",     cDefModel);
-    definer.propertyFloat(   "spinSpeed",      [this]() {return cDefSpinSpeed;},    [this](float value) {cDefSpinSpeed    = value;});
+    definer.propertyFloat(   "spinSpeed",      cDefSpinSpeed);
 
     // Input
     definer.propertyResource("xInput",         cDefInputX);
@@ -75,7 +75,7 @@ namespace IsoRealms::Equilibria {
     definer.propertyResource("onApex",         cDefApexAction);
 
     // Misc
-    definer.propertyInteger( "respawnDelay",   [this]() {return cDefRespawnDelay;}, [this](int   value) {cDefRespawnDelay = value;}, DEFAULT_RESPAWN_DELAY);
+    definer.propertyInteger( "respawnDelay",   cDefRespawnDelay, DEFAULT_RESPAWN_DELAY);
     definer.propertyResource("orientation",    cDefOrientation);
   }
 

@@ -41,8 +41,8 @@ namespace IsoRealms::Spindizzy {
       randomizeInstances();
       return mCycleColour;
     });
-    definer.propertyResource("frame", cDefColourFrame);
-    definer.propertyFloat("cycleSpeed", [this]() {return cDefCycleSpeed;}, [this](float value) {cDefCycleSpeed = value;}, DEFAULT_CYCLE_SPEED);
+    definer.propertyResource("frame",      cDefColourFrame);
+    definer.propertyFloat(   "cycleSpeed", cDefCycleSpeed, DEFAULT_CYCLE_SPEED);
 
     // If we are loading persisted values, we need to create a default cycle colour if none exists.
     definer.onInitialised([this]() {

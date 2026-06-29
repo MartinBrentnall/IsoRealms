@@ -140,7 +140,7 @@ namespace IsoRealms::Equilibria {
   void CameraTransitional::defineResource(IComponentDefiner& definer) {
     definer.propertyResource(       "start",            cDefStart, IComponentDefiner::HINT_IMMEDIATE);
     definer.propertyResource(       "end",              cDefEnd,   IComponentDefiner::HINT_IMMEDIATE);
-    definer.propertyUnsignedInteger("duration",         [this]() {return cDefDuration;}, [this](int value) {cDefDuration = value;}, DEFAULT_DURATION);
+    definer.propertyUnsignedInteger("duration",         cDefDuration, DEFAULT_DURATION);
     definer.propertyResource(       "onStartDeparture", cDefStartDepartureAction);
     definer.propertyResource(       "onEndArrival",     cDefEndArrivalAction);
     definer.propertyResource(       "onEndDeparture",   cDefEndDepartureAction);

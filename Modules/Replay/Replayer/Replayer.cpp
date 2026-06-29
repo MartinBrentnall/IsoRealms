@@ -169,7 +169,7 @@ namespace IsoRealms::Replay {
   }
 
   void Replayer::DigitalInput::define(IComponentDefiner& definer) {
-    definer.propertyString(  "name",  [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, "", [this](const std::string& value) {return cParent.isInputNameAllowed(*this, value);});
+    definer.propertyString(  "name",  cDefName, "", [this](const std::string& value) {return cParent.isInputNameAllowed(*this, value);});
     definer.propertyResource("value", cDefActualInput);
   }
   
@@ -209,7 +209,7 @@ namespace IsoRealms::Replay {
   }
 
   void Replayer::AnalogueInput::define(IComponentDefiner& definer) {
-    definer.propertyString(  "name",  [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, "", [this](const std::string& value) {return cParent.isInputNameAllowed(*this, value);});
+    definer.propertyString("name", cDefName, "", [this](const std::string& value) {return cParent.isInputNameAllowed(*this, value);});
     definer.propertyResource("value", cDefActualInput);
   }
       

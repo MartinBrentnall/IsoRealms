@@ -98,10 +98,10 @@ namespace IsoRealms::Equilibria {
     definer.propertyInteger("width",            [this]() {return (cDefEndX + 1) - cDefStartX;},               [this](int value) {cDefEndX = cDefStartX + value - 1;}, 1);
     definer.propertyInteger("length",           [this]() {return (cDefEndY + 1) - cDefStartY;},               [this](int value) {cDefEndY = cDefStartY + value - 1;}, 1);
     definer.propertyInteger("height",           [this]() {return cDefEndZ - cDefStartZ;},                     [this](int value) {cDefEndZ = cDefStartZ + value;},     1);
-    definer.propertyInteger("northWestCorner",  [this]() {return cDefCornerHeight[0][1];},                    [this](int value) {cDefCornerHeight[0][1] = value;});
-    definer.propertyInteger("northEastCorner",  [this]() {return cDefCornerHeight[1][1];},                    [this](int value) {cDefCornerHeight[1][1] = value;});
-    definer.propertyInteger("southEastCorner",  [this]() {return cDefCornerHeight[1][0];},                    [this](int value) {cDefCornerHeight[1][0] = value;});
-    definer.propertyInteger("southWestCorner",  [this]() {return cDefCornerHeight[0][0];},                    [this](int value) {cDefCornerHeight[0][0] = value;});
+    definer.propertyInteger("northWestCorner",  cDefCornerHeight[0][1]);
+    definer.propertyInteger("northEastCorner",  cDefCornerHeight[1][1]);
+    definer.propertyInteger("southEastCorner",  cDefCornerHeight[1][0]);
+    definer.propertyInteger("southWestCorner",  cDefCornerHeight[0][0]);
     definer.propertyBoolean("alternativeSplit", [this]() {return (cDefFlags & FLAG_ALTERNATIVE_SPLIT) != 0;}, [this](bool value) {
       cDefFlags = value ? cDefFlags | FLAG_ALTERNATIVE_SPLIT : cDefFlags & ~FLAG_ALTERNATIVE_SPLIT;
     });

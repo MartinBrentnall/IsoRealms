@@ -59,8 +59,8 @@ namespace IsoRealms::Basics {
 
   void SequenceInstance::define(IComponentDefiner& definer) {
     definer.propertyString( "name",      [this]() {return cParent.getInstanceName(*this);}, [this](const std::string& value) {cParent.setInstanceName(*this, value);}, "", [this](const std::string& value) {return cParent.isInstanceNameAllowed(*this, value);});
-    definer.propertyInteger("startTime", [this]() {return cDefStartTime;},                  [this](int value)                {cDefStartTime = value;});
-    definer.propertyFloat(  "speed",     [this]() {return cDefSpeed;},                      [this](float value)              {cDefSpeed     = value;}, 1.0f);
+    definer.propertyInteger("startTime", cDefStartTime);
+    definer.propertyFloat(  "speed",     cDefSpeed, 1.0f);
   }
 
   void SequenceInstance::publish(ResourcePublisher& publisher, const std::string& parentID) {

@@ -34,12 +34,12 @@ namespace IsoRealms::Equilibria {
   void AlienType::define(IComponentDefiner& definer) {
     definer.propertyResource("appearance",   cDefModel);
     definer.propertyResource("target",       cDefTarget);
-    definer.propertyFloat(   "acceleration", [this]() {return cDefAcceleration;}, [this](float value) {cDefAcceleration = value;}, DEFAULT_ACCELERATION);
-    definer.propertyFloat(   "friction",     [this]() {return cDefFriction;},     [this](float value) {cDefFriction     = value;}, DEFAULT_FRICTION);
-    definer.propertyFloat(   "spinSpeed",    [this]() {return cDefSpinSpeed;},    [this](float value) {cDefSpinSpeed    = value;});
-    definer.propertyFloat(   "height",       [this]() {return cDefHeight;},       [this](float value) {cDefHeight       = value;}, DEFAULT_HEIGHT);
-    definer.propertyFloat(   "radius",       [this]() {return cDefRadius;},       [this](float value) {cDefRadius       = value;}, DEFAULT_RADIUS);
-    definer.propertyFloat(   "hugMomentum",  [this]() {return cDefHugMomentum;},  [this](float value) {cDefHugMomentum  = value;}, DEFAULT_HUG_MOMENTUM);
+    definer.propertyFloat(   "acceleration", cDefAcceleration, DEFAULT_ACCELERATION);
+    definer.propertyFloat(   "friction",     cDefFriction,     DEFAULT_FRICTION);
+    definer.propertyFloat(   "spinSpeed",    cDefSpinSpeed);
+    definer.propertyFloat(   "height",       cDefHeight,       DEFAULT_HEIGHT);
+    definer.propertyFloat(   "radius",       cDefRadius,       DEFAULT_RADIUS);
+    definer.propertyFloat(   "hugMomentum",  cDefHugMomentum,  DEFAULT_HUG_MOMENTUM);
   }
 
   void AlienType::publish(ResourcePublisher& publisher) {

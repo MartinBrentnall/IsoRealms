@@ -112,8 +112,8 @@ namespace IsoRealms::UI {
       cDefID = value;
       cMenu.getComponentData().republish();
     });
-    definer.propertyString(  "folder",      [this]() {return cDefFolder;}, [this](const std::string& value) {cDefFolder = value;});
-    definer.propertyBoolean( "user",        [this]() {return cDefUser;},   [this](bool               value) {cDefUser   = value;});
+    definer.propertyString(  "folder",      cDefFolder);
+    definer.propertyBoolean( "user",        cDefUser);
     definer.propertyResource("onSelection", cDefAction);
   }
 

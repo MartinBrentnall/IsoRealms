@@ -27,8 +27,8 @@ namespace IsoRealms::Basics {
 
   void Sprite::define(IComponentDefiner& definer) {
     definer.propertyResource("texture",        cDefTexture);
-    definer.propertyBoolean( "billboardYaw",   [this]() {return cDefBillboardYaw;},   [this](bool value) {cDefBillboardYaw   = value;});
-    definer.propertyBoolean( "billboardPitch", [this]() {return cDefBillboardPitch;}, [this](bool value) {cDefBillboardPitch = value;});
+    definer.propertyBoolean( "billboardYaw",   cDefBillboardYaw);
+    definer.propertyBoolean( "billboardPitch", cDefBillboardPitch);
   }
 
   void Sprite::publish(ResourcePublisher& publisher) {

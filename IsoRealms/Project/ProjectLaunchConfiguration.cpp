@@ -40,7 +40,7 @@ namespace IsoRealms {
   }
 
   void ProjectLaunchConfiguration::define(IComponentDefiner& definer, Project& project) {
-    definer.propertyString("launchConfigurationName", [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, cDefName, [this, &project](const std::string& value) {return !project.isLaunchConfigurationNameUsed(value, this);});
+    definer.propertyString("launchConfigurationName", cDefName, cDefName, [this, &project](const std::string& value) {return !project.isLaunchConfigurationNameUsed(value, this);});
     definer.keyedArray("options", "launchConfigurationOptionAdd", cDefOptions, [](const std::unique_ptr<Option>& option) -> Option& {return *option;}, [this, &definer](Option& option) {
       definer.scope("launchConfigurationOption", option.getName(), [&option, this, &definer]() {
         option.getProperties(definer, *this, IComponentDefiner::HINT_INLINE);
@@ -96,7 +96,7 @@ namespace IsoRealms {
   }
 
   void ProjectLaunchConfiguration::Option::getProperties(IComponentDefiner& definer, ProjectLaunchConfiguration& launch, const Options& hint) {
-    definer.propertyString("launchConfigurationOptionName", [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, cDefName, [this, &launch](const std::string& value) {return !launch.isOptionNameUsed(value, this);});
+    definer.propertyString("launchConfigurationOptionName", cDefName, cDefName, [this, &launch](const std::string& value) {return !launch.isOptionNameUsed(value, this);});
     definer.propertyResource("launchConfigurationOptionValue", cDefValue, hint);
   }
 }

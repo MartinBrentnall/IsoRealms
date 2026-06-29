@@ -29,9 +29,9 @@ namespace IsoRealms::Basics {
   }
 
   void ArgumentDefinition::define(IComponentDefiner& definer, Function& parent) {
-    definer.propertyString(  "name",    [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, "", [this, &parent](const std::string& value) {return parent.isArgumentDefinitionNameAllowed(*this, value);});
+    definer.propertyString(  "name",    cDefName, "", [this, &parent](const std::string& value) {return parent.isArgumentDefinitionNameAllowed(*this, value);});
     definer.propertyResource("type",    cDefType);
-    definer.propertyString(  "luaName", [this]() {return cDefLuaName;}, [this](const std::string& value) {cDefLuaName = value;});
+    definer.propertyString(  "luaName", cDefLuaName);
   }
 
   void ArgumentDefinition::setName(const std::string& name) {

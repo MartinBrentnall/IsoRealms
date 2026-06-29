@@ -35,7 +35,7 @@ namespace IsoRealms {
   }
 
   void FloatRegistry::Literal::Instance::defineResource(IComponentDefiner& definer) {
-    definer.propertyFloat("value", [this]() {return cValue;}, [this](float value) {cValue = value;});
+    definer.propertyFloat("value", cValue);
   }
 
   bool FloatRegistry::Literal::Instance::isDefaultConfiguration() const {

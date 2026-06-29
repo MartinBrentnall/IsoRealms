@@ -24,7 +24,7 @@ namespace IsoRealms::Basics {
   }
 
   void SimpleBoolean::define(IComponentDefiner& definer) {
-    definer.propertyBoolean("value", [this]() {return cDefValue;}, [this](bool value) {cDefValue = value;});
+    definer.propertyBoolean("value", cDefValue);
   }
 
   void SimpleBoolean::publish(ResourcePublisher& publisher) {

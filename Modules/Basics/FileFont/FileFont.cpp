@@ -33,11 +33,11 @@ namespace IsoRealms::Basics {
 
   void FileFont::define(IComponentDefiner& definer) {
     definer.propertyResource("filename",    cDefFilename);
-    definer.propertyInteger( "detail",      [this]() {return cDefDetail;},      [this](int   value) {cDefDetail      = value;}, DEFAULT_DETAIL);
-    definer.propertyFloat(   "scale",       [this]() {return cDefScale;},       [this](float value) {cDefScale       = value;}, DEFAULT_SCALE);
-    definer.propertyFloat(   "offsetX",     [this]() {return cDefOffsetX;},     [this](float value) {cDefOffsetX     = value;});
-    definer.propertyFloat(   "offsetY",     [this]() {return cDefOffsetY;},     [this](float value) {cDefOffsetY     = value;});
-    definer.propertyFloat(   "lineSpacing", [this]() {return cDefLineSpacing;}, [this](float value) {cDefLineSpacing = value;}, DEFAULT_LINE_SPACING);
+    definer.propertyInteger( "detail",      cDefDetail,      DEFAULT_DETAIL);
+    definer.propertyFloat(   "scale",       cDefScale,       DEFAULT_SCALE);
+    definer.propertyFloat(   "offsetX",     cDefOffsetX);
+    definer.propertyFloat(   "offsetY",     cDefOffsetY);
+    definer.propertyFloat(   "lineSpacing", cDefLineSpacing, DEFAULT_LINE_SPACING);
   }
   
   void FileFont::publish(ResourcePublisher& publisher) {

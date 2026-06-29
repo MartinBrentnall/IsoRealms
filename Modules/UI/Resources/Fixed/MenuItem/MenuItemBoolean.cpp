@@ -99,9 +99,9 @@ namespace IsoRealms::UI {
       cDefID = value;
       cMenu.getComponentData().republish();
     });
-    definer.propertyString("label",      [this]() {return cDefLabel;},      [this](const std::string& value) {cDefLabel      = value;});
-    definer.propertyString("trueLabel",  [this]() {return cDefLabelTrue;},  [this](const std::string& value) {cDefLabelTrue  = value;});
-    definer.propertyString("falseLabel", [this]() {return cDefLabelFalse;}, [this](const std::string& value) {cDefLabelFalse = value;});
+    definer.propertyString("label",      cDefLabel);
+    definer.propertyString("trueLabel",  cDefLabelTrue);
+    definer.propertyString("falseLabel", cDefLabelFalse);
   }
 
   bool MenuItemBoolean::isDefaultConfiguration() const {

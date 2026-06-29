@@ -36,8 +36,8 @@ namespace IsoRealms::Basics {
   }
 
   void SequenceTrackActionEvent::getEventProperties(IComponentDefiner& definer) {
-    definer.propertyInteger("delay", [this]() {return cDefTime;}, [this](unsigned int time) {cDefTime = time;});
-    definer.propertyResource("execute", cDefAction);
+    definer.propertyUnsignedInteger("delay",   cDefTime);
+    definer.propertyResource(       "execute", cDefAction);
   }
 
   void SequenceTrackActionEvent::execute() {

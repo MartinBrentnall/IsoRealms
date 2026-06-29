@@ -25,14 +25,14 @@ namespace IsoRealms::UI {
   }
 
   void Throbber::define(IComponentDefiner& definer) {
-    definer.propertyUnsignedInteger("duration",     [this]() {return cDefDuration;},     [this](unsigned int value) {cDefDuration     = value;}, DEFAULT_DURATION);
-    definer.propertyUnsignedInteger("spots",        [this]() {return cDefSpots;},        [this](unsigned int value) {cDefSpots        = value;}, DEFAULT_SPOTS);
-    definer.propertyUnsignedInteger("spotSides",    [this]() {return cDefSpotSides;},    [this](unsigned int value) {cDefSpotSides    = value;}, DEFAULT_SPOT_SIDES);
-    definer.propertyFloat(          "spotRadius",   [this]() {return cDefSpotRadius;},   [this](float        value) {cDefSpotRadius   = value;}, DEFAULT_SPOT_RADIUS);
-    definer.propertyFloat(          "shadowOffset", [this]() {return cDefShadowOffset;}, [this](float        value) {cDefShadowOffset = value;}, DEFAULT_SHADOW_OFFSET);
+    definer.propertyUnsignedInteger("duration",     cDefDuration,     DEFAULT_DURATION);
+    definer.propertyUnsignedInteger("spots",        cDefSpots,        DEFAULT_SPOTS);
+    definer.propertyUnsignedInteger("spotSides",    cDefSpotSides,    DEFAULT_SPOT_SIDES);
+    definer.propertyFloat(          "spotRadius",   cDefSpotRadius,   DEFAULT_SPOT_RADIUS);
+    definer.propertyFloat(          "shadowOffset", cDefShadowOffset, DEFAULT_SHADOW_OFFSET);
     definer.propertyResource(       "colour",       cDefColour);
-    definer.propertyFloat(          "ringRadius",   [this]() {return cDefRingRadius;},   [this](float        value) {cDefRingRadius   = value;}, DEFAULT_RING_RADIUS);
-    definer.propertyUnsignedInteger("repetitions",  [this]() {return cDefRepetitions;},  [this](unsigned int value) {cDefRepetitions  = value;}, DEFAULT_REPETITIONS);
+    definer.propertyFloat(          "ringRadius",   cDefRingRadius,   DEFAULT_RING_RADIUS);
+    definer.propertyUnsignedInteger("repetitions",  cDefRepetitions,  DEFAULT_REPETITIONS);
   }
 
   void Throbber::publish(ResourcePublisher& publisher) {

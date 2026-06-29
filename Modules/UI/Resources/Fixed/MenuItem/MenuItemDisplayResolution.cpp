@@ -103,7 +103,7 @@ namespace IsoRealms::UI {
       cDefID = value;
       cMenu.getComponentData().republish();
     });
-    definer.propertyString("label", [this]() {return cDefLabel;}, [this](const std::string& value) {cDefLabel = value;});
+    definer.propertyString("label", cDefLabel);
   }
 
   bool MenuItemDisplayResolution::isDefaultConfiguration() const {

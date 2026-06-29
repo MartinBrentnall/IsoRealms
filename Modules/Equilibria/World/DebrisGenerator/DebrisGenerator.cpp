@@ -30,12 +30,12 @@ namespace IsoRealms::Equilibria {
   }
 
   void DebrisGenerator::define(IComponentDefiner& definer) {
-    definer.propertyString(         "id",        [this]() {return cDefID;},        [this](const std::string& value) {cDefID = value;});
+    definer.propertyString(         "id",         cDefID);
     definer.propertyResource(       "appearance", cDefModel);
-    definer.propertyUnsignedInteger("life",      [this]() {return cDefLifeTime;}, [this](unsigned int value) {cDefLifeTime = value;}, DEFAULT_LIFE);
-    definer.propertyFloat(          "height",    [this]() {return cDefHeight;},   [this](float value) {cDefHeight = value;}, DEFAULT_HEIGHT);
-    definer.propertyFloat(          "radius",    [this]() {return cDefRadius;},   [this](float value) {cDefRadius = value;}, DEFAULT_RADIUS);
-    definer.propertyFloat(          "stepReach", [this]() {return cDefStepReach;}, [this](float value) {cDefStepReach = value;}, DEFAULT_STEP_REACH);
+    definer.propertyUnsignedInteger("life",       cDefLifeTime,  DEFAULT_LIFE);
+    definer.propertyFloat(          "height",     cDefHeight,    DEFAULT_HEIGHT);
+    definer.propertyFloat(          "radius",     cDefRadius,    DEFAULT_RADIUS);
+    definer.propertyFloat(          "stepReach",  cDefStepReach, DEFAULT_STEP_REACH);
   }
 
   const std::string& DebrisGenerator::getID() const {

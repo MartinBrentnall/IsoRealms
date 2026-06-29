@@ -24,7 +24,7 @@ namespace IsoRealms::Basics {
   }
 
   void SimpleString::define(IComponentDefiner& definer) {
-    definer.propertyString("value", [this]() {return cDefValue;}, [this](const std::string& value) {cDefValue = value;});
+    definer.propertyString("value", cDefValue);
   }
 
   void SimpleString::publish(ResourcePublisher& publisher) {

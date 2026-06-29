@@ -81,7 +81,7 @@ namespace IsoRealms {
   }
 
   void Condition::define(IComponentDefiner& definer, const std::vector<ConditionElement*>& availableElements) {
-    definer.propertyBoolean("negated", [this]() {return cDefNegated;}, [this](bool value) {cDefNegated = value;});
+    definer.propertyBoolean("negated", cDefNegated);
 
     // Operator is only applicable if there are multiple criteria or conditions.
     if (cDefCriteria.size() + cDefConditions.size() > 1) {

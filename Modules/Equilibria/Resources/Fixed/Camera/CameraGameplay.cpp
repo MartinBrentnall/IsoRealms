@@ -167,7 +167,7 @@ namespace IsoRealms::Equilibria {
                              std::vector<std::string>{DIRECTION_NORTH_EAST, DIRECTION_NORTH_WEST, DIRECTION_SOUTH_EAST, DIRECTION_SOUTH_WEST},
                              [this]() {return getDirectionString();},
                              [this](const std::string& value) {cDefAngle = getDirectionValue(value);});
-    definer.propertyInteger("rotateDuration", [this]() {return cDefRollDuration;}, [this](int value) {cDefRollDuration = value;});
+    definer.propertyInteger("rotateDuration", cDefRollDuration);
   }
 
   bool CameraGameplay::isDefaultConfiguration() const {

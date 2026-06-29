@@ -44,7 +44,7 @@ namespace IsoRealms::UI {
   }
   
   void LayoutLocationRelative::defineResource(IComponentDefiner& definer) {
-    definer.propertyFloat("value",    [this]() {return cDefValue;}, [this](float value) {cDefValue = value;}, cParent.isPositiveEdge() ? 1.0f : -1.0f);
+    definer.propertyFloat("value",    cDefValue, cParent.isPositiveEdge() ? 1.0f : -1.0f);
     definer.propertyList( "relative", cParent.getComponent().getAvailableComponentNames(), [this]() {return cParent.getComponent().getLayout().getName(cDefRelative);}, [this](const std::string& value) {cDefRelative = cParent.getComponent().getLayout().getComponent(value);});
   }
 

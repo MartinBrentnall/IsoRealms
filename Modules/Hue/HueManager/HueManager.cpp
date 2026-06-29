@@ -24,9 +24,9 @@ namespace IsoRealms::Hue {
   }
 
   void HueManager::define(IComponentDefiner& definer) {
-    definer.propertyString("bridge", [this]() {return cDefBridgeAddress;}, [this](const std::string& value) {cDefBridgeAddress = value;});
-    definer.propertyString("user",   [this]() {return cDefBridgeUser;},    [this](const std::string& value) {cDefBridgeUser    = value;});
-    definer.propertyString("psk",    [this]() {return cDefBridgePSK;},     [this](const std::string& value) {cDefBridgePSK     = value;});
+    definer.propertyString("bridge", cDefBridgeAddress);
+    definer.propertyString("user",   cDefBridgeUser);
+    definer.propertyString("psk",    cDefBridgePSK);
     definer.array("bulbs", cDefBulbs, [](const std::unique_ptr<Bulb>& bulb) -> Bulb& {return *bulb;}, [this, &definer](Bulb& bulb) {
       bulb.define(definer, [this, &bulb]() {
         Utils::removeElementUnique(cDefBulbs, &bulb);

@@ -124,9 +124,7 @@ namespace IsoRealms::Basics {
     }
 
     void getBaseProperties(IComponentDefiner& definer) {
-      definer.propertyString("name", [this]() {return cDefName;}, [this](const std::string& name) {
-        cDefName = name;
-      });
+      definer.propertyString("name", cDefName);
       definer.array("events", cDefEvents, [](const std::unique_ptr<EVENT>& mEvent) -> EVENT& {return *mEvent;}, [this, &definer](EVENT& event) {
         event.getEventProperties(definer);
       }, [this]() -> EVENT& {

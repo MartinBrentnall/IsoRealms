@@ -24,7 +24,7 @@ namespace IsoRealms::Basics {
   }
 
   void SimpleInteger::define(IComponentDefiner& definer) {
-    definer.propertyInteger("value", [this]() {return cDefValue;}, [this](int value) {cDefValue = value; return true;});
+    definer.propertyInteger("value", cDefValue);
   }
 
   void SimpleInteger::publish(ResourcePublisher& publisher) {

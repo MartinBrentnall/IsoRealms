@@ -41,9 +41,9 @@ namespace IsoRealms::Basics {
 
   void ProjectConfigurer::define(IComponentDefiner& definer) {
     definer.propertyResource("font",         cDefFont);
-    definer.propertyFloat(   "fontSize",     [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value;});
+    definer.propertyFloat(   "fontSize",     cDefFontSize);
     definer.propertyResource("codeFont",     cDefCodeFont);
-    definer.propertyFloat(   "codeFontSize", [this]() {return cDefCodeFontSize;}, [this](float value) {cDefCodeFontSize = value;});
+    definer.propertyFloat(   "codeFontSize", cDefCodeFontSize);
     definer.propertyResource("onExit",       cDefExitAction);
     definer.propertyResource("onEditor",     cDefEditorAction);
     // TODO: Input configuration

@@ -85,10 +85,10 @@ namespace IsoRealms::Equilibria {
     definer.propertyInteger("z",           [this]() {return cDefZ - cZone.getStartZ();},       [this](int value) {cDefZ = value + cZone.getStartZ();});
     definer.propertyInteger("top",         [this]() {return cDefTop - cZone.getStartZ();},     [this](int value) {cDefTop = value + cZone.getStartZ();});
     definer.propertyInteger("bottom",      [this]() {return cDefBottom - cZone.getStartZ();},  [this](int value) {cDefBottom = value + cZone.getStartZ();});
-    definer.propertyInteger("upSpeed",     [this]() {return cDefSpeedUp;},                     [this](int value) {cDefSpeedUp = value;});
-    definer.propertyInteger("downSpeed",   [this]() {return cDefSpeedDown;},                   [this](int value) {cDefSpeedDown = value;});
-    definer.propertyInteger("topPause",    [this]() {return cDefTopPause;},                    [this](int value) {cDefTopPause = value;});
-    definer.propertyInteger("bottomPause", [this]() {return cDefBottomPause;},                 [this](int value) {cDefBottomPause = value;});
+    definer.propertyInteger("upSpeed",     cDefSpeedUp);
+    definer.propertyInteger("downSpeed",   cDefSpeedDown);
+    definer.propertyInteger("topPause",    cDefTopPause);
+    definer.propertyInteger("bottomPause", cDefBottomPause);
   }
 
   void Lift::initialise() {
@@ -549,10 +549,10 @@ namespace IsoRealms::Equilibria {
         cDefBottomPause = value ? 1500 : 0;
       });
     } else {
-      definer.propertyInteger("bottomPause", [this]() {return cDefTopPause;},    [this](int value) {cDefTopPause    = value;});
-      definer.propertyInteger("topPause",    [this]() {return cDefBottomPause;}, [this](int value) {cDefBottomPause = value;});
-      definer.propertyInteger("upSpeed",     [this]() {return cDefSpeedUp;},     [this](int value) {cDefSpeedUp     = value;});
-      definer.propertyInteger("downSpeed",   [this]() {return cDefSpeedDown;},   [this](int value) {cDefSpeedDown   = value;});
+      definer.propertyInteger("bottomPause", cDefTopPause);
+      definer.propertyInteger("topPause",    cDefBottomPause);
+      definer.propertyInteger("upSpeed",     cDefSpeedUp);
+      definer.propertyInteger("downSpeed",   cDefSpeedDown);
     }
   }
 

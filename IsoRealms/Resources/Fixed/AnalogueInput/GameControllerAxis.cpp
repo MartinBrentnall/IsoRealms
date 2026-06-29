@@ -68,7 +68,7 @@ namespace IsoRealms {
     }, [this]() {
       return getLocalizedName();
     }, IComponentDefiner::HINT_TRANSIENT);
-    definer.propertyFloat("deadZone", [this]() {return cDefDeadZone;}, [this](float deadZone) {cDefDeadZone = deadZone;});
+    definer.propertyFloat("deadZone", cDefDeadZone);
   }
 
   bool GameControllerAxis::isDefaultConfiguration() const {

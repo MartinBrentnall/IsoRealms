@@ -34,8 +34,8 @@ namespace IsoRealms::UI {
   void Menu::define(IComponentDefiner& definer) {
     definer.propertyResource("colour",       cDefColour);
     definer.propertyResource("font",         cDefFont);
-    definer.propertyFloat(   "fontSize",     [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value;}, DEFAULT_FONT_SIZE);
-    definer.propertyFloat(   "shadowOffset", [this]() {return cDefShadowOffset;}, [this](float value) {cDefShadowOffset = value;}, DEFAULT_SHADOW_OFFSET);
+    definer.propertyFloat(   "fontSize",     cDefFontSize,     DEFAULT_FONT_SIZE);
+    definer.propertyFloat(   "shadowOffset", cDefShadowOffset, DEFAULT_SHADOW_OFFSET);
     definer.propertyResource("onExit",       cDefExitAction);
     definer.array(           "options",      cDefItems, [](const std::unique_ptr<MenuItem>& mItem) -> MenuItem& {return *mItem;}, [this, &definer](MenuItem& item) {
       definer.propertyResource("item", item, IComponentDefiner::HINT_IMMEDIATE, [this, &item]() {

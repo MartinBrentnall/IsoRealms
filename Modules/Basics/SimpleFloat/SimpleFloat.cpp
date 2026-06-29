@@ -24,7 +24,7 @@ namespace IsoRealms::Basics {
   }
 
   void SimpleFloat::define(IComponentDefiner& definer) {
-    definer.propertyFloat("value", [this]() {return cDefValue;}, [this](float value) {cDefValue = value;});
+    definer.propertyFloat("value", cDefValue);
   }
 
   void SimpleFloat::publish(ResourcePublisher& publisher) {

@@ -39,7 +39,7 @@ namespace IsoRealms::UI {
     definer.propertyResource("font",         cDefFont);
     definer.propertyList(    "alignment",    std::vector<std::string>{ALIGNMENT_CENTER, ALIGNMENT_LEFT, ALIGNMENT_RIGHT}, [this]() {return getAlignment();}, [this](const std::string& value) {setAlignment(value);});
     definer.propertyResource("colour",       cDefColour);
-    definer.propertyFloat(   "shadowOffset", [this]() {return cDefShadowOffset;}, [this](float value) {cDefShadowOffset = value;}, DEFAULT_SHADOW_OFFSET);
+    definer.propertyFloat(   "shadowOffset", cDefShadowOffset, DEFAULT_SHADOW_OFFSET);
   }
   
   bool ScreenText::isDefaultConfiguration() const {

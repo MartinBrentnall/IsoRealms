@@ -24,10 +24,10 @@ namespace IsoRealms::Equilibria {
   }
 
   void TerrainState::define(IComponentDefiner& definer) {
-    definer.propertyBoolean( "state",     [this]() {return cDefValue;}, [this](bool value) {cDefValue = value;});
+    definer.propertyBoolean( "state",     cDefValue);
     definer.propertyResource("hint",      cDefHintAction);
     definer.propertyResource("icon",      cDefIcon);
-    definer.propertyFloat(   "iconScale", [this]() {return cDefIconScale;}, [this](float value) {cDefIconScale = value;}, 1.0f, [](float value) {return value > 0.0f;});
+    definer.propertyFloat(   "iconScale", cDefIconScale, 1.0f, [](float value) {return value > 0.0f;});
   }
 
   void TerrainState::publish(ResourcePublisher& publisher) {

@@ -24,9 +24,9 @@ namespace IsoRealms::Basics {
   }
 
   void SimpleVertex::define(IComponentDefiner& definer) {
-    definer.propertyFloat("x", [this]() {return cDefX;}, [this](float value) {cDefX = value;});
-    definer.propertyFloat("y", [this]() {return cDefY;}, [this](float value) {cDefY = value;});
-    definer.propertyFloat("z", [this]() {return cDefZ;}, [this](float value) {cDefZ = value;});
+    definer.propertyFloat("x", cDefX);
+    definer.propertyFloat("y", cDefY);
+    definer.propertyFloat("z", cDefZ);
   }
 
   void SimpleVertex::publish(ResourcePublisher& publisher) {

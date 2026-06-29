@@ -126,10 +126,10 @@ namespace IsoRealms::UI {
       cDefID = value;
       cMenu.getComponentData().republish();
     });
-    definer.propertyString(  "label",    [this]() {return cDefLabel;},   [this](const std::string& value) {cDefLabel   = value;});
-    definer.propertyFloat(   "minimum",  [this]() {return cDefMinimum;}, [this](float              value) {cDefMinimum = value;});
-    definer.propertyFloat(   "maximum",  [this]() {return cDefMaximum;}, [this](float              value) {cDefMaximum = value;}, 1.0);
-    definer.propertyInteger( "steps",    [this]() {return cDefSteps;},   [this](int                value) {cDefSteps   = value;}, 20);
+    definer.propertyString(  "label",    cDefLabel);
+    definer.propertyFloat(   "minimum",  cDefMinimum);
+    definer.propertyFloat(   "maximum",  cDefMaximum, 1.0);
+    definer.propertyInteger( "steps",    cDefSteps,   20);
     definer.propertyResource("onChange", cDefValueChangedAction);
   }
 

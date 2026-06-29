@@ -30,12 +30,12 @@ namespace IsoRealms::UI {
 
   void Prompt::define(IComponentDefiner& definer) {
     definer.propertyResource("font",            cDefFont);
-    definer.propertyFloat(   "textSize",        [this]() {return cDefTextSize;},     [this](float              value) {cDefTextSize     = value;}, DEFAULT_TEXT_SIZE);
-    definer.propertyFloat(   "shadowOffset",    [this]() {return cDefShadowOffset;}, [this](float              value) {cDefShadowOffset = value;}, DEFAULT_SHADOW_OFFSET);
+    definer.propertyFloat(   "textSize",        cDefTextSize,     DEFAULT_TEXT_SIZE);
+    definer.propertyFloat(   "shadowOffset",    cDefShadowOffset, DEFAULT_SHADOW_OFFSET);
     definer.propertyResource("selectionColour", cDefSelectionColour);
-    definer.propertyString(  "message",         [this]() {return cDefMessage;},      [this](const std::string& value) {cDefMessage      = value;});
-    definer.propertyString(  "cancelLabel",     [this]() {return cDefNegativeText;}, [this](const std::string& value) {cDefNegativeText = value;});
-    definer.propertyString(  "confirmLabel",    [this]() {return cDefPositiveText;}, [this](const std::string& value) {cDefPositiveText = value;});
+    definer.propertyString(  "message",         cDefMessage);
+    definer.propertyString(  "cancelLabel",     cDefNegativeText);
+    definer.propertyString(  "confirmLabel",    cDefPositiveText);
     definer.propertyResource("onCancel",        cDefNegativeAction);
     definer.propertyResource("onConfirm",       cDefPositiveAction);
   }

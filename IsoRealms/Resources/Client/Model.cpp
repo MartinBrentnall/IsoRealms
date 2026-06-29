@@ -67,14 +67,14 @@ namespace IsoRealms {
 
   void Model::defineWrapper(IComponentDefiner& definer) {
     definer.scope("", "", [this, &definer]() {
-      definer.propertyFloat("offsetX", [this]() {return cDefOffsetX;}, [this](float value) {cDefOffsetX = value;});
-      definer.propertyFloat("offsetY", [this]() {return cDefOffsetY;}, [this](float value) {cDefOffsetY = value;});
-      definer.propertyFloat("offsetZ", [this]() {return cDefOffsetZ;}, [this](float value) {cDefOffsetZ = value;});
-      definer.propertyFloat("scaleX",  [this]() {return cDefScaleX;},  [this](float value) {cDefScaleX  = value;}, 1.0f);
-      definer.propertyFloat("scaleY",  [this]() {return cDefScaleY;},  [this](float value) {cDefScaleY  = value;}, 1.0f);
-      definer.propertyFloat("scaleZ",  [this]() {return cDefScaleZ;},  [this](float value) {cDefScaleZ  = value;}, 1.0f);
-      definer.propertyFloat("yaw",     [this]() {return cDefYaw;},     [this](float value) {cDefYaw     = value;});
-      definer.propertyFloat("pitch",   [this]() {return cDefPitch;},   [this](float value) {cDefPitch   = value;});
+      definer.propertyFloat("offsetX", cDefOffsetX);
+      definer.propertyFloat("offsetY", cDefOffsetY);
+      definer.propertyFloat("offsetZ", cDefOffsetZ);
+      definer.propertyFloat("scaleX",  cDefScaleX, 1.0f);
+      definer.propertyFloat("scaleY",  cDefScaleY, 1.0f);
+      definer.propertyFloat("scaleZ",  cDefScaleZ, 1.0f);
+      definer.propertyFloat("yaw",     cDefYaw);
+      definer.propertyFloat("pitch",   cDefPitch);
     }, nullptr, IComponentDefiner::resourceMetadataHint("", "Model") + IComponentDefiner::HINT_INLINE);
 
     definer.onInitialised([this]() {

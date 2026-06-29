@@ -38,10 +38,10 @@ namespace IsoRealms::Basics {
   }
 
   void Project::define(IComponentDefiner& definer) {
-    definer.propertyString(  "file",     [this]() {return cDefProjectPath;}, [this](const std::string& value) {cDefProjectPath = value;});
-    definer.propertyBoolean( "user",     [this]() {return cDefProjectUser;}, [this](bool value)               {cDefProjectUser = value;});
-    definer.propertyBoolean( "running",  [this]() {return cDefRunning;},     [this](bool value)               {cDefRunning     = value;});
-    definer.propertyBoolean( "editing",  [this]() {return cDefEditing;},     [this](bool value)               {cDefEditing     = value;});
+    definer.propertyString("file",       cDefProjectPath);
+    definer.propertyBoolean("user",      cDefProjectUser);
+    definer.propertyBoolean("running",   cDefRunning);
+    definer.propertyBoolean("editing",   cDefEditing);
     definer.propertyResource("onFinish", cDefEndAction);
     definer.propertyResource("onError",  cDefErrorAction);
     definer.propertyResource("onReady",  cDefReadyAction);

@@ -69,8 +69,8 @@ namespace IsoRealms::Basics {
   }
   
   void DigitalToAnalogueMapping::defineResource(IComponentDefiner& definer) {
-    definer.propertyString("name",   [this]() {return cDefName;},        [this](const std::string& name) {cDefName        = name;});
-    definer.propertyFloat("toValue", [this]() {return cDefOutputValue;}, [this](float toValue)           {cDefOutputValue = toValue;});
+    definer.propertyString("name",    cDefName);
+    definer.propertyFloat( "toValue", cDefOutputValue);
     cDefControl.define(definer);
   }
 

@@ -88,13 +88,13 @@ namespace IsoRealms::Equilibria {
         }
       });
     }, nullptr, IComponentDefiner::HINT_DEFER);
-    definer.propertyBoolean("visited", [this]() {return cDefVisited;}, [this](bool value) {cDefVisited = value;});
-    definer.propertyInteger("x", [this]() {return cDefStartX;},                     [this](int value) {cDefStartX = value;});
-    definer.propertyInteger("y", [this]() {return cDefStartY;},                     [this](int value) {cDefStartY = value;});
-    definer.propertyInteger("z", [this]() {return cDefStartZ;},                     [this](int value) {cDefStartZ = value;});
-    definer.propertyInteger("width",  [this]() {return (cDefEndX - cDefStartX) + 1;},  [this](int value) {cDefEndX = cDefStartX + value - 1;});
-    definer.propertyInteger("length", [this]() {return (cDefEndY - cDefStartY) + 1;},  [this](int value) {cDefEndY = cDefStartY + value - 1;});
-    definer.propertyInteger("height", [this]() {return (cDefEndZ - cDefStartZ) + 1;},  [this](int value) {cDefEndZ = cDefStartZ + value - 1;});
+    definer.propertyBoolean("visited", cDefVisited);
+    definer.propertyInteger("x",       cDefStartX);
+    definer.propertyInteger("y",       cDefStartY);
+    definer.propertyInteger("z",       cDefStartZ);
+    definer.propertyInteger("width",   [this]() {return (cDefEndX - cDefStartX) + 1;},  [this](int value) {cDefEndX = cDefStartX + value - 1;});
+    definer.propertyInteger("length",  [this]() {return (cDefEndY - cDefStartY) + 1;},  [this](int value) {cDefEndY = cDefStartY + value - 1;});
+    definer.propertyInteger("height",  [this]() {return (cDefEndZ - cDefStartZ) + 1;},  [this](int value) {cDefEndZ = cDefStartZ + value - 1;});
 
     definer.scope("zoneObjects", "", [this, &definer]() {
       definer.array("terrain", cDefTerrain, [](const std::unique_ptr<Terrain>& mTerrain) -> Terrain& {return *mTerrain;}, [&definer](Terrain& terrain) {

@@ -71,7 +71,7 @@ namespace IsoRealms {
   }
 
   void StringRegistry::Literal::Instance::defineResource(IComponentDefiner& definer) {
-    definer.propertyString("value", [this]() {return cValue;}, [this](const std::string& value) {cValue = value;});
+    definer.propertyString("value", cValue);
   }
 
   bool StringRegistry::Literal::Instance::isDefaultConfiguration() const {

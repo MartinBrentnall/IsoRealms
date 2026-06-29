@@ -37,12 +37,12 @@ namespace IsoRealms::Equilibria {
   }
 
   void TerrainType::define(IComponentDefiner& definer) {
-    definer.propertyFloat(   "friction",     [this]() {return cDefSurfaceFriction;}, [this](float value) {cDefSurfaceFriction = value;});
-    definer.propertyFloat(   "grip",         [this]() {return cDefSurfaceGrip;},     [this](float value) {cDefSurfaceGrip     = value;});
-    definer.propertyFloat(   "floorBounce",  [this]() {return cDefSurfaceBounce;},   [this](float value) {cDefSurfaceBounce   = value;});
-    definer.propertyFloat(   "wallBounce",   [this]() {return cDefWallBounce;},      [this](float value) {cDefWallBounce      = value;}, DEFAULT_WALL_BOUNCE);
-    definer.propertyBoolean( "allowRespawn", [this]() {return cDefRespawnAllowed;},  [this](bool  value) {cDefRespawnAllowed  = value;});
-    definer.propertyBoolean( "solid",        [this]() {return cDefSolid;},           [this](bool  value) {cDefSolid           = value;});
+    definer.propertyFloat(   "friction",     cDefSurfaceFriction);
+    definer.propertyFloat(   "grip",         cDefSurfaceGrip);
+    definer.propertyFloat(   "floorBounce",  cDefSurfaceBounce);
+    definer.propertyFloat(   "wallBounce",   cDefWallBounce, DEFAULT_WALL_BOUNCE);
+    definer.propertyBoolean( "allowRespawn", cDefRespawnAllowed);
+    definer.propertyBoolean( "solid",        cDefSolid);
     definer.propertyResource("onTouch",      cDefContactAction);
     definer.propertyResource("onImpact",     cDefImpactAction);
     definer.propertyResource("surface",      cDefSurfacePattern);
