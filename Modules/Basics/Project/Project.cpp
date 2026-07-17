@@ -70,13 +70,17 @@ namespace IsoRealms::Basics {
     cRuntimeEditing            = cDefEditing;
     cRuntimeQuitRequestGranted = false;
 
-    // Start loading the project, ready action will be executed when it's done.
-    if (cDefProjectPath != "") {
-      prepare(cDefProjectPath, cDefProjectUser, false);
-    }
+    // Defer auto-prepare until updateRuntime so it does not overlap
+    // Application::initMainThread during startup project reset.
+    cRuntimePreparePending = cDefProjectPath != "";
   }
 
   void Project::updateRuntime(unsigned int milliseconds) {
+    if (cRuntimePreparePending) {
+      cRuntimePreparePending = false;
+      prepare(cDefProjectPath, cDefProjectUser, false);
+    }
+
     if (cRuntimeLoading) {
       try {
         IsoRealms::Project* mProject = cRuntimeProjectLoader->getLoadedProject();
@@ -139,6 +143,7 @@ namespace IsoRealms::Basics {
   }
 
   void Project::prepareNewProject() {
+    cRuntimePreparePending = false;
     cRuntimeProjectLoader = std::make_unique<ProjectLoader>([this](bool quitRequestGranted) {
       cRuntimeRunning = false;
       cRuntimeEditing = true; // TODO: Why do we assume a switch to editing mode?
@@ -156,7 +161,8 @@ namespace IsoRealms::Basics {
   }
 
   void Project::prepare(const std::string& file, bool user, bool force) {
-    
+    cRuntimePreparePending = false;
+
     // If it's the same as the current project, nothing to do.
     if (!force && cRuntimeProjectLoader != nullptr && cRuntimeProjectLoader->matches(file, user)) {
       cRuntimeLoading = true;

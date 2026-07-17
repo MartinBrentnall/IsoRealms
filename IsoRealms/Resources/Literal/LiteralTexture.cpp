@@ -27,11 +27,8 @@ namespace IsoRealms {
             cProject(project),
             cWidth(width),
             cHeight(height) {
-    project.getApplication().mainThreadAlloc([this]() {
-      glGenTextures(1, &cTexture);
-    });
-    
     project.getApplication().mainThreadInit([this, clampX, clampY, depth]() {
+      glGenTextures(1, &cTexture);
       glGenFramebuffersEXT(1, &cFrameBuffer);
       glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, cFrameBuffer);
 

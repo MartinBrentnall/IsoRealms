@@ -147,8 +147,8 @@ namespace IsoRealms {
       void removeWorker();
     };
     
-    std::queue<std::function<void()>> cMainThreadAllocTasks; /// Allocation tasks to be perfomed on the main thread during initialisation.
-    std::queue<std::function<void()>> cMainThreadInitTasks;  /// initialisation tasks to be performed on the main thread.
+    std::mutex cMainThreadTaskMutex;                        /// Guards main-thread init task queue (filled from worker threads).
+    std::queue<std::function<void()>> cMainThreadInitTasks; /// Initialisation tasks to be performed on the main thread.
 
     // Application window fields.
     sf::Window cWindow;                                   /// The application window.
@@ -222,7 +222,6 @@ namespace IsoRealms {
      */
     void loop(int threadID);
     void cleanUp();
-    void mainThreadAlloc(std::function<void()> task);
     void mainThreadInit(std::function<void()> task);
     void initMainThread();
     std::vector<DisplayResolution> getAvailableDisplayResolutions() const;

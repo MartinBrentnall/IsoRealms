@@ -275,12 +275,9 @@ namespace IsoRealms {
     }
   }
 
-  void Application::mainThreadAlloc(std::function<void()> task) {
-    cMainThreadAllocTasks.push(task);
-  }
-
   void Application::mainThreadInit(std::function<void()> task) {
-    cMainThreadInitTasks.push(task);
+    std::lock_guard<std::mutex> mLock(cMainThreadTaskMutex);
+    cMainThreadInitTasks.push(std::move(task));
   }
 
   void Application::ensureWindow() {
@@ -291,15 +288,16 @@ namespace IsoRealms {
 
   void Application::initMainThread() {
     ensureWindow();
-    while (!cMainThreadAllocTasks.empty()) {
-      std::function<void()> mTask = cMainThreadAllocTasks.front();
-      mTask();
-      cMainThreadAllocTasks.pop();
+
+    std::queue<std::function<void()>> mInitTasks;
+    {
+      std::lock_guard<std::mutex> mLock(cMainThreadTaskMutex);
+      mInitTasks.swap(cMainThreadInitTasks);
     }
-    while (!cMainThreadInitTasks.empty()) {
-      std::function<void()> mTask = cMainThreadInitTasks.front();
-      mTask();
-      cMainThreadInitTasks.pop();
+
+    while (!mInitTasks.empty()) {
+      mInitTasks.front()();
+      mInitTasks.pop();
     }
   }
 
