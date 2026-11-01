@@ -42,6 +42,7 @@ namespace IsoRealms {
             cAction(Action::SELECT),
             cFetching(false),
             cIndentLevel(0) {
+    cComponentEditor.refreshMetadata(cOwner.getProject());
     cComponentEditor.openMenu(*this);
     cMetadata = &cComponentEditor.getParentMenuMetadata();
     refreshProperties();

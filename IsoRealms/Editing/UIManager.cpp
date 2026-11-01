@@ -32,10 +32,10 @@ namespace IsoRealms {
             cProject(project),
             cStyle(style),
             cHatHandler(project.getApplication().getHatHandler()),
-            cButtonStateUp(   [this]() {return input(UISignalID::MOVE_UP);   }),
-            cButtonStateDown( [this]() {return input(UISignalID::MOVE_DOWN); }),
-            cButtonStateLeft( [this]() {return input(UISignalID::MOVE_LEFT); }),
-            cButtonStateRight([this]() {return input(UISignalID::MOVE_RIGHT);}),
+            cButtonStateUp(   [this]() {return input(UISignalID::MOVE_UP);   }, true),
+            cButtonStateDown( [this]() {return input(UISignalID::MOVE_DOWN); }, true),
+            cButtonStateLeft( [this]() {return input(UISignalID::MOVE_LEFT); }, false),
+            cButtonStateRight([this]() {return input(UISignalID::MOVE_RIGHT);}, false),
             cFinishCallback(finishCallback),
             cEditorCallback(editorCallback),
             cTooltipVisible(false),
@@ -312,6 +312,7 @@ namespace IsoRealms {
         if (cHatHandler.downPressed())   {return cButtonStateDown.setPressed( true);  }
         if (cHatHandler.leftPressed())   {return cButtonStateLeft.setPressed( true);  }
         if (cHatHandler.rightPressed())  {return cButtonStateRight.setPressed(true);  }
+        // TODO: These don't always get called when the hat is released.
         if (cHatHandler.upReleased())    {return cButtonStateUp.setPressed(   false); }
         if (cHatHandler.downReleased())  {return cButtonStateDown.setPressed( false); }
         if (cHatHandler.leftReleased())  {return cButtonStateLeft.setPressed( false); }
@@ -463,7 +464,8 @@ namespace IsoRealms {
     }
   }
 
-  UIManager::ButtonState::ButtonState(std::function<bool()> pressAction) :
+  UIManager::ButtonState::ButtonState(std::function<bool()> pressAction, bool repeatInputsOnHold) :
+            cRepeatInputsOnHold(repeatInputsOnHold),
             cPressed(false),
             cTimeUntilTrigger(BUTTON_STATE_PRESS_REPEAT_DELAY),
             cRepeatInterval(BUTTON_STATE_PRESS_REPEAT_INTERVAL),
@@ -475,7 +477,9 @@ namespace IsoRealms {
     if (pressed) {
       mResult = cPressAction();
     }
-    cPressed = pressed;
+    if (cRepeatInputsOnHold) {
+      cPressed = pressed;
+    }
     return mResult;
   }
 

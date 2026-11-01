@@ -93,11 +93,12 @@ namespace IsoRealms {
     
     class ButtonState {
       public:
-      ButtonState(std::function<bool()> pressAction);
+      ButtonState(std::function<bool()> pressAction, bool repeatInputsOnHold);
       bool setPressed(bool pressed);
       void update(unsigned int milliseconds);
 
       private:
+      bool cRepeatInputsOnHold;
       bool cPressed;
       int cTimeUntilTrigger;
       int cRepeatInterval;
