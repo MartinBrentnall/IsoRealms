@@ -18,6 +18,8 @@
  */
 #include "ComponentEditor.h"
 
+#include <stdexcept>
+
 #include "IsoRealms/IComponentData.h"
 #include "IsoRealms/Persistence/JSONObject.h"
 #include "IsoRealms/Persistence/JSONThing.h"
@@ -42,41 +44,49 @@ namespace IsoRealms {
 
   void ComponentEditor::refreshMetadata(Project& project) {
 
-    // Clear any existing metadata.
-    cModuleMetadata.clear();
-    cApplicationMetadata.clear();
-
-    // Load application metadata.
-    std::locale mLocale("");
-    std::string mMetadataPath = "Metadata/IsoRealms." + mLocale.name();
-    std::string::size_type mLastExtensionIndex = mMetadataPath.find_last_of('.');
-    std::string::size_type mLastDashIndex = mMetadataPath.find_last_of('_');
-    std::string::size_type mLastSeparatorIndex = (mLastExtensionIndex != std::string::npos && (mLastDashIndex == std::string::npos || mLastExtensionIndex > mLastDashIndex))
-                                               ? mLastExtensionIndex
-                                               : mLastDashIndex;
-    while (!System::fileExists(mMetadataPath + ".json", false) && mLastSeparatorIndex != std::string::npos) {
-      mMetadataPath = mMetadataPath.substr(0, mLastSeparatorIndex);
-      mLastExtensionIndex = mMetadataPath.find_last_of('.');
-      mLastDashIndex = mMetadataPath.find_last_of('_');
-      mLastSeparatorIndex = (mLastExtensionIndex != std::string::npos && (mLastDashIndex == std::string::npos || mLastExtensionIndex > mLastDashIndex))
-                          ? mLastExtensionIndex
-                          : mLastDashIndex;
+    // Open property menus store callbacks that capture ModuleMetadata and Metadata
+    // pointers.  Rebuilding those maps while a menu is open leaves dangling
+    // captures and crashes when a nested menu (e.g. a module category) is entered.
+    if (cPropertyManagers.empty()) {
+      cModuleMetadata.clear();
+      cApplicationMetadata.clear();
     }
 
-    if (!System::fileExists(mMetadataPath + ".json", false)) {
-      mMetadataPath = "Metadata/IsoRealms.en";
-    }
-    JSONDocument mMetadataDocument(mMetadataPath + ".json", false);
-    JSONObject mRootObject(mMetadataDocument, mMetadataDocument.getDocument());
-    for (JSONThing mSectionThing : mRootObject) {
-      std::string mSectionName = mSectionThing.getName();
-      JSONObject mSectionObject = mSectionThing.getValue();
-      cApplicationMetadata.emplace(mSectionName, std::make_unique<Metadata>(mSectionObject));
+    if (cApplicationMetadata.empty()) {
+      std::locale mLocale("");
+      std::string mMetadataPath = "Metadata/IsoRealms." + mLocale.name();
+      std::string::size_type mLastExtensionIndex = mMetadataPath.find_last_of('.');
+      std::string::size_type mLastDashIndex = mMetadataPath.find_last_of('_');
+      std::string::size_type mLastSeparatorIndex = (mLastExtensionIndex != std::string::npos && (mLastDashIndex == std::string::npos || mLastExtensionIndex > mLastDashIndex))
+                                                 ? mLastExtensionIndex
+                                                 : mLastDashIndex;
+      while (!System::fileExists(mMetadataPath + ".json", false) && mLastSeparatorIndex != std::string::npos) {
+        mMetadataPath = mMetadataPath.substr(0, mLastSeparatorIndex);
+        mLastExtensionIndex = mMetadataPath.find_last_of('.');
+        mLastDashIndex = mMetadataPath.find_last_of('_');
+        mLastSeparatorIndex = (mLastExtensionIndex != std::string::npos && (mLastDashIndex == std::string::npos || mLastExtensionIndex > mLastDashIndex))
+                            ? mLastExtensionIndex
+                            : mLastDashIndex;
+      }
+
+      if (!System::fileExists(mMetadataPath + ".json", false)) {
+        mMetadataPath = "Metadata/IsoRealms.en";
+      }
+      JSONDocument mMetadataDocument(mMetadataPath + ".json", false);
+      JSONObject mRootObject(mMetadataDocument, mMetadataDocument.getDocument());
+      for (JSONThing mSectionThing : mRootObject) {
+        std::string mSectionName = mSectionThing.getName();
+        JSONObject mSectionObject = mSectionThing.getValue();
+        cApplicationMetadata.emplace(mSectionName, std::make_unique<Metadata>(mSectionObject));
+      }
     }
 
+    const Metadata& mComponentBaseMetadata = *cApplicationMetadata.at("Component");
     const std::vector<std::unique_ptr<Module>>& mModules = project.getModules();
     for (const std::unique_ptr<Module>& mModule : mModules) {
-      cModuleMetadata[mModule->getName()] = std::make_unique<ModuleMetadata>(*mModule, *cApplicationMetadata["Component"].get());
+      if (cModuleMetadata.find(mModule->getName()) == cModuleMetadata.end()) {
+        cModuleMetadata.emplace(mModule->getName(), std::make_unique<ModuleMetadata>(*mModule, mComponentBaseMetadata));
+      }
     }
   }
 
@@ -199,7 +209,11 @@ namespace IsoRealms {
 
   void ComponentEditor::scopeModule(Module& module, std::function<void()> removeFunction) {
     std::string mModuleName = module.getName();
-    cModuleMetadata[mModuleName]->scopeCategories(*this, getProperties(), module, removeFunction);
+    std::map<std::string, std::unique_ptr<ModuleMetadata>>::iterator mModuleMetadata = cModuleMetadata.find(mModuleName);
+    if (mModuleMetadata == cModuleMetadata.end() || mModuleMetadata->second == nullptr) {
+      throw std::runtime_error("ERROR: ComponentEditor::scopeModule: No metadata loaded for module \"" + mModuleName + "\".");
+    }
+    mModuleMetadata->second->scopeCategories(*this, getProperties(), module, removeFunction);
   }
 
   void ComponentEditor::scope(const std::string& key, const std::string& value, std::function<void()> subProperties, std::function<void()> removeFunction, const Options& hint, std::function<bool()> icon) {

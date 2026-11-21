@@ -385,6 +385,7 @@ namespace IsoRealms {
   }
   
   void PropertiesMenu::refreshProperties() {
+    cComponentEditor.refreshMetadata(cOwner.getProject());
     clear();
     cEditingProperty = nullptr;
     cClosingProperty = nullptr;
