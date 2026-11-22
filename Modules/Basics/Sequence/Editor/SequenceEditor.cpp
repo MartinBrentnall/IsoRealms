@@ -674,7 +674,10 @@ namespace IsoRealms::Basics {
 
                 if (cCursorEvent != nullptr) {
                   cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cComponentEditor, cSequence.getComponentData(), [this](IComponentDefiner& definer) {
-                    return cCursorEvent->getEventProperties(definer);
+                    SequenceTrack& mTrack = cSequence.getTrack(cCursorTrack.value());
+                    definer.scope("", "", [this, &definer]() {
+                      cCursorEvent->getEventProperties(definer);
+                    }, nullptr, IComponentDefiner::resourceMetadataHint(mTrack->getResourceModuleName(), mTrack->getResourceTypeName()) + IComponentDefiner::HINT_INLINE);
                   }), "Event Configuration");
                   cEditingProperties = true;
                 }
