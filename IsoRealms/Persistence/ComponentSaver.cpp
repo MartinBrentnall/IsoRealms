@@ -200,7 +200,7 @@ namespace IsoRealms {
     currentObject().addString(key, getter(), defaultValue);
   }
 
-  void ComponentSaver::propertyUnsignedInteger(const std::string& key, std::function<unsigned int()> getter, std::function<void(unsigned int)> setter, unsigned int defaultValue, std::function<bool(unsigned int)> validityChecker, std::function<void()> removeFunction) {
+  void ComponentSaver::propertyUnsignedInteger(const std::string& key, std::function<unsigned int()> getter, std::function<void(unsigned int)> setter, unsigned int defaultValue, std::function<bool(unsigned int)> validityChecker, std::function<void()> removeFunction, const Options& hint) {
     currentObject().addInteger(key, static_cast<int>(getter()), static_cast<int>(defaultValue));
   }
 

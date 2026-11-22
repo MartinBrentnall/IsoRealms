@@ -142,7 +142,7 @@ namespace IsoRealms {
     virtual void propertyString(          const std::string& key, std::function<std::string()>  getter, std::function<void(const std::string&)> setter, const std::string& defaultValue = "",    std::function<bool(const std::string&)> validityChecker = [](const std::string&) {return true;}, std::function<void()> removeFunction = nullptr, PropertyConfirmCallback confirmCustom = nullptr, const Options& hint = Options::EMPTY) = 0;
     virtual void propertyOptional(        const std::string& key, IOptionalObject& optionalSource, const std::string& noneLabel, std::function<bool()> noneIcon, std::function<void(const std::string&)> choiceCallback, std::function<std::string()> valueGetter = nullptr, const Options& hint = Options::EMPTY) = 0;
     virtual void propertyResource(        const std::string& key, ITreeSelectorObject& item, const Options& hint = Options::EMPTY, std::function<void()> removeFunction = nullptr) = 0;
-    virtual void propertyUnsignedInteger( const std::string& key, std::function<unsigned int()> getter, std::function<void(unsigned int)>       setter, unsigned int       defaultValue = 0,     std::function<bool(unsigned int)>       validityChecker = [](unsigned int)       {return true;}, std::function<void()> removeFunction = nullptr) = 0;
+    virtual void propertyUnsignedInteger( const std::string& key, std::function<unsigned int()> getter, std::function<void(unsigned int)>       setter, unsigned int       defaultValue = 0,     std::function<bool(unsigned int)>       validityChecker = [](unsigned int)       {return true;}, std::function<void()> removeFunction = nullptr, const Options& hint = Options::EMPTY) = 0;
 
     void propertyBoolean(const std::string& key, bool& value, bool defaultValue = false, std::function<void()> removeFunction = nullptr, PropertyBooleanConfirmCallback confirmCustom = nullptr) {
       propertyBoolean(key, [&]() {return value;}, [&](bool v) {value = v;}, defaultValue, removeFunction, confirmCustom);
@@ -153,15 +153,15 @@ namespace IsoRealms {
     }
 
     void propertyInteger(const std::string& key, int& value, int defaultValue = 0, std::function<bool(int)> validityChecker = [](int) {return true;}, std::function<void()> removeFunction = nullptr, const Options& hint = Options::EMPTY) {
-      propertyInteger(key, [&]() {return value;}, [&](int v) {value = v;}, defaultValue, validityChecker, removeFunction);
+      propertyInteger(key, [&]() {return value;}, [&](int v) {value = v;}, defaultValue, validityChecker, removeFunction, hint);
     }
 
     void propertyString(const std::string& key, std::string& value, const std::string& defaultValue = "", std::function<bool(const std::string&)> validityChecker = [](const std::string&) {return true;}, std::function<void()> removeFunction = nullptr, PropertyConfirmCallback confirmCustom = nullptr, const Options& hint = Options::EMPTY) {
-      propertyString(key, [&]() {return value;}, [&](const std::string& v) {value = v;}, defaultValue, validityChecker, removeFunction, confirmCustom);
+      propertyString(key, [&]() {return value;}, [&](const std::string& v) {value = v;}, defaultValue, validityChecker, removeFunction, confirmCustom, hint);
     }
 
-    void propertyUnsignedInteger(const std::string& key, unsigned int& value, unsigned int defaultValue = 0, std::function<bool(unsigned int)> validityChecker = [](unsigned int) {return true;}, std::function<void()> removeFunction = nullptr) {
-      propertyUnsignedInteger(key, [&]() {return value;}, [&](unsigned int v) {value = v;}, defaultValue, validityChecker, removeFunction);
+    void propertyUnsignedInteger(const std::string& key, unsigned int& value, unsigned int defaultValue = 0, std::function<bool(unsigned int)> validityChecker = [](unsigned int) {return true;}, std::function<void()> removeFunction = nullptr, const Options& hint = Options::EMPTY) {
+      propertyUnsignedInteger(key, [&]() {return value;}, [&](unsigned int v) {value = v;}, defaultValue, validityChecker, removeFunction, hint);
     }
 
     virtual void scopeModule(Module& module, std::function<void()> removeFunction) = 0;

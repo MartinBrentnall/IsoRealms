@@ -203,7 +203,10 @@ namespace IsoRealms {
     getProperties().addProperty(std::make_unique<PropertyOptional>(*this, mParent, mergePropertyMetadata(getCurrentMetadata().getPropertyData(key), hint), choiceCallback, mParent.getProject(), cApplication, optionalSource, noneLabel, noneIcon, valueGetter));
   }
 
-  void ComponentEditor::propertyUnsignedInteger(const std::string& key, std::function<unsigned int()> getter, std::function<void(unsigned int)> setter, unsigned int defaultValue, std::function<bool(unsigned int)> validityChecker, std::function<void()> removeFunction) {
+  void ComponentEditor::propertyUnsignedInteger(const std::string& key, std::function<unsigned int()> getter, std::function<void(unsigned int)> setter, unsigned int defaultValue, std::function<bool(unsigned int)> validityChecker, std::function<void()> removeFunction, const Options& options) {
+    if (options.getOption(IComponentDefiner::HINT_KEY_HIDDEN) == "true") {
+      return;
+    }
     getProperties().addProperty(std::make_unique<PropertyNativeUnsignedInteger>(getCurrentMetadata().getPropertyData(key), *this, getter, setter, validityChecker, removeFunction));
   }
 

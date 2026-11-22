@@ -18,6 +18,7 @@
  */
 #include "SequenceTrackColourEvent.h"
 
+#include "IsoRealms/IComponentDefiner.h"
 #include "SequenceTrackColour.h"
 
 namespace IsoRealms::Basics {
@@ -37,7 +38,7 @@ namespace IsoRealms::Basics {
   }
 
   void SequenceTrackColourEvent::getEventProperties(IComponentDefiner& definer) {
-    definer.propertyUnsignedInteger("duration", cDefTime);
+    definer.propertyUnsignedInteger("duration", cDefTime, 0, [](unsigned int) {return true;}, nullptr, IComponentDefiner::HINT_HIDDEN);
     definer.propertyResource(       "target",   cDefTarget);
     definer.propertyBoolean(        "fade",     cDefFade, true);
   }

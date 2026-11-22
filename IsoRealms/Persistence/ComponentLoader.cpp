@@ -288,7 +288,7 @@ namespace IsoRealms {
     setter(mValue);
   }
 
-  void ComponentLoader::propertyUnsignedInteger(const std::string& key, std::function<unsigned int()> getter, std::function<void(unsigned int)> setter, unsigned int defaultValue, std::function<bool(unsigned int)> validityChecker, std::function<void()> removeFunction) {
+  void ComponentLoader::propertyUnsignedInteger(const std::string& key, std::function<unsigned int()> getter, std::function<void(unsigned int)> setter, unsigned int defaultValue, std::function<bool(unsigned int)> validityChecker, std::function<void()> removeFunction, const Options& hint) {
     unsigned int mValue = static_cast<unsigned int>(currentObject().getInteger(key, static_cast<int>(defaultValue)));
     requireValidPropertyValue(key, mValue, validityChecker);
     setter(mValue);
